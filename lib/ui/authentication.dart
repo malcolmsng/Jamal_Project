@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/net/auth.dart';
+import 'registration.dart';
 import 'home_page.dart';
 
 class Authentication extends StatefulWidget {
@@ -67,19 +68,15 @@ class _AuthenticationState extends State<Authentication> {
                   color: Colors.white,
                 ),
                 child: MaterialButton(
-                  onPressed: () async {
-                    Auth auth = Auth();
-                    bool shouldNavigate = await auth.login(
-                        _emailField.toString(), _passwordField.toString());
-                    if (shouldNavigate) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomePage(),
-                        ),
-                      );
-                    }
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Registraton(),
+                      ),
+                    );
                   },
+
                   // },
                   child: Text("Register"),
                 ),
