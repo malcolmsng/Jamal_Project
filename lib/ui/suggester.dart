@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_multiselect/flutter_multiselect.dart';
 import 'package:jamal_v1/ui/suggested_workouts.dart';
 import 'package:jamal_v1/widgets/equipment_checkbox.dart';
 import 'package:jamal_v1/widgets/fitness_checkbox.dart';
@@ -11,6 +12,7 @@ class Suggester extends StatefulWidget {
 class _SuggesterState extends State<Suggester> {
   //user's available time
   TextEditingController _availableTime = TextEditingController();
+  List<String> selectedValues = [];
 
   //list of all equipment the user can select
   List<Equipment> equipment;
@@ -74,7 +76,50 @@ class _SuggesterState extends State<Suggester> {
                               color: Colors.blueAccent,
                             ))),
                   ),
-
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                    child: MultiSelect(
+                      autovalidate: false,
+                      titleText: "Available Equipment",
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select one or more option(s)';
+                        }
+                        return value;
+                      },
+                      errorText: 'Please select one or more option(s)',
+                      dataSource: [
+                        {
+                          "display": "bench",
+                          "value": "bench",
+                        },
+                        {
+                          "display": "pull up bar",
+                          "value": "pull up bar",
+                        },
+                        {
+                          "display": "dumbbells",
+                          "value": "dumbbells",
+                        },
+                        {
+                          "display": "kettle bells",
+                          "value": "kettle bells",
+                        }
+                      ],
+                      textField: 'display',
+                      valueField: 'value',
+                      filterable: true,
+                      required: true,
+                      value: null,
+                      change: (values) {
+                        selectedValues = [values.toString()];
+                        print(selectedValues);
+                      },
+                    ),
+                  ),
                   SizedBox(
                     height: 50,
                   ),
@@ -121,7 +166,7 @@ class _SuggesterState extends State<Suggester> {
                   ),
 
                   SizedBox(
-                    height: 100,
+                    height: 30,
                   ),
 
                   ElevatedButton(
@@ -137,7 +182,7 @@ class _SuggesterState extends State<Suggester> {
                         ),
                       );
                     },
-                  )
+                  ),
                 ],
               ),
             ),
