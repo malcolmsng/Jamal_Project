@@ -30,7 +30,7 @@ class EquipmentCheckbox {
             title: Text('Available Equipment'),
             onConfirm: (results) {
               selectedList = results;
-              print(selectedList.toString);
+              print(selectedList.toString());
             },
           );
         });

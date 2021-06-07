@@ -45,6 +45,7 @@ class _AuthenticationState extends State<Authentication> {
               Container(
                 width: MediaQuery.of(context).size.width / 1.3,
                 child: TextFormField(
+                  obscureText: true,
                   style: TextStyle(color: Colors.white),
                   controller: _passwordField,
                   decoration: InputDecoration(
@@ -68,6 +69,7 @@ class _AuthenticationState extends State<Authentication> {
                   color: Colors.white,
                 ),
                 child: MaterialButton(
+<<<<<<< HEAD
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -78,6 +80,16 @@ class _AuthenticationState extends State<Authentication> {
                   },
 
                   // },
+=======
+                  onPressed: () async {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Registration(),
+                      ),
+                    );
+                  },
+>>>>>>> 2991f5ffdb559bd09b79ab3fc1d552c3a4e7428d
                   child: Text("Register"),
                 ),
               ),
@@ -103,7 +115,6 @@ class _AuthenticationState extends State<Authentication> {
                       );
                     }
                   },
-                  // },
                   child: Text("Login"),
                 ),
               ),

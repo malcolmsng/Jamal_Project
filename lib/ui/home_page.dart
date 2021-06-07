@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/widgets/features.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,6 +13,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    var user = Provider.of<User>(context);
+    print("home page");
+
     return Scaffold(
       bottomNavigationBar: BottomFeaturesBar(),
       body: Stack(
@@ -29,7 +34,7 @@ class _HomePageState extends State<HomePage> {
                         height: screenSize.height * 0.05,
                       ),
                       Text(
-                        // insert usen's name here
+                        // insert user's name here
                         "Welcome back, Jason",
                         style: Theme.of(context)
                             .textTheme
@@ -52,14 +57,42 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(
                         height: 20,
                       ),
-                      SizedBox(
-                        width: screenSize.width,
-                        child: Image.asset("assets/progress.png"),
-                      ),
+                      // FutureBuilder(
+                      //   future: Provider.of(context).auth.getCurrentUserID(),
+                      //   builder: (context, snapshot) {
+                      //     if (snapshot.connectionState ==
+                      //         ConnectionState.done) {
+                      //       return Text(
+                      //         "${snapshot.data.age ?? 2000}",
+                      //       );
+                      //     } else {
+                      //       return CircularProgressIndicator();
+                      //     }
+                      //   },
+                      // ),
+                      // SizedBox(
+                      //   width: screenSize.width,
+                      //   child: Image.asset("assets/progress.png"),
+                      // ),
+                      Column(
+                        children: [
+                          SizedBox(height: 10),
+                          Text(user.toString() ?? "no user found",
+                              style: TextStyle(
+                                fontSize: 20,
+                              ))
+                        ],
+                      )
                     ],
                   ))))
         ],
       ),
     );
   }
+
+  // Stream<QuerySnapshot> getUsersTripsStreamSnapshots(
+  //     BuildContext context) async* {
+  //   final uid = await Provider.of(context).auth.getCurrentUID();
+  //   FirebaseAuth.instance.snapshots();
+  // }
 }
