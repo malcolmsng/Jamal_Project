@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jamal_v1/ui/demonstration.dart';
 import 'package:jamal_v1/widgets/equipment_checkbox.dart';
 import 'package:jamal_v1/widgets/fitness_checkbox.dart';
-import 'package:jamal_v1/ui/startWorkout.dart';
+import 'package:jamal_v1/ui/workout_timer.dart';
 
 class Exercise {
   FitnessLevel difficulty;

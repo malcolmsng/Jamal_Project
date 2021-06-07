@@ -1,16 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-<<<<<<< HEAD
-
-class Auth {
-  FirebaseAuth auth = FirebaseAuth.instance;
-
-  Future<bool> register(String email, String password) async {
-    try {
-      await auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-=======
 import 'package:jamal_v1/net/database.dart';
 
 class Auth {
@@ -29,7 +17,6 @@ class Auth {
       await DatabaseService(uid: user.uid).updateUserData(
           email, password, name, age, height, weight, fitnessLevel);
 
->>>>>>> 2991f5ffdb559bd09b79ab3fc1d552c3a4e7428d
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -48,13 +35,8 @@ class Auth {
 
   Future<bool> login(String email, String password) async {
     try {
-<<<<<<< HEAD
-      await auth.signInWithEmailAndPassword(
-        email: email,
-=======
       await _auth.signInWithEmailAndPassword(
         email: email.trim(),
->>>>>>> 2991f5ffdb559bd09b79ab3fc1d552c3a4e7428d
         password: password,
       );
       return true;
@@ -72,18 +54,12 @@ class Auth {
 
   Future<bool> anon() async {
     try {
-<<<<<<< HEAD
-      await auth.signInAnonymously();
-=======
       await _auth.signInAnonymously();
->>>>>>> 2991f5ffdb559bd09b79ab3fc1d552c3a4e7428d
       return true;
     } on FirebaseAuthException {
       return false;
     }
   }
-<<<<<<< HEAD
-=======
 
   // get user UID
   Future<String> getCurrentID() async {
@@ -95,5 +71,4 @@ class Auth {
     //return firebase.auth().currentUser;
     return _auth.currentUser;
   }
->>>>>>> 2991f5ffdb559bd09b79ab3fc1d552c3a4e7428d
 }

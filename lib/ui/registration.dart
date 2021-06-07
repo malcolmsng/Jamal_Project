@@ -2,21 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:jamal_v1/net/auth.dart';
 import 'package:jamal_v1/ui/home_page.dart';
 
-<<<<<<< HEAD
-class Registraton extends StatefulWidget {
-  @override
-  _RegistratonState createState() => _RegistratonState();
-}
-
-class _RegistratonState extends State<Registraton> {
-=======
 class Registration extends StatefulWidget {
   @override
   _RegistrationState createState() => _RegistrationState();
 }
 
 class _RegistrationState extends State<Registration> {
->>>>>>> 2991f5ffdb559bd09b79ab3fc1d552c3a4e7428d
   final _formkey = GlobalKey<FormState>();
 
   TextEditingController _emailField = TextEditingController();
@@ -202,10 +193,6 @@ class _RegistrationState extends State<Registration> {
                             _formkey.currentState.validate();
                             Auth auth = Auth();
                             bool shouldNavigate = await auth.register(
-<<<<<<< HEAD
-                                _emailField.toString(),
-                                _passwordField.toString());
-=======
                                 _emailField.text,
                                 _passwordField.text,
                                 _nameField.text,
@@ -213,7 +200,6 @@ class _RegistrationState extends State<Registration> {
                                 _heightField.text,
                                 _weightField.text,
                                 _fitnessField.text);
->>>>>>> 2991f5ffdb559bd09b79ab3fc1d552c3a4e7428d
                             if (shouldNavigate) {
                               Navigator.push(
                                 context,
