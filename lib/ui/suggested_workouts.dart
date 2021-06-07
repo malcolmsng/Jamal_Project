@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jamal_v1/ui/demonstration.dart';
 import 'package:jamal_v1/widgets/equipment_checkbox.dart';
 import 'package:jamal_v1/widgets/fitness_checkbox.dart';
+import 'package:jamal_v1/ui/startWorkout.dart';
 
 class Exercise {
   FitnessLevel difficulty;
@@ -84,7 +85,6 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
                 itemCount: exercises.length,
                 itemBuilder: (context, index) {
                   Exercise current = exercises[index];
-                  print(current.name);
                   return InkWell(
                     onTap: () {
                       print('Confirmed');
@@ -116,12 +116,24 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
                             fontSize: 18,
                             color: Colors.blueAccent,
                           ),
-                        )
+                        ),
                       ],
                     )),
                   );
                 },
               ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(primary: Colors.orangeAccent),
+              child: Text('Start Workout'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => WorkoutTimer(),
+                  ),
+                );
+              },
             )
           ],
         ),
