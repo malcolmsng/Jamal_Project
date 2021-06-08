@@ -50,16 +50,14 @@ class _WorkoutTimerState extends State<WorkoutTimer> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                  padding: EdgeInsets.only(top: 18),
-                  child: Text('Time Remaining',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                      ))),
               Expanded(
                 child: CircularPercentIndicator(
+                    header: Text('Time Remaining',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                        )),
                     percent: percent,
                     animation: true,
                     animateFromLastPercent: true,

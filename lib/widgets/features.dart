@@ -82,3 +82,10 @@ class BottomIcon {
 
   BottomIcon(this.imgLocation, this.title, this.page);
 }
+
+class NavigationDrawer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer();
+  }
+}

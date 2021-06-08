@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multiselect/flutter_multiselect.dart';
 import 'package:jamal_v1/ui/suggested_workouts.dart';
-import 'package:jamal_v1/widgets/equipment_checkbox.dart';
-import 'package:jamal_v1/widgets/fitness_checkbox.dart';
+import 'package:jamal_v1/model/equipment.dart';
+import 'package:jamal_v1/model/fitness.dart';
 
 class Suggester extends StatefulWidget {
   @override
@@ -54,28 +54,6 @@ class _SuggesterState extends State<Suggester> {
                         ),
                       ),
                       margin: EdgeInsets.all(20),
-                    ),
-                    SizedBox(
-                      height: 70,
-                    ),
-                    ConstrainedBox(
-                      constraints: BoxConstraints.tightFor(
-                        width: 350,
-                        height: 60,
-                      ),
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.fromLTRB(0, 0, 123, 0),
-                            primary: Colors.white,
-                          ),
-                          onPressed: () {
-                            EquipmentCheckbox.showEquipment(context);
-                          },
-                          child: Text('Select Available Equipment',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blueAccent,
-                              ))),
                     ),
                     SizedBox(
                       height: 50,

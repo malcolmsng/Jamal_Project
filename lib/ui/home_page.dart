@@ -17,6 +17,7 @@ class _HomePageState extends State<HomePage> {
     print("home page");
 
     return Scaffold(
+      drawer: NavigationDrawer(),
       bottomNavigationBar: BottomFeaturesBar(),
       body: Stack(
         children: [
