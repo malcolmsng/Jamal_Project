@@ -3,6 +3,7 @@ import 'package:flutter_multiselect/flutter_multiselect.dart';
 import 'package:jamal_v1/ui/suggested_workouts.dart';
 import 'package:jamal_v1/model/equipment.dart';
 import 'package:jamal_v1/model/fitness.dart';
+import 'package:jamal_v1/widgets/navigation_menu.dart';
 
 class Suggester extends StatefulWidget {
   @override
@@ -21,6 +22,7 @@ class _SuggesterState extends State<Suggester> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: NavigationDrawerWidget(),
         appBar: AppBar(
           title: Text('Workout Suggester'),
           centerTitle: true,

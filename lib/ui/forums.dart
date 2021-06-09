@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/ui/create_post.dart';
 import 'package:jamal_v1/widgets/features.dart';
+import 'package:jamal_v1/widgets/navigation_menu.dart';
 
 class ForumsPage extends StatefulWidget {
   @override
@@ -22,7 +23,8 @@ class _ForumsPageState extends State<ForumsPage> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      bottomNavigationBar: BottomFeaturesBar(),
+      drawer: NavigationDrawerWidget(),
+      appBar: AppBar(),
       body: Stack(
         children: [
           SizedBox(

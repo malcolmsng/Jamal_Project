@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/widgets/features.dart';
+import 'package:jamal_v1/widgets/navigation_menu.dart';
 
 import 'home_page.dart';
 
@@ -51,7 +52,8 @@ class _AddMeasurementsState extends State<AddMeasurements> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      bottomNavigationBar: BottomFeaturesBar(),
+      appBar: AppBar(),
+      drawer: NavigationDrawerWidget(),
       body: Stack(
         children: [
           SizedBox(

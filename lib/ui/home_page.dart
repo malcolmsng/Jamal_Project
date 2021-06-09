@@ -1,8 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jamal_v1/widgets/features.dart';
-import 'package:provider/provider.dart';
+import 'package:jamal_v1/widgets/line_chart.dart';
+import 'package:jamal_v1/widgets/navigation_menu.dart';
+//import 'package:jamal_v1/widgets/features.dart';
+//import 'package:provider/provider.dart';
+
+SliverAppBar buildAppBar(BuildContext context) => SliverAppBar(
+      flexibleSpace: FlexibleSpaceBar(background: LineChartWidget()),
+      expandedHeight: MediaQuery.of(context).size.height * 0.5,
+      stretch: true,
+      title: Text('Statistics'),
+      centerTitle: true,
+      pinned: true,
+      /*leading: ElevatedButton.icon(
+          onPressed: () {
+            NavigationDrawerWidget().build(context);
+          },
+          icon: Icon(Icons.menu),
+          label: Text('')),
+      actions: [
+        Icon(Icons.person, size: 28),
+        SizedBox(width: 12),
+      ],*/
+    );
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,14 +33,22 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
-    var user = Provider.of<User>(context);
-    print("home page");
+    //var screenSize = MediaQuery.of(context).size;
+    //var user = Provider.of<User>(context);
 
     return Scaffold(
-      drawer: NavigationDrawer(),
-      bottomNavigationBar: BottomFeaturesBar(),
-      body: Stack(
+      drawer: NavigationDrawerWidget(),
+      //bottomNavigationBar: BottomFeaturesBar(),
+      body: CustomScrollView(
+        physics: BouncingScrollPhysics(),
+        slivers: [
+          buildAppBar(context),
+          //ExercisesWidget(),
+        ],
+      ),
+    );
+  }
+  /*Stack(
         children: [
           SizedBox(
             child: Image.asset("assets/bg.jpg"),
@@ -90,7 +119,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
+*/
   // Stream<QuerySnapshot> getUsersTripsStreamSnapshots(
   //     BuildContext context) async* {
   //   final uid = await Provider.of(context).auth.getCurrentUID();

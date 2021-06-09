@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/widgets/features.dart';
+import 'package:jamal_v1/widgets/navigation_menu.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -22,7 +23,7 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      bottomNavigationBar: BottomFeaturesBar(),
+      bottomNavigationBar: NavigationDrawerWidget(),
       body: Stack(children: [
         SizedBox(
           child: Image.asset("assets/bg.jpg"),
