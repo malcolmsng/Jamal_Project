@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:jamal_v1/model/equipment.dart';
 import 'package:jamal_v1/model/fitness.dart';
 
@@ -12,6 +11,11 @@ enum Focus {
   Cardio,
 }
 
+//creating a new method that Focus can use
+extension on Focus {
+  int compareTo(Focus other) => this.index.compareTo(other.index);
+}
+
 String getFocus(Focus focus) {
   switch (focus) {
     case Focus.Chest:
@@ -20,14 +24,14 @@ String getFocus(Focus focus) {
     case Focus.Back:
       return 'Back';
       break;
+    case Focus.Legs:
+      return 'Legs';
+      break;
     case Focus.Bicep:
       return 'Bicep';
       break;
     case Focus.Tricep:
       return 'Tricep';
-      break;
-    case Focus.Legs:
-      return 'Legs';
       break;
     case Focus.Abs:
       return 'Abs';
@@ -46,7 +50,7 @@ class Exercise {
   String name;
   int reps;
   int sets;
-  Focus focus;
+  List<Focus> focus;
   Duration time; //time per set
 
   Exercise({
@@ -59,7 +63,9 @@ class Exercise {
     this.reps,
     this.focus,
     this.time, //seconds per set
-  });
+  }) {
+    this.sortFocus();
+  }
   //setters
   set _reps(int x) {
     this.reps = x;
@@ -86,5 +92,11 @@ class Exercise {
       seconds: seconds,
       minutes: minutes,
     );
+  }
+
+  void sortFocus() {
+    if (focus.length > 1) {
+      focus.sort((a, b) => a.compareTo(b));
+    }
   }
 }
