@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jamal_v1/model/exercise.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ExerciseDemonstration extends StatefulWidget {
@@ -7,17 +8,18 @@ class ExerciseDemonstration extends StatefulWidget {
 }
 
 class _ExerciseDemonstrationState extends State<ExerciseDemonstration> {
-  YoutubePlayerController _controller = YoutubePlayerController(
-    initialVideoId: YoutubePlayer.convertUrlToId(
-        'https://www.youtube.com/watch?v=IODxDxX7oi4&t=2s&ab_channel=Calisthenicmovement'),
-    flags: YoutubePlayerFlags(
-      autoPlay: true,
-      mute: true,
-    ),
-  );
-
   @override
   Widget build(BuildContext context) {
+    final exercise = ModalRoute.of(context).settings.arguments as Exercise;
+
+    YoutubePlayerController _controller = YoutubePlayerController(
+      initialVideoId: YoutubePlayer.convertUrlToId(exercise.vidURL),
+      flags: YoutubePlayerFlags(
+        autoPlay: true,
+        mute: true,
+      ),
+    );
+
     return Scaffold(
       backgroundColor: Colors.blueAccent,
       appBar: AppBar(
@@ -28,7 +30,7 @@ class _ExerciseDemonstrationState extends State<ExerciseDemonstration> {
       body: Center(
         child: Column(
           children: [
-            Text('Pushup Demonstration',
+            Text(exercise.name + ' Demonstration',
                 style: TextStyle(
                   fontSize: 28,
                   color: Colors.white,

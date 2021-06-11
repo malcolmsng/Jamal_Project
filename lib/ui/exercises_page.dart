@@ -10,7 +10,7 @@ class ExercisePage extends StatefulWidget {
 }
 
 class _ExercisePageState extends State<ExercisePage> {
-  FitnessLevel selectedFitness = FitnessLevel.Intermediate;
+  FitnessLevel selectedFitness = FitnessLevel.Beginner;
 
   @override
   Widget build(BuildContext context) {
@@ -83,15 +83,40 @@ class _ExercisePageState extends State<ExercisePage> {
 
   Widget buildExercise() {
     return GestureDetector(
+      onHorizontalDragEnd: swipeFunction,
       child: Column(
         children:
             intermediate //should put every exercise in a list and pass it here
                 .where((element) => element.difficulty == selectedFitness)
-                .map((e) => ExerciseCard(
-                      exercise: e,
+                .map((e) => Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16)),
+                      margin: EdgeInsets.symmetric(
+                        vertical: 5,
+                      ),
+                      child: ExerciseCard(
+                        exercise: e,
+                      ),
                     ))
                 .toList(),
       ),
     );
+  }
+
+  void swipeFunction(DragEndDetails dragEndDetails) {
+    final selectedIndex = FitnessLevel.values.indexOf(selectedFitness);
+    final hasNext = selectedIndex < FitnessLevel.values.length;
+    final hasPrevious = selectedIndex > 0;
+
+    setState(() {
+      if (dragEndDetails.primaryVelocity < 0 && hasNext) {
+        final nextFitness = FitnessLevel.values[selectedIndex + 1];
+        selectedFitness = nextFitness;
+      }
+      if (dragEndDetails.primaryVelocity > 0 && hasPrevious) {
+        final previousFitness = FitnessLevel.values[selectedIndex - 1];
+        selectedFitness = previousFitness;
+      }
+    });
   }
 }

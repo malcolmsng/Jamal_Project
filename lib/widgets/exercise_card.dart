@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/model/exercise.dart' as ex;
 import 'package:jamal_v1/model/fitness.dart';
+import 'package:jamal_v1/ui/demonstration.dart';
 
 class ExerciseCard extends StatefulWidget {
   final ex.Exercise exercise;
@@ -13,21 +14,33 @@ class ExerciseCard extends StatefulWidget {
 class _ExerciseCardState extends State<ExerciseCard> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: getColour(),
-      ),
-      height: 100,
-      child: Row(
-        children: [
-          Expanded(
-            child: buildText(),
-            flex: 3,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+              builder: (context) => ExerciseDemonstration(),
+              settings: RouteSettings(arguments: widget.exercise)),
+        );
+      },
+      child: InkWell(
+        hoverColor: Colors.black,
+        child: Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: getColour(),
           ),
-          Expanded(child: Image.network(widget.exercise.picURL)),
-        ],
+          height: 100,
+          child: Row(
+            children: [
+              Expanded(
+                child: buildText(),
+                flex: 3,
+              ),
+              Expanded(child: Image.network(widget.exercise.picURL)),
+            ],
+          ),
+        ),
       ),
     );
   }
