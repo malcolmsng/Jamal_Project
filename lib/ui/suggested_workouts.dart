@@ -53,6 +53,7 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
+                                settings: RouteSettings(arguments: current),
                                 builder: (context) => ExerciseDemonstration(),
                               ),
                             );

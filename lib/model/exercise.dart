@@ -66,12 +66,13 @@ class Exercise {
   }) {
     this.sortFocus();
   }
+
   //setters
-  set _reps(int x) {
+  set setReps(int x) {
     this.reps = x;
   }
 
-  set _sets(int x) {
+  set setSets(int x) {
     this.sets = x;
   }
   //getters
