@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "997156990616",
+    "project_id": "jamal-2c621",
+    "storage_bucket": "jamal-2c621.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997156990616:android:a9d05b2d104bd520bd6aed",
+        "android_client_info": {
+          "package_name": "com.example.jamal_v1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "997156990616-c275bbjhk7ia62prla90re5fclqqpbp6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG0SsGsA7pvKZVekekv-zhBvgm3qG6SdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997156990616-c275bbjhk7ia62prla90re5fclqqpbp6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "997156990616-fh248tulv1bno8hm7m9b5hn3g6alnua2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.jamalV1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
