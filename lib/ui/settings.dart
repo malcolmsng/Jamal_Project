@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:jamal_v1/widgets/features.dart';
+import 'package:jamal_v1/ui/user_info.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
 
-class Settings extends StatefulWidget {
+class LocalSettings extends StatefulWidget {
   @override
-  _SettingsState createState() => _SettingsState();
+  _LocalSettingsState createState() => _LocalSettingsState();
 }
 
-class _SettingsState extends State<Settings> {
+class _LocalSettingsState extends State<LocalSettings> {
   final List<String> settingTitles = [
     "Privacy",
     "Profile",
@@ -23,7 +23,8 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      bottomNavigationBar: NavigationDrawerWidget(),
+      appBar: AppBar(),
+      drawer: NavigationDrawerWidget(),
       body: Stack(children: [
         SizedBox(
           child: Image.asset("assets/bg.jpg"),
@@ -45,6 +46,18 @@ class _SettingsState extends State<Settings> {
                       .copyWith(fontWeight: FontWeight.w900),
                 ),
                 SizedBox(height: 50),
+                // Align(
+                //   alignment: Alignment.centerLeft,
+                //   child: MaterialButton(
+                //     color: Colors.lightBlue,
+                //     onPressed: () {
+                //       Navigator.of(context).push(MaterialPageRoute(
+                //         builder: (context) => UserProfilePage(),
+                //       ));
+                //     },
+                //     child: Text("View profile"),
+                //   ),
+                // ),
                 Column(
                   children: [
                     for (final title in settingTitles)
@@ -63,7 +76,7 @@ class _SettingsState extends State<Settings> {
                         ),
                       ),
                   ],
-                )
+                ),
               ],
             )),
       ]),

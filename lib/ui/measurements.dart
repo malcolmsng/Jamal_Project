@@ -79,7 +79,7 @@ class _AddMeasurementsState extends State<AddMeasurements> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Input your measurements below.\nMeasurements are taken in kg/cm.",
+                        "Input measurements below.\nMeasurements are taken in kg/cm.",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 80),

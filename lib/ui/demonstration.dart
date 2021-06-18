@@ -15,25 +15,20 @@ class _ExerciseDemonstrationState extends State<ExerciseDemonstration> {
     YoutubePlayerController _controller = YoutubePlayerController(
       initialVideoId: YoutubePlayer.convertUrlToId(exercise.vidURL),
       flags: YoutubePlayerFlags(
-        autoPlay: true,
-        mute: true,
+        autoPlay: false,
+        mute: false,
       ),
     );
 
     return Scaffold(
-      backgroundColor: Colors.blueAccent,
-      appBar: AppBar(
-        title: Text(
-          'Exercise Demonstration',
-        ),
-      ),
+      appBar: AppBar(),
       body: Center(
         child: Column(
           children: [
             Text(exercise.name + ' Demonstration',
                 style: TextStyle(
                   fontSize: 28,
-                  color: Colors.white,
+                  color: Colors.black,
                 )),
             Container(
                 height: 400,
@@ -44,6 +39,9 @@ class _ExerciseDemonstrationState extends State<ExerciseDemonstration> {
                     handleColor: Colors.amberAccent,
                   ),
                 )),
+            SizedBox(height: 30),
+            Text(
+                "1. Get down on all fours, placing your hands slightly wider than your shoulders. \n 2. Straighten your arms and legs. \n 3. Lower your body until your chest nearly touches the floor. "),
           ],
         ),
       ),

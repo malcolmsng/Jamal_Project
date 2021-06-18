@@ -118,7 +118,7 @@ class _SuggesterState extends State<Suggester> {
                           controller: _availableTime,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.symmetric(),
-                            labelText: 'Input Available Time',
+                            labelText: 'Input Available Time (min)',
                             labelStyle: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.blueAccent),
