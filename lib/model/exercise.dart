@@ -13,6 +13,7 @@ enum Focus {
   Cardio,
 }
 
+// getColour()
 Color getColour(Focus focus) {
   switch (focus) {
     case Focus.Chest:
