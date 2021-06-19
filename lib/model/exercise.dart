@@ -4,6 +4,7 @@ import 'package:jamal_v1/model/fitness.dart';
 enum Focus {
   Chest,
   Back,
+  Shoulder,
   Bicep,
   Tricep,
   Legs,
@@ -23,6 +24,9 @@ String getFocus(Focus focus) {
       break;
     case Focus.Back:
       return 'Back';
+      break;
+    case Focus.Shoulder:
+      return 'Shoulder';
       break;
     case Focus.Legs:
       return 'Legs';
