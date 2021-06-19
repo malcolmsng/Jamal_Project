@@ -1,5 +1,6 @@
 import 'package:jamal_v1/model/equipment.dart';
 import 'package:jamal_v1/model/fitness.dart';
+import 'package:flutter/material.dart';
 
 enum Focus {
   Chest,
@@ -10,6 +11,36 @@ enum Focus {
   Legs,
   Abs,
   Cardio,
+}
+
+Color getColour(Focus focus) {
+  switch (focus) {
+    case Focus.Chest:
+      return Color(0xffffcdd2);
+      break;
+    case Focus.Back:
+      return Color(0xffe1bee7);
+      break;
+    case Focus.Shoulder:
+      return Color(0xffcfdbdc);
+      break;
+    case Focus.Legs:
+      return Color(0xffb3e5fc);
+      break;
+    case Focus.Bicep:
+      return Color(0xffb2dfdb);
+      break;
+    case Focus.Tricep:
+      return Color(0xfffff9c4);
+      break;
+    case Focus.Abs:
+      return Color(0xffffe0b2);
+      break;
+    case Focus.Cardio:
+      return Color(0xffd7ccc8);
+      break;
+  }
+  return Color(0xffd7ccc8);
 }
 
 //creating a new method that Focus can use
@@ -81,14 +112,6 @@ class Exercise {
     this.sets = x;
   }
   //getters
-
-  String get _picURL {
-    return this.picURL;
-  }
-
-  String get _vidURL {
-    return this.vidURL;
-  }
 
   Duration totalWorkTime() {
     int totalSeconds = this.time.inSeconds * this.sets;

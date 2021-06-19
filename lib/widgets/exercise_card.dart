@@ -29,7 +29,7 @@ class _ExerciseCardState extends State<ExerciseCard> {
           padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: getColour(),
+            color: ex.getColour(widget.exercise.focus[0]),
           ),
           height: 100,
           child: Row(
@@ -38,7 +38,17 @@ class _ExerciseCardState extends State<ExerciseCard> {
                 child: buildText(),
                 flex: 3,
               ),
-              Expanded(child: Image.network(widget.exercise.picURL)),
+              Expanded(
+                  child: Container(
+                height: 200,
+                width: 200,
+                decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    image: DecorationImage(
+                        fit: BoxFit.scaleDown,
+                        image: NetworkImage(widget.exercise.picURL))),
+                //child: Image.network(widget.exercise.picURL)
+              )),
             ],
           ),
         ),
@@ -73,31 +83,5 @@ class _ExerciseCardState extends State<ExerciseCard> {
         ),
       ],
     );
-  }
-
-  Color getColour() {
-    switch (widget.exercise.focus[0]) {
-      case ex.Focus.Chest:
-        return Color(0xffffcdd2);
-        break;
-      case ex.Focus.Back:
-        return Color(0xffe1bee7);
-        break;
-      case ex.Focus.Legs:
-        return Color(0xffb3e5fc);
-        break;
-      case ex.Focus.Bicep:
-        return Color(0xffb2dfdb);
-        break;
-      case ex.Focus.Tricep:
-        return Color(0xfffff9c4);
-        break;
-      case ex.Focus.Abs:
-        return Color(0xffffe0b2);
-        break;
-      case ex.Focus.Cardio:
-        return Color(0xffd7ccc8);
-        break;
-    }
   }
 }

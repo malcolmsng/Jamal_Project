@@ -30,6 +30,7 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
       jumpSquat,
       toeTouches,
     ];
+
     super.initState();
   }
 
@@ -61,6 +62,8 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData queryData = MediaQuery.of(context);
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.blueAccent,
       appBar: AppBar(
@@ -75,37 +78,38 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
                 itemCount: exercises.length,
                 itemBuilder: (context, index) {
                   ex.Exercise current = exercises[index];
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: Stack(children: [
-                      Ink.image(
-                        image: NetworkImage(current.picURL),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ExerciseDemonstration(),
-                            )
-                                // settings: RouteSettings(arguments: widget.current)),
-                                );
-                          },
-                        ),
-                        height: 240,
-                        fit: BoxFit.cover,
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(24),
+                    onTap: () {
+                      print(current.focus[0]);
+                      Navigator.of(context).push(MaterialPageRoute(
+                        settings: RouteSettings(arguments: current),
+                        builder: (context) => ExerciseDemonstration(),
+                      )
+                          //
+                          );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      height: queryData.size.height / 5,
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      decoration: BoxDecoration(
+                        color: ex.getColour(current.focus[0]),
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                      Column(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.values.first,
                         children: [
                           Text(
                             '${current.name}',
                             textAlign: TextAlign.left,
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold),
                           ),
                           SizedBox(
-                            height: 160,
+                            height: 70,
                           ),
                           Text(
                             (current.reps == null
@@ -113,12 +117,12 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
                                 : '${current.sets} sets x ${current.reps} reps'),
                             style: TextStyle(
                               fontSize: 18,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
                         ],
                       ),
-                    ]),
+                    ),
                   );
                 },
               ),
