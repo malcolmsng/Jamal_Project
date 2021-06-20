@@ -20,6 +20,9 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
   String uid = 'QxZTmkv4oHfR1dK4ya1yWH7A2I22';
 
   List<ex.Exercise> exercises;
+  List<int> sets;
+  List<int> reps;
+  List<int> time;
 
   Equipment noEquip;
 
@@ -30,6 +33,12 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
       jumpSquat,
       toeTouches,
     ];
+
+    sets = [4, 4, 4, 4];
+
+    reps = [15, 15, 15, 15];
+
+    time = [0, 0, 0, 0];
 
     super.initState();
   }
@@ -63,9 +72,9 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData queryData = MediaQuery.of(context);
-    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Suggested Workout'),
         backgroundColor: Colors.black,
@@ -78,9 +87,19 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
                 itemCount: exercises.length,
                 itemBuilder: (context, index) {
                   ex.Exercise current = exercises[index];
+                  int currentSet = sets[index];
+
+                  int currentRep = reps[index];
+                  int currentTime = time[index];
+
                   return InkWell(
                     borderRadius: BorderRadius.circular(24),
                     onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => WorkoutTimer(),
+                      ));
+                    },
+                    onLongPress: () {
                       print(current.focus[0]);
                       Navigator.of(context).push(MaterialPageRoute(
                         settings: RouteSettings(arguments: current),
@@ -97,29 +116,43 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
                         color: ex.getColour(current.focus[0]),
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.values.first,
+                      child: Row(
                         children: [
-                          Text(
-                            '${current.name}',
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            height: 70,
-                          ),
-                          Text(
-                            (current.reps == null
-                                ? '${current.sets} sets x ${current.time} seconds'
-                                : '${current.sets} sets x ${current.reps} reps'),
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.values.first,
+                              children: [
+                                Text(
+                                  '${current.name}',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 70,
+                                ),
+                                Text(
+                                  (currentRep == 0
+                                      ? '$currentSet sets x $currentTime seconds'
+                                      : '$currentSet sets x $currentRep reps'),
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
+                          Expanded(
+                            child: CircleAvatar(
+                              radius: 100,
+                              backgroundImage: NetworkImage(current.picURL),
+                            ),
+                          )
                         ],
                       ),
                     ),
