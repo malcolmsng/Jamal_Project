@@ -106,24 +106,21 @@ class _ExercisePageState extends State<ExercisePage> {
   }
 
   Widget buildExercise(List<ex.Exercise> selected) {
-    return Material(
-      child: InkWell(
-        onTap: () {},
-        hoverColor: Colors.black,
-        child: Column(
-          children: selected
-              .map((e) => Container(
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(16)),
-                    margin: EdgeInsets.symmetric(
-                      vertical: 5,
-                    ),
-                    child: ExerciseCard(
-                      exercise: e,
-                    ),
-                  ))
-              .toList(),
-        ),
+    return GestureDetector(
+      onHorizontalDragEnd: swipeFunction,
+      child: Column(
+        children: selected
+            .map((e) => Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(16)),
+                  margin: EdgeInsets.symmetric(
+                    vertical: 5,
+                  ),
+                  child: ExerciseCard(
+                    exercise: e,
+                  ),
+                ))
+            .toList(),
       ),
     );
   }
