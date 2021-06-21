@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jamal_v1/ui/custom_exercises.dart';
 import 'package:jamal_v1/widgets/line_chart.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
-//import 'package:jamal_v1/widgets/features.dart';
-//import 'package:provider/provider.dart';
 
 SliverAppBar buildAppBar(BuildContext context) => SliverAppBar(
       flexibleSpace: FlexibleSpaceBar(background: LineChartWidget()),
@@ -38,6 +36,18 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       drawer: NavigationDrawerWidget(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CustomExercisesPage(),
+            ),
+          );
+          print("button");
+        },
+        child: Icon(Icons.add),
+      ),
       //bottomNavigationBar: BottomFeaturesBar(),
       body: CustomScrollView(
         physics: BouncingScrollPhysics(),
