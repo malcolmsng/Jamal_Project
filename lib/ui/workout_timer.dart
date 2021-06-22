@@ -14,6 +14,10 @@ class _WorkoutTimerState extends State<WorkoutTimer> {
   // int seconds = minutes * 60;
 
   // Timer timer;
+
+  bool running = false;
+  bool started = false;
+
   CountDownController _controller = CountDownController();
   int _duration = 60;
 
@@ -47,13 +51,13 @@ class _WorkoutTimerState extends State<WorkoutTimer> {
         ringGradient: null,
 
         // Filling Color for Countdown Widget.
-        fillColor: Colors.purpleAccent[100],
+        fillColor: Colors.grey[400],
 
         // Filling Gradient for Countdown Widget.
         fillGradient: null,
 
         // Background Color for Countdown Widget.
-        backgroundColor: Colors.purple[500],
+        backgroundColor: Colors.blueAccent,
 
         // Background Gradient for Countdown Widget.
         backgroundGradient: null,
@@ -101,15 +105,27 @@ class _WorkoutTimerState extends State<WorkoutTimer> {
           SizedBox(
             width: 30,
           ),
-          _button(title: "Start", onPressed: () => _controller.start()),
-          SizedBox(
-            width: 10,
-          ),
-          _button(title: "Pause", onPressed: () => _controller.pause()),
-          SizedBox(
-            width: 10,
-          ),
-          _button(title: "Resume", onPressed: () => _controller.resume()),
+          _button(
+              title: running ? "Pause" : 'Start',
+              onPressed: () {
+                if (running == false && started == false) {
+                  _controller.start();
+                  setState(() {
+                    started = true;
+                    running = true;
+                  });
+                } else if (running == false && started == true) {
+                  _controller.resume();
+                  setState(() {
+                    running = true;
+                  });
+                } else {
+                  _controller.pause();
+                  setState(() {
+                    running = false;
+                  });
+                }
+              }),
           SizedBox(
             width: 10,
           ),
@@ -123,13 +139,13 @@ class _WorkoutTimerState extends State<WorkoutTimer> {
 
   _button({@required String title, VoidCallback onPressed}) {
     return Expanded(
-        child: RaisedButton(
+        child: ElevatedButton(
       child: Text(
         title,
         style: TextStyle(color: Colors.white),
       ),
       onPressed: onPressed,
-      color: Colors.purple,
+      style: ElevatedButton.styleFrom(primary: Colors.blueAccent),
     ));
   }
 }
