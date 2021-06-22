@@ -8,7 +8,7 @@ SliverAppBar buildAppBar(BuildContext context) => SliverAppBar(
       flexibleSpace: FlexibleSpaceBar(background: LineChartWidget()),
       expandedHeight: MediaQuery.of(context).size.height * 0.5,
       stretch: true,
-      title: Text('Statistics'),
+      title: Text('Home Page'),
       centerTitle: true,
       pinned: true,
       /*leading: ElevatedButton.icon(
@@ -53,7 +53,21 @@ class _HomePageState extends State<HomePage> {
         physics: BouncingScrollPhysics(),
         slivers: [
           buildAppBar(context),
-          //ExercisesWidget(),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return Container(
+                  color: index.isOdd ? Colors.white : Colors.black12,
+                  height: 150.0,
+                  child: LineChartWidget(),
+                  // Center(
+                  //   child: Text('$index', textScaleFactor: 5),
+                  // ),
+                );
+              },
+              childCount: 10,
+            ),
+          ),
         ],
       ),
     );

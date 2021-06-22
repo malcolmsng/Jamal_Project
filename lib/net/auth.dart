@@ -35,10 +35,12 @@ class Auth {
 
   Future<bool> login(String email, String password) async {
     try {
+      print('1');
       await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password,
       );
+      print('2');
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
