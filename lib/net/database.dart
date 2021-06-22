@@ -9,13 +9,13 @@ class DatabaseService {
   final CollectionReference particularsCollection =
       FirebaseFirestore.instance.collection('particulars');
 
-  Future addWorkout(String workout) async {
+  Future addWorkout(String workoutType, String workout) async {
     final CollectionReference workoutsCollection = FirebaseFirestore.instance
         .collection('particulars')
         .doc(uid)
         .collection('workouts');
 
-    return await workoutsCollection.doc("Cardio workout").set({
+    return await workoutsCollection.doc(workoutType).set({
       "exercise": workout,
     });
   }

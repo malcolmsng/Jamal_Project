@@ -37,7 +37,7 @@ class Auth {
     try {
       print('1');
       await _auth.signInWithEmailAndPassword(
-        email: email.trim(),
+        email: email,
         password: password,
       );
       print('2');
