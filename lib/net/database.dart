@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:jamal_v1/model/user_particulars.dart';
 
 class DatabaseService {
@@ -22,6 +23,20 @@ class DatabaseService {
 
   Future updateUserData(String email, String password, String name, String age,
       String height, String weight, String fitnessLevel) async {
+    // retrieve current date
+    String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
+    print(now);
+
+    await particularsCollection
+        .doc(uid)
+        .collection('measurements')
+        .doc(now)
+        .set({
+      'height': height,
+      'weight': weight,
+      'bodyFat': '30',
+    });
+
     return await particularsCollection.doc(uid).set({
       "email": email,
       "password": password,
