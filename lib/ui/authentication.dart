@@ -104,8 +104,8 @@ class _AuthenticationState extends State<Authentication> {
                 child: MaterialButton(
                   onPressed: () async {
                     Auth auth = Auth();
-                    bool shouldNavigate = await auth.login(
-                        _emailField.toString(), _passwordField.toString());
+                    bool shouldNavigate =
+                        await auth.login(_emailField.text, _passwordField.text);
                     if (shouldNavigate) {
                       Navigator.push(
                         context,

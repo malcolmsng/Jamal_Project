@@ -10,19 +10,15 @@ class DatabaseService {
   final CollectionReference particularsCollection =
       FirebaseFirestore.instance.collection('particulars');
 
-  Future addWorkout(String workoutType, String workout) async {
-    final CollectionReference workoutsCollection = FirebaseFirestore.instance
-        .collection('particulars')
-        .doc(uid)
-        .collection('workouts');
-
-    return await workoutsCollection.doc(workoutType).set({
-      "exercise": workout,
-    });
-  }
-
-  Future updateUserData(String email, String password, String name, String age,
-      String height, String weight, String fitnessLevel) async {
+  Future updateUserData(
+      String email,
+      String password,
+      String name,
+      String age,
+      String height,
+      String weight,
+      String bodyFatPercentage,
+      String fitnessLevel) async {
     // retrieve current date
     String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
     print(now);
@@ -44,7 +40,36 @@ class DatabaseService {
       "age": age,
       "height": height,
       "weight": weight,
+      "bodyFatPercentage": bodyFatPercentage,
       "fitnessLevel": fitnessLevel,
+    });
+  }
+
+  Future addWorkout(String workoutType, String workout) async {
+    final CollectionReference workoutsCollection = FirebaseFirestore.instance
+        .collection('particulars')
+        .doc(uid)
+        .collection('workouts');
+
+    return await workoutsCollection.doc(workoutType).set({
+      "exercise": workout,
+    });
+  }
+
+  Future addMeasurements(
+      String height, String weight, String fitnessLevel) async {
+    // retrieve current date
+    String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
+    print(now);
+
+    return await particularsCollection
+        .doc(uid)
+        .collection('measurements')
+        .doc(now)
+        .set({
+      'height': height,
+      'weight': weight,
+      'bodyFat': '30',
     });
   }
 

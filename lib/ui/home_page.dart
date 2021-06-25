@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/ui/custom_exercises.dart';
 import 'package:jamal_v1/widgets/line_chart.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
+import 'package:jamal_v1/widgets/progress_chart.dart';
 
 SliverAppBar buildAppBar(BuildContext context) => SliverAppBar(
       flexibleSpace: FlexibleSpaceBar(background: LineChartWidget()),
@@ -29,6 +32,69 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String uid = FirebaseAuth.instance.currentUser.uid;
+  String urlImage =
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80';
+
+  SliverAppBar buildUserInfoSection(BuildContext context) => SliverAppBar(
+      expandedHeight: MediaQuery.of(context).size.height * 0.3,
+      stretch: true,
+      title: Text('Profile'),
+      centerTitle: true,
+      pinned: true,
+      flexibleSpace: FlexibleSpaceBar(
+          background: Center(
+              child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('particulars')
+                      //.doc(FirebaseAuth.instance.currentUser.uid)
+                      // .collection('Coins')
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    return ListView(
+                      physics: BouncingScrollPhysics(),
+                      children: snapshot.data.docs
+                          .where((document) => document.id == uid)
+                          .map((document) {
+                        // print(document.id);
+                        // if (document.id == uid) {
+                        return Container(
+                            child: Column(
+                          children: [
+                            SizedBox(height: 40),
+                            ClipOval(
+                              child: Material(
+                                color: Colors.transparent,
+                                child: Ink.image(
+                                    image: NetworkImage(urlImage),
+                                    fit: BoxFit.cover,
+                                    width: 128,
+                                    height: 128,
+                                    child: InkWell(onTap: () {})),
+                              ),
+                            ),
+                            SizedBox(height: 24),
+                            FittedBox(
+                              fit: BoxFit.contain,
+                              child: Text("${document.data()['name']}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30)),
+                              //Text( "Price: ${getValue(document.id, document.data()['Amount'])}"),
+                            ),
+                          ],
+                        ));
+                      }).toList(),
+                    );
+                  }))));
+
   @override
   Widget build(BuildContext context) {
     //var screenSize = MediaQuery.of(context).size;
@@ -52,22 +118,23 @@ class _HomePageState extends State<HomePage> {
       body: CustomScrollView(
         physics: BouncingScrollPhysics(),
         slivers: [
-          buildAppBar(context),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return Container(
-                  color: index.isOdd ? Colors.white : Colors.black12,
-                  height: 150.0,
-                  child: LineChartWidget(),
-                  // Center(
-                  //   child: Text('$index', textScaleFactor: 5),
-                  // ),
-                );
-              },
-              childCount: 10,
-            ),
-          ),
+          buildUserInfoSection(context),
+          ProgressChart(),
+          // SliverList(
+          //   delegate: SliverChildBuilderDelegate(
+          //     (BuildContext context, int index) {
+          //       return Container(
+          //         color: index.isOdd ? Colors.white : Colors.black12,
+          //         height: 150.0,
+          //         child: LineChartWidget(),
+          //         // Center(
+          //         //   child: Text('$index', textScaleFactor: 5),
+          //         // ),
+          //       );
+          //     },
+          //     childCount: 10,
+          //   ),
+          // ),
         ],
       ),
     );

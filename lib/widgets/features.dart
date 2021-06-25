@@ -8,7 +8,7 @@ import 'package:jamal_v1/ui/settings.dart';
 class BottomFeaturesBar extends StatelessWidget {
   final List<BottomIcon> bottomIcons = [
     BottomIcon("assets/icons/graph.png", "Progress", HomePage()),
-    BottomIcon("assets/icons/measurements.png", "Track", AddMeasurements()),
+    BottomIcon("assets/icons/measurements.png", "Track", AddMeasurementsPage()),
     BottomIcon("assets/icons/add.png", "Add", DoWorkout()),
     BottomIcon("assets/icons/forums.png", "Forums", ForumsPage()),
     BottomIcon("assets/icons/settings.png", "Settings", LocalSettings()),

@@ -16,6 +16,7 @@ class _RegistrationState extends State<Registration> {
   TextEditingController _ageField = TextEditingController();
   TextEditingController _heightField = TextEditingController();
   TextEditingController _weightField = TextEditingController();
+  TextEditingController _bodyFatField = TextEditingController();
   TextEditingController _fitnessField = TextEditingController();
   //for password field
   bool obscure = true;
@@ -178,6 +179,20 @@ class _RegistrationState extends State<Registration> {
                         Container(
                           width: MediaQuery.of(context).size.width / 1.3,
                           child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            controller: _bodyFatField,
+                            decoration: InputDecoration(
+                              labelText: "Body Fat %",
+                              labelStyle: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 40),
+                        Container(
+                          width: MediaQuery.of(context).size.width / 1.3,
+                          child: TextFormField(
                             controller: _fitnessField,
                             decoration: InputDecoration(
                               labelText: "Fitness Level",
@@ -199,6 +214,7 @@ class _RegistrationState extends State<Registration> {
                                 _ageField.text,
                                 _heightField.text,
                                 _weightField.text,
+                                _bodyFatField.text,
                                 _fitnessField.text);
                             if (shouldNavigate) {
                               Navigator.push(
