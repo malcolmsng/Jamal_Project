@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/ui/demonstration.dart';
 import 'package:jamal_v1/ui/suggester.dart';
+import 'package:jamal_v1/ui/workout_plan.dart';
 import 'package:jamal_v1/widgets/features.dart';
 
 class DoWorkout extends StatefulWidget {
@@ -56,6 +57,18 @@ class _DoWorkoutState extends State<DoWorkout> {
               TextButton(
                 child: Text('Add custom workout!'),
                 onPressed: () {},
+              ),
+
+              TextButton(
+                child: Text('Calendar Test'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WorkoutPlan(),
+                    ),
+                  );
+                },
               ),
               // TextButton(
               //   child: Text('Back to dashboard'),
