@@ -4,8 +4,15 @@ import 'package:jamal_v1/net/database.dart';
 class Auth {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<bool> register(String email, String password, String name, String age,
-      String height, String weight, String fitnessLevel) async {
+  Future<bool> register(
+      String email,
+      String password,
+      String name,
+      String age,
+      String height,
+      String weight,
+      String bodyFatPercentage,
+      String fitnessLevel) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email.trim(),
@@ -14,8 +21,8 @@ class Auth {
       User user = result.user;
 
       // create default values for now
-      await DatabaseService(uid: user.uid).updateUserData(
-          email, password, name, age, height, weight, fitnessLevel);
+      await DatabaseService(uid: user.uid).updateUserData(email, password, name,
+          age, height, weight, bodyFatPercentage, fitnessLevel);
 
       return true;
     } on FirebaseAuthException catch (e) {
@@ -35,11 +42,14 @@ class Auth {
 
   Future<bool> login(String email, String password) async {
     try {
+      print('1');
       await _auth.signInWithEmailAndPassword(
+
         email: email.trim(),
         password: password.trim(),
       );
       print(email);
+
       return true;
     } on FirebaseAuthException catch (e) {
       print(e);

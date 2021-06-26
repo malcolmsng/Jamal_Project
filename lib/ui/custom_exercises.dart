@@ -1,8 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:jamal_v1/net/database.dart';
 import 'package:jamal_v1/util/intermediate_exercise_constants.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
 import 'package:jamal_v1/model/exercise.dart' as ex;
 import 'package:smart_select/smart_select.dart';
+
+import 'home_page.dart';
 
 class CustomExercisesPage extends StatefulWidget {
   @override
@@ -10,6 +14,7 @@ class CustomExercisesPage extends StatefulWidget {
 }
 
 class _CustomExercisesPageState extends State<CustomExercisesPage> {
+  String uid = FirebaseAuth.instance.currentUser.uid;
   TextEditingController _setsField = TextEditingController();
   TextEditingController _repsField = TextEditingController();
   List<ex.Exercise> availableExercises = intermediateExercises;
@@ -77,6 +82,32 @@ class _CustomExercisesPageState extends State<CustomExercisesPage> {
             ],
           );
         });
+  }
+
+  Future<void> finishedWorkoutDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Workout completed!'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Back to dashboard'),
+              onPressed: () {
+                print('Confirmed');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -153,6 +184,22 @@ class _CustomExercisesPageState extends State<CustomExercisesPage> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: ButtonBar(
+          alignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(primary: Colors.orangeAccent),
+              child: Text('End Workout'),
+              onPressed: () async {
+                finishedWorkoutDialog();
+                await DatabaseService(uid: uid)
+                    .addWorkout("custom workout", "pushup");
+              },
+            )
+          ],
+        ),
       ),
     );
   }

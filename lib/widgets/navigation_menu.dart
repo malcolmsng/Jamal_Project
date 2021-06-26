@@ -121,40 +121,41 @@ class NavigationDrawerWidget extends StatelessWidget {
                           CircleAvatar(
                               radius: 30,
                               backgroundImage: NetworkImage(urlImage)),
-                          SizedBox(width: 20),
+                          SizedBox(width: 15),
                           MaterialButton(
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => UserProfilePage(),
                               ));
                             },
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  FittedBox(
-                                    fit: BoxFit.contain,
-                                    child: Text(
-                                      "${document.data()['name']}",
-                                      style: TextStyle(
-                                          fontSize: 14, color: Colors.white),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width / 2.8,
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    FittedBox(
+                                      fit: BoxFit.contain,
+                                      child: Text(
+                                        "${document.data()['name']}",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
                                     ),
-                                  ),
-                                  FittedBox(
-                                    fit: BoxFit.contain,
-                                    child: Text(
-                                      "${document.data()['email']}",
-                                      style: TextStyle(
-                                          fontSize: 14, color: Colors.white),
+                                    FittedBox(
+                                      fit: BoxFit.contain,
+                                      child: Text(
+                                        "${document.data()['email']}",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
                                     ),
-                                  ),
-                                  // Spacer(),
-                                  // CircleAvatar(
-                                  //   radius: 20,
-                                  //   backgroundColor: Color.fromRGBO(30, 60, 208, 1),
-                                  //   child: Icon(Icons.add_comment_outlined,
-                                  //       color: Colors.white),
-                                  // )
-                                ]),
+                                    // Spacer(),
+                                    // CircleAvatar(
+                                    //   radius: 20,
+                                    //   backgroundColor: Color.fromRGBO(30, 60, 208, 1),
+                                    //   child: Icon(Icons.add_comment_outlined,
+                                    //       color: Colors.white),
+                                    // )
+                                  ]),
+                            ),
                           ),
                         ],
                       );
@@ -225,7 +226,7 @@ class NavigationDrawerWidget extends StatelessWidget {
         break;
       case 3:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AddMeasurements(),
+          builder: (context) => AddMeasurementsPage(),
         ));
         break;
       case 4:

@@ -11,6 +11,9 @@ class Authentication extends StatefulWidget {
 class _AuthenticationState extends State<Authentication> {
   TextEditingController _emailField = TextEditingController();
   TextEditingController _passwordField = TextEditingController();
+  //for password field
+  bool obscure = true;
+  IconData passIcon = Icons.visibility;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +48,7 @@ class _AuthenticationState extends State<Authentication> {
               Container(
                 width: MediaQuery.of(context).size.width / 1.3,
                 child: TextFormField(
-                  obscureText: true,
+                  obscureText: obscure,
                   style: TextStyle(color: Colors.white),
                   controller: _passwordField,
                   decoration: InputDecoration(
@@ -56,6 +59,16 @@ class _AuthenticationState extends State<Authentication> {
                     labelText: "Password",
                     labelStyle: TextStyle(
                       color: Colors.white,
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          obscure = !obscure;
+                          passIcon =
+                              obscure ? Icons.visibility : Icons.visibility_off;
+                        });
+                      },
+                      icon: Icon(passIcon),
                     ),
                   ),
                 ),
@@ -130,6 +143,19 @@ class _AuthenticationState extends State<Authentication> {
                   child: Text("Anon Login"),
                 ),
               ),
+              SizedBox(height: MediaQuery.of(context).size.height / 35),
+              Container(
+                width: MediaQuery.of(context).size.width / 1.4,
+                height: 45,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                ),
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Text("a"),
+                ),
+              )
             ],
           )),
     );

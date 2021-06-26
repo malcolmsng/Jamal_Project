@@ -1,34 +1,29 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:jamal_v1/widgets/features.dart';
+import 'package:jamal_v1/net/database.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
 
 import 'home_page.dart';
 
-class AddMeasurements extends StatefulWidget {
+class AddMeasurementsPage extends StatefulWidget {
   @override
-  _AddMeasurementsState createState() => _AddMeasurementsState();
+  _AddMeasurementsPageState createState() => _AddMeasurementsPageState();
 }
 
-class _AddMeasurementsState extends State<AddMeasurements> {
+class _AddMeasurementsPageState extends State<AddMeasurementsPage> {
+  String uid = FirebaseAuth.instance.currentUser.uid;
+
   TextEditingController _heightField = TextEditingController();
   TextEditingController _weightField = TextEditingController();
-  TextEditingController _neckField = TextEditingController();
-  TextEditingController _waistField = TextEditingController();
+  TextEditingController _bodyFatField = TextEditingController();
 
   Future<void> _showMyDialog() async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: false, // user must tap button
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Measurements added!'),
-          // content: SingleChildScrollView(
-          //   child: Column(
-          //     children: <Widget>[
-          //       Text('Back to homescreen'),
-          //     ],
-          //   ),
-          // ),
           actions: <Widget>[
             TextButton(
               child: Text('Back to dashboard'),
@@ -79,7 +74,7 @@ class _AddMeasurementsState extends State<AddMeasurements> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Input measurements below.\nMeasurements are taken in kg/cm.",
+                        "Input measurements below.",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 80),
@@ -88,7 +83,7 @@ class _AddMeasurementsState extends State<AddMeasurements> {
                         child: TextFormField(
                           controller: _heightField,
                           decoration: InputDecoration(
-                            labelText: "Height",
+                            labelText: "Height (cm)",
                             labelStyle: TextStyle(
                               color: Colors.black,
                             ),
@@ -103,7 +98,7 @@ class _AddMeasurementsState extends State<AddMeasurements> {
                         child: TextFormField(
                           controller: _weightField,
                           decoration: InputDecoration(
-                            labelText: "Weight",
+                            labelText: "Weight (kg)",
                             labelStyle: TextStyle(
                               color: Colors.black,
                             ),
@@ -116,24 +111,9 @@ class _AddMeasurementsState extends State<AddMeasurements> {
                       Container(
                         width: MediaQuery.of(context).size.width / 1.3,
                         child: TextFormField(
-                          controller: _neckField,
+                          controller: _bodyFatField,
                           decoration: InputDecoration(
-                            labelText: "Neck Circumference",
-                            labelStyle: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 1.3,
-                        child: TextFormField(
-                          controller: _waistField,
-                          decoration: InputDecoration(
-                            labelText: "Waist Circumference",
+                            labelText: "Body Fat Percentage (%)",
                             labelStyle: TextStyle(
                               color: Colors.black,
                             ),
@@ -144,9 +124,12 @@ class _AddMeasurementsState extends State<AddMeasurements> {
                         height: 20,
                       ),
                       MaterialButton(
-                        // TODO log to db, pop out, move back to homescreen
-                        onPressed: () {
+                        onPressed: () async {
                           _showMyDialog();
+                          await DatabaseService(uid: uid).addMeasurements(
+                              _heightField.text,
+                              _weightField.text,
+                              _bodyFatField.text);
                         },
                         child: Text("Log Measurements"),
                         color: Colors.lightBlueAccent,

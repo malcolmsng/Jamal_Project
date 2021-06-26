@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/net/database.dart';
@@ -16,8 +15,7 @@ class SuggestedWorkout extends StatefulWidget {
 }
 
 class _SuggestedWorkoutState extends State<SuggestedWorkout> {
-  //find a way to retrieve user id
-  String uid = 'QxZTmkv4oHfR1dK4ya1yWH7A2I22';
+  String uid = FirebaseAuth.instance.currentUser.uid;
 
   List<ex.Exercise> exercises;
   List<int> sets;
@@ -178,7 +176,8 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
                 child: Text('End Workout'),
                 onPressed: () async {
                   finishedWorkoutDialog();
-                  await DatabaseService(uid: uid).addWorkout("pushup");
+                  await DatabaseService(uid: uid)
+                      .addWorkout("suggested workout", "pushup");
                 },
               ),
             ])
