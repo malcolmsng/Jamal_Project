@@ -21,7 +21,7 @@ class WorkoutDataSource extends CalendarDataSource {
   WorkoutDataSource({this.workouts});
 
   Workout getWorkout(int index) {
-    workouts[index] as Workout;
+    return workouts[index] as Workout;
   }
 
   @override
