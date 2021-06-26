@@ -1,5 +1,9 @@
+import 'dart:html';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/provider/workout_provider.dart';
+import 'package:jamal_v1/widgets/calendar.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:provider/provider.dart';
 import 'package:jamal_v1/model/workout.dart';
@@ -25,5 +29,14 @@ class WorkoutDataSource extends CalendarDataSource {
   }
 
   @override
-  DateTime getStartTime(int index) => DateTime.now();
+  DateTime getStartTime(int index) => getWorkout(index).date;
+
+  @override
+  DateTime getEndTime(int index) => getWorkout(index).date;
+
+  @override
+  String getSubject(int index) => getWorkout(index).toString();
+
+  @override
+  bool isAllDay(int index) => true;
 }

@@ -129,4 +129,9 @@ class Exercise {
       focus.sort((a, b) => a.compareTo(b));
     }
   }
+
+  @override
+  String toString() {
+    return this.name;
+  }
 }

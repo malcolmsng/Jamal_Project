@@ -1,10 +1,18 @@
+import 'package:jamal_v1/model/fitness.dart';
+
 class UserParticulars {
   final String name;
   final String age;
   final String height;
   final String weight;
-  final String fitnessLevel;
+  final FitnessLevel fitnessLevel;
+  final String imageURL; //profile picture
 
   UserParticulars(
-      {this.name, this.age, this.height, this.weight, this.fitnessLevel});
+      {this.name,
+      this.age,
+      this.height,
+      this.weight,
+      this.fitnessLevel,
+      this.imageURL});
 }

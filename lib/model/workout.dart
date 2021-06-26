@@ -32,4 +32,9 @@ class Workout {
     }
     return this.exercises;
   }
+
+  @override
+  String toString() {
+    return exercises.map((e) => e.toString()).toList().join(', ');
+  }
 }
