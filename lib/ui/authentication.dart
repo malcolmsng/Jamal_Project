@@ -103,6 +103,7 @@ class _AuthenticationState extends State<Authentication> {
                 ),
                 child: MaterialButton(
                   onPressed: () async {
+                    print(_emailField.text.toString());
                     Auth auth = Auth();
                     bool shouldNavigate =
                         await auth.login(_emailField.text, _passwordField.text);

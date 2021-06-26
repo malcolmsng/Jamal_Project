@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:jamal_v1/ui/do_workout.dart';
 import 'package:jamal_v1/ui/user_info.dart';
 import 'package:jamal_v1/ui/exercises_page.dart';
 import 'package:jamal_v1/ui/forums.dart';
@@ -215,7 +216,7 @@ class NavigationDrawerWidget extends StatelessWidget {
 
       case 1:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Suggester(),
+          builder: (context) => DoWorkout(),
         ));
         break;
       case 2:
