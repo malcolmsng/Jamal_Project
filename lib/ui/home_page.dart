@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jamal_v1/model/progress_graphs.dart';
 import 'package:jamal_v1/ui/custom_exercises.dart';
 import 'package:jamal_v1/widgets/line_chart.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
-import 'package:jamal_v1/widgets/progress_chart.dart';
 
 SliverAppBar buildAppBar(BuildContext context) => SliverAppBar(
       flexibleSpace: FlexibleSpaceBar(background: LineChartWidget()),
@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                         return Container(
                             child: Column(
                           children: [
-                            SizedBox(height: 40),
+                            SizedBox(height: 50),
                             ClipOval(
                               child: Material(
                                 color: Colors.transparent,
@@ -119,26 +119,19 @@ class _HomePageState extends State<HomePage> {
         physics: BouncingScrollPhysics(),
         slivers: [
           buildUserInfoSection(context),
-          // ProgressChart(),
-          // SliverList(
-          //   delegate: SliverChildBuilderDelegate(
-          //     (BuildContext context, int index) {
-          //       return Container(
-          //         color: index.isOdd ? Colors.white : Colors.black12,
-          //         height: 150.0,
-          //         child: LineChartWidget(),
-          //         // Center(
-          //         //   child: Text('$index', textScaleFactor: 5),
-          //         // ),
-          //       );
-          //     },
-          //     childCount: 10,
-          //   ),
-          // ),
+          SliverList(
+              delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              print(index);
+              return buildProgressGraph(index);
+            },
+            childCount: 3,
+          ))
         ],
       ),
     );
   }
+
   /*Stack(
         children: [
           SizedBox(

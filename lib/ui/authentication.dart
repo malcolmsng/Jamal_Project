@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/net/auth.dart';
-import 'package:jamal_v1/widgets/progress_chart.dart';
 import 'registration.dart';
 import 'home_page.dart';
 
@@ -153,14 +152,7 @@ class _AuthenticationState extends State<Authentication> {
                   color: Colors.white,
                 ),
                 child: MaterialButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProgressChart(),
-                      ),
-                    );
-                  },
+                  onPressed: () {},
                   child: Text("testing page"),
                 ),
               )
