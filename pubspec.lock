@@ -378,32 +378,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "18.4.49"
-
   syncfusion_flutter_charts:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_charts
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0-beta.5"
+    version: "18.4.49"
   syncfusion_flutter_core:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-
     version: "18.4.49"
-
   syncfusion_flutter_datepicker:
     dependency: transitive
     description:
       name: syncfusion_flutter_datepicker
       url: "https://pub.dartlang.org"
     source: hosted
-
     version: "18.4.49-beta"
-
   term_glyph:
     dependency: transitive
     description:
@@ -424,9 +419,7 @@ packages:
       name: timezone
       url: "https://pub.dartlang.org"
     source: hosted
-
     version: "0.6.1"
-
   typed_data:
     dependency: transitive
     description:
