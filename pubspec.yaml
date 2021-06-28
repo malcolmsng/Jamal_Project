@@ -45,6 +45,7 @@ dependencies:
   smart_select: ^4.3.2
   intl: ^0.16.1
   syncfusion_flutter_charts: ^18.4.49
+  syncfusion_flutter_calendar: ^18.4.49
 
 dev_dependencies:
   flutter_test:
