@@ -42,4 +42,31 @@ ex.Exercise plank = ex.Exercise(
       'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/hdm119918mh15842-1545237096.png?crop=1.00xw:0.752xh;0,0.248xh&resize=1200:*',
 );
 
-List<ex.Exercise> beginnerExercises = [kneePushup, russianTwist, squat, plank];
+ex.Exercise jumpingJacks = ex.Exercise(
+  name: 'Jumping Jacks',
+  focus: [ex.Focus.Cardio],
+  difficulty: FitnessLevel.Beginner,
+  equipmentNeeded: Equipment.noEquip,
+  vidURL: 'https://www.youtube.com/watch?v=UpH7rm0cYbM',
+  picURL:
+      'https://i.ytimg.com/vi/UpH7rm0cYbM/hq720.jpg?sqp=-oaymwEXCNAFEJQDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBZmiY34NEkXNnKFGS-D3amZRiBUQ',
+);
+
+ex.Exercise ropeSkipping = ex.Exercise(
+  name: 'Rope Skipping',
+  focus: [ex.Focus.Abs],
+  difficulty: FitnessLevel.Beginner,
+  equipmentNeeded: Equipment.noEquip,
+  vidURL: 'https://www.youtube.com/watch?v=FJmRQ5iTXKE',
+  picURL:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUP4MVI4ITNsRLIOVsKFRgxpEwL9SefvHe3m9nElatAOYoduUlQCeTx0ZkNDPVtd0hHwE&usqp=CAU',
+);
+
+List<ex.Exercise> beginnerExercises = [
+  kneePushup,
+  russianTwist,
+  squat,
+  plank,
+  jumpingJacks,
+  ropeSkipping
+];

@@ -46,6 +46,26 @@ ex.Exercise toeTouches = ex.Exercise(
     picURL:
         'https://media1.popsugar-assets.com/files/thumbor/6MmclGB9DFm01WPF4Pk67cMU-KM/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2018/10/19/950/n/1922729/da46d3485bca514ddc3ac5.05075484_Toe-Touches-redo/i/Tabata-Six-Toe-Touch-Crunch.jpg');
 
+ex.Exercise lateralRaises = ex.Exercise(
+  name: 'Lateral Raises',
+  focus: [ex.Focus.Shoulder],
+  difficulty: FitnessLevel.Intermediate,
+  equipmentNeeded: Equipment.noEquip,
+  vidURL: 'https://www.youtube.com/watch?v=3VcKaXpzqRo',
+  picURL:
+      'https://www.oxygenmag.com/wp-content/uploads/2020/09/level-1.jpg?width=730',
+);
+
+ex.Exercise waiterCurl = ex.Exercise(
+  name: 'Waiter Curl',
+  focus: [ex.Focus.Bicep],
+  difficulty: FitnessLevel.Intermediate,
+  equipmentNeeded: Equipment.noEquip,
+  vidURL: 'https://www.youtube.com/watch?v=tQRlbZ48U_I',
+  picURL:
+      'https://cdn2.coachmag.co.uk/sites/coachmag/files/2016/06/lateral-raise.jpg',
+);
+
 List<List<ex.Exercise>> difficultyLevel = [
   beginnerExercises,
   intermediateExercises,
@@ -56,5 +76,7 @@ List<ex.Exercise> intermediateExercises = [
   pushup,
   situp,
   jumpSquat,
-  toeTouches
+  toeTouches,
+  lateralRaises,
+  waiterCurl
 ];

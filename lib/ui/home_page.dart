@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
   SliverAppBar buildUserInfoSection(BuildContext context) => SliverAppBar(
       expandedHeight: MediaQuery.of(context).size.height * 0.3,
       stretch: true,
-      title: Text('Profile'),
+      // title: Text('Profile'),
       centerTitle: true,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
@@ -102,18 +102,18 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       drawer: NavigationDrawerWidget(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CustomExercisesPage(),
-            ),
-          );
-          print("button");
-        },
-        child: Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => CustomExercisesPage(),
+      //       ),
+      //     );
+      //     print("button");
+      //   },
+      //   child: Icon(Icons.add),
+      // ),
       //bottomNavigationBar: BottomFeaturesBar(),
       body: CustomScrollView(
         physics: BouncingScrollPhysics(),
