@@ -16,7 +16,7 @@ class Auth {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email.trim(),
-        password: password,
+        password: password.trim(),
       );
       User user = result.user;
 
@@ -44,12 +44,15 @@ class Auth {
     try {
       print('1');
       await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
+
+        email: email.trim(),
+        password: password.trim(),
       );
-      print('2');
+      print(email);
+
       return true;
     } on FirebaseAuthException catch (e) {
+      print(e);
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
         return false;
