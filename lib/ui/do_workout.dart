@@ -1,5 +1,5 @@
+
 import 'package:flutter/material.dart';
-import 'package:jamal_v1/ui/demonstration.dart';
 import 'package:jamal_v1/ui/suggester.dart';
 import 'package:jamal_v1/ui/workout_plan.dart';
 import 'package:jamal_v1/widgets/features.dart';

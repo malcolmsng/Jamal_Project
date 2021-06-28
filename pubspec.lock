@@ -377,7 +377,8 @@ packages:
       name: syncfusion_flutter_calendar
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.1.69"
+    version: "18.4.49"
+
   syncfusion_flutter_charts:
     dependency: "direct main"
     description:
@@ -391,14 +392,18 @@ packages:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.1.69"
+
+    version: "18.4.49"
+
   syncfusion_flutter_datepicker:
     dependency: transitive
     description:
       name: syncfusion_flutter_datepicker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.1.69-beta"
+
+    version: "18.4.49-beta"
+
   term_glyph:
     dependency: transitive
     description:
@@ -419,7 +424,9 @@ packages:
       name: timezone
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.0"
+
+    version: "0.6.1"
+
   typed_data:
     dependency: transitive
     description:
