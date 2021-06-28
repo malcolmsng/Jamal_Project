@@ -51,7 +51,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   buildMenuItem(
-                    text: 'Workout Suggester',
+                    text: 'Do a Workout',
                     icon: Icons.fitness_center_outlined,
                     onClicked: () => selectedItem(context, 1),
                   ),
@@ -67,12 +67,12 @@ class NavigationDrawerWidget extends StatelessWidget {
                     icon: Icons.add,
                     onClicked: () => selectedItem(context, 3),
                   ),
-                  const SizedBox(height: 20),
-                  buildMenuItem(
-                    text: 'Jamal Forum',
-                    icon: Icons.forum,
-                    onClicked: () => selectedItem(context, 4),
-                  ),
+                  // const SizedBox(height: 20),
+                  // buildMenuItem(
+                  //   text: 'Jamal Forum',
+                  //   icon: Icons.forum,
+                  //   onClicked: () => selectedItem(context, 4),
+                  // ),
                   const SizedBox(height: 20),
                   buildMenuItem(
                     text: 'Settings',

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jamal_v1/ui/user_info.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
 
 class LocalSettings extends StatefulWidget {
@@ -45,7 +44,7 @@ class _LocalSettingsState extends State<LocalSettings> {
                       .headline4
                       .copyWith(fontWeight: FontWeight.w900),
                 ),
-                SizedBox(height: 50),
+                SizedBox(height: 30),
                 // Align(
                 //   alignment: Alignment.centerLeft,
                 //   child: MaterialButton(
@@ -61,19 +60,30 @@ class _LocalSettingsState extends State<LocalSettings> {
                 Column(
                   children: [
                     for (final title in settingTitles)
-                      Container(
-                        padding: EdgeInsets.only(top: 10, bottom: 10),
-                        width: MediaQuery.of(context).size.width,
-                        child: Text(title,
-                            style: TextStyle(
-                              fontSize: 20,
-                            )),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          border: Border.all(
-                            color: Colors.black,
-                          ),
-                        ),
+                      TextButton(
+                        onPressed: () {},
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                //padding: EdgeInsets.only(top: 10, bottom: 10),
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                child: Text(title,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                    )),
+                                // decoration: BoxDecoration(
+                                //   color: Colors.grey[200],
+                                //   border: Border.all(
+                                //     color: Colors.black,
+                                //   ),
+                                // ),
+                              ),
+                              Icon(IconData(61068,
+                                  fontFamily: 'MaterialIcons',
+                                  matchTextDirection: true))
+                            ]),
                       ),
                   ],
                 ),
