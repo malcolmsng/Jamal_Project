@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
         physics: BouncingScrollPhysics(),
         slivers: [
           buildUserInfoSection(context),
-          ProgressChart(),
+          // ProgressChart(),
           // SliverList(
           //   delegate: SliverChildBuilderDelegate(
           //     (BuildContext context, int index) {
