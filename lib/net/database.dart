@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:jamal_v1/model/user_particulars.dart';
+import 'package:jamal_v1/model/fitness.dart';
 
 class DatabaseService {
   final String uid;
@@ -9,6 +10,11 @@ class DatabaseService {
 
   final CollectionReference particularsCollection =
       FirebaseFirestore.instance.collection('particulars');
+
+  Future<FitnessLevel> getFitnessLevel(String uid) async {
+    DocumentSnapshot snapshot = await particularsCollection.doc(uid).get();
+    return snapshot.data()['fitnessLevel'];
+  }
 
   Future updateUserData(
       String email,
