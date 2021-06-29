@@ -74,20 +74,24 @@ class _SuggesterState extends State<Suggester> {
                         errorText: 'Please select one or more option(s)',
                         dataSource: [
                           {
-                            "display": "bench",
-                            "value": "bench",
+                            "display": "No equipment",
+                            "value": "No equipment",
                           },
                           {
-                            "display": "pull up bar",
-                            "value": "pull up bar",
+                            "display": "Bench",
+                            "value": "Bench",
                           },
                           {
-                            "display": "dumbbells",
-                            "value": "dumbbells",
+                            "display": "Pull Up Bar",
+                            "value": "Pull Up Bar",
                           },
                           {
-                            "display": "kettle bells",
-                            "value": "kettle bells",
+                            "display": "Dumbbells",
+                            "value": "Dumbbells",
+                          },
+                          {
+                            "display": "Kettle Bells",
+                            "value": "Kettle Bells",
                           }
                         ],
                         textField: 'display',
@@ -100,29 +104,6 @@ class _SuggesterState extends State<Suggester> {
                           print(selectedValues);
                         },
                       ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    ConstrainedBox(
-                      constraints: BoxConstraints.tightFor(
-                        width: 350,
-                        height: 60,
-                      ),
-                      child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.blueAccent,
-                          ),
-                          controller: _availableTime,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(),
-                            labelText: 'Input Available Time (min)',
-                            labelStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blueAccent),
-                          )),
                     ),
                     SizedBox(
                       height: 30,
