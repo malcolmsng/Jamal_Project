@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:jamal_v1/ui/authentication.dart';
 import 'package:jamal_v1/ui/do_workout.dart';
 import 'package:jamal_v1/ui/user_info.dart';
 import 'package:jamal_v1/ui/exercises_page.dart';
@@ -9,6 +10,7 @@ import 'package:jamal_v1/ui/home_page.dart';
 import 'package:jamal_v1/ui/measurements.dart';
 import 'package:jamal_v1/ui/settings.dart';
 import 'package:jamal_v1/ui/suggester.dart';
+import 'package:jamal_v1/net/auth.dart' as auth;
 
 class NavigationDrawerWidget extends StatelessWidget {
   final String uid = FirebaseAuth.instance.currentUser.uid;
@@ -78,6 +80,16 @@ class NavigationDrawerWidget extends StatelessWidget {
                     text: 'Settings',
                     icon: Icons.settings,
                     onClicked: () => selectedItem(context, 5),
+                  ),
+
+                  const SizedBox(height: 20),
+                  buildMenuItem(
+                    text: 'Log Out',
+                    icon: Icons.logout,
+                    onClicked: () {
+                      FirebaseAuth.instance.signOut();
+                      selectedItem(context, 6);
+                    },
                   ),
                 ],
               ),
@@ -237,6 +249,11 @@ class NavigationDrawerWidget extends StatelessWidget {
       case 5:
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => LocalSettings(),
+        ));
+        break;
+      case 6:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Authentication(),
         ));
         break;
     }

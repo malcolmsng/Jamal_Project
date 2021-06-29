@@ -44,7 +44,6 @@ class Auth {
     try {
       print('1');
       await _auth.signInWithEmailAndPassword(
-
         email: email.trim(),
         password: password.trim(),
       );
@@ -67,6 +66,15 @@ class Auth {
   Future<bool> anon() async {
     try {
       await _auth.signInAnonymously();
+      return true;
+    } on FirebaseAuthException {
+      return false;
+    }
+  }
+
+  Future<bool> logout() async {
+    try {
+      await _auth.signOut();
       return true;
     } on FirebaseAuthException {
       return false;

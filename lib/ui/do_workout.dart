@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
+import 'package:jamal_v1/ui/custom_exercises.dart';
 import 'package:jamal_v1/ui/suggester.dart';
 import 'package:jamal_v1/ui/workout_plan.dart';
 import 'package:jamal_v1/widgets/features.dart';
+import 'package:jamal_v1/widgets/navigation_menu.dart';
 
 class DoWorkout extends StatefulWidget {
   @override
@@ -15,7 +16,9 @@ class _DoWorkoutState extends State<DoWorkout> {
     var screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      bottomNavigationBar: BottomFeaturesBar(),
+      appBar: AppBar(),
+      drawer: NavigationDrawerWidget(),
+      // bottomNavigationBar: BottomFeaturesBar(),
       body: Stack(children: [
         SizedBox(
           child: Image.asset("assets/bg.jpg"),
@@ -56,7 +59,14 @@ class _DoWorkoutState extends State<DoWorkout> {
               ),
               TextButton(
                 child: Text('Add custom workout!'),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CustomExercisesPage(),
+                    ),
+                  );
+                },
               ),
 
               TextButton(
