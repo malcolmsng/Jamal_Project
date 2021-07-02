@@ -25,5 +25,14 @@ class WorkoutDataSource extends CalendarDataSource {
   }
 
   @override
-  DateTime getStartTime(int index) => DateTime.now();
+  DateTime getStartTime(int index) => getWorkout(index).date;
+
+  @override
+  DateTime getEndTime(int index) => getWorkout(index).date;
+
+  @override
+  String getSubject(int index) => getWorkout(index).toString();
+
+  @override
+  bool isAllDay(int index) => true;
 }

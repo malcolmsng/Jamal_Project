@@ -11,9 +11,11 @@ class DatabaseService {
   final CollectionReference particularsCollection =
       FirebaseFirestore.instance.collection('particulars');
 
-  Future<FitnessLevel> getFitnessLevel(String uid) async {
-    DocumentSnapshot snapshot = await particularsCollection.doc(uid).get();
-    return snapshot.data()['fitnessLevel'];
+  Future<String> getFitnessLevel(String uid) async {
+    return await particularsCollection
+        .doc(uid)
+        .get()
+        .then((value) => value.data()['fitnessLevel']);
   }
 
   Future updateUserData(
