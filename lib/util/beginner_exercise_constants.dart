@@ -28,6 +28,7 @@ ex.Exercise squat = ex.Exercise(
     focus: [ex.Focus.Legs],
     difficulty: FitnessLevel.Beginner,
     equipmentNeeded: Equipment.noEquip,
+    isTimed: true,
     vidURL: 'https://www.youtube.com/watch?v=0KtrNQre5rQ',
     picURL:
         'https://1fsawj22yir9otqyf1vuai46-wpengine.netdna-ssl.com/wp-content/uploads/sites/32/2017/06/Screen-Shot-2017-06-22-at-3.25.47-PM-1024x640.png');

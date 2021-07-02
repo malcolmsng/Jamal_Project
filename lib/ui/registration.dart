@@ -4,6 +4,7 @@ import 'package:jamal_v1/ui/authentication.dart';
 import 'package:jamal_v1/ui/home_page.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:jamal_v1/model/fitness.dart';
+import 'package:jamal_v1/util/enum_methods.dart';
 
 class Registration extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class _RegistrationState extends State<Registration> {
   List<FitnessLevel> selectedFitnessLevel = [];
 
   List<MultiSelectItem> fitnessLevel = FitnessLevel.values
-      .map((e) => MultiSelectItem<FitnessLevel>(e, enumToString(e)))
+      .map((e) => MultiSelectItem<FitnessLevel>(e, Enums.enumToString(e)))
       .toList();
   final _formkey = GlobalKey<FormState>();
   final _multiformkey = GlobalKey<FormFieldState>();
@@ -26,7 +27,7 @@ class _RegistrationState extends State<Registration> {
   TextEditingController _heightField = TextEditingController();
   TextEditingController _weightField = TextEditingController();
   TextEditingController _bodyFatField = TextEditingController();
-  TextEditingController _fitnessField = TextEditingController();
+
   //for password field
   bool obscure = true;
   IconData passIcon = Icons.visibility;
@@ -262,7 +263,7 @@ class _RegistrationState extends State<Registration> {
                               _heightField.text,
                               _weightField.text,
                               _bodyFatField.text,
-                              enumToString(_multiformkey.currentState.value),
+                              Enums.enumToString(selectedFitnessLevel[0]),
                             );
                             if (shouldNavigate) {
                               Navigator.push(

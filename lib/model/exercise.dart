@@ -89,6 +89,7 @@ class Exercise {
   int sets;
   List<Focus> focus;
   Duration time; //time per set
+  bool isTimed;
 
   Exercise({
     this.picURL,
@@ -99,7 +100,8 @@ class Exercise {
     this.sets = 1,
     this.reps,
     this.focus,
-    this.time, //seconds per set
+    this.time,
+    this.isTimed = false,
   }) {
     this.sortFocus();
   }

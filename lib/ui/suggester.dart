@@ -1,9 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_multiselect/flutter_multiselect.dart';
+import 'package:jamal_v1/model/workout.dart';
+import 'package:jamal_v1/net/database.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:jamal_v1/ui/suggested_workouts.dart';
 import 'package:jamal_v1/model/equipment.dart';
 import 'package:jamal_v1/model/fitness.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
+import 'package:jamal_v1/util/enum_methods.dart';
 
 class Suggester extends StatefulWidget {
   @override
@@ -12,12 +16,18 @@ class Suggester extends StatefulWidget {
 
 class _SuggesterState extends State<Suggester> {
   //user's available time
-  TextEditingController _availableTime = TextEditingController();
-  List<String> selectedValues = [];
+  final _multiformkey = GlobalKey<FormFieldState>();
+  List<MultiSelectItem> equipment = Equipment.values
+      .map((e) => MultiSelectItem<Equipment>(e, getEquipment(e)))
+      .toList();
+
+  List<Equipment> selectedEquipment = [];
+
+  String uid = FirebaseAuth.instance.currentUser.uid;
 
   //list of all equipment the user can select
-  List<Equipment> equipment;
-  List<FitnessLevel> fitnesslevel;
+
+  FitnessLevel userFitness = FitnessLevel.Beginner;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +58,7 @@ class _SuggesterState extends State<Suggester> {
                     Container(
                       padding: EdgeInsets.all(10),
                       child: Text(
-                        "Please provide the information below",
+                        "Select Available Equipment ",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -62,46 +72,28 @@ class _SuggesterState extends State<Suggester> {
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                      child: MultiSelect(
-                        autovalidate: false,
-                        titleText: "Available Equipment",
-                        validator: (value) {
-                          if (value == null) {
-                            return 'Please select one or more option(s)';
-                          }
-                          return value;
+                      child: MultiSelectChipField<Equipment>(
+                        items: equipment,
+                        key: _multiformkey,
+                        title: Text('Select Available Equipment'),
+                        headerColor: Colors.transparent,
+                        decoration: BoxDecoration(color: Colors.transparent),
+                        textStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                        chipColor: Colors.white,
+                        validator: (values) {
+                          return values.length < 1 ? 'Select at least one' : '';
                         },
-                        errorText: 'Please select one or more option(s)',
-                        dataSource: [
-                          {
-                            "display": "No equipment",
-                            "value": "No equipment",
-                          },
-                          {
-                            "display": "Bench",
-                            "value": "Bench",
-                          },
-                          {
-                            "display": "Pull Up Bar",
-                            "value": "Pull Up Bar",
-                          },
-                          {
-                            "display": "Dumbbells",
-                            "value": "Dumbbells",
-                          },
-                          {
-                            "display": "Kettle Bells",
-                            "value": "Kettle Bells",
-                          }
-                        ],
-                        textField: 'display',
-                        valueField: 'value',
-                        filterable: true,
-                        required: true,
-                        value: null,
-                        change: (values) {
-                          selectedValues = [values.toString()];
-                          print(selectedValues);
+                        showHeader: false,
+                        onTap: (values) {
+                          selectedEquipment = values;
+                          print(Scrollable.of(context).position.pixels);
+
+                          _multiformkey.currentState.validate();
+                        },
+                        scrollControl: (controller) {
+                          scrollAnimation(controller);
                         },
                       ),
                     ),
@@ -122,6 +114,16 @@ class _SuggesterState extends State<Suggester> {
                         );
                       },
                     ),
+                    TextButton(
+                        child: Text('nice'),
+                        onPressed: () {
+                          setState(() {
+                            DatabaseService().getFitnessLevel(uid).then(
+                                (value) => (userFitness =
+                                    Enums.enumFromString<FitnessLevel>(
+                                        value, FitnessLevel.values)));
+                          });
+                        }),
                   ],
                 ),
               ),
@@ -129,4 +131,16 @@ class _SuggesterState extends State<Suggester> {
           ),
         ));
   }
+}
+
+void scrollAnimation(ScrollController controller) {
+  // when using more than one animation, use async/await
+  Future.delayed(const Duration(milliseconds: 500), () async {
+    await controller.animateTo(controller.position.maxScrollExtent,
+        duration: Duration(milliseconds: 5000), curve: Curves.linear);
+
+    await controller.animateTo(controller.position.minScrollExtent,
+        duration: Duration(milliseconds: 1250),
+        curve: Curves.fastLinearToSlowEaseIn);
+  });
 }
