@@ -103,6 +103,7 @@ class Exercise {
     this.focus,
     this.time,
     this.isTimed = false,
+    this.date
   }) {
     this.sortFocus();
   }
