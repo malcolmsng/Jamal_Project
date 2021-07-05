@@ -90,6 +90,7 @@ class Exercise {
   List<Focus> focus;
   Duration time; //time per set
   bool isTimed;
+  DateTime date;
 
   Exercise({
     this.picURL,
