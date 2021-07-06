@@ -92,6 +92,7 @@ class Exercise {
   bool isTimed;
   DateTime date;
 
+
   Exercise({
     this.picURL,
     this.vidURL,
@@ -105,16 +106,14 @@ class Exercise {
     this.isTimed = false,
     this.date
   }) {
+
     this.sortFocus();
   }
 
   //setters
-  set setReps(int x) {
-    this.reps = x;
-  }
 
-  set setSets(int x) {
-    this.sets = x;
+  set setDate(DateTime dt) {
+    this.date = dt;
   }
   //getters
 

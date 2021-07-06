@@ -160,6 +160,7 @@ class _RegistrationState extends State<Registration> {
                         Container(
                           width: MediaQuery.of(context).size.width / 1.3,
                           child: TextFormField(
+                            keyboardType: TextInputType.number,
                             controller: _ageField,
                             decoration: InputDecoration(
                               labelText: "Age",
