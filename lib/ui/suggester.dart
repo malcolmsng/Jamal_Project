@@ -28,17 +28,28 @@ class _SuggesterState extends State<Suggester> {
   List<Equipment> selectedEquipment = [];
 
   String uid = FirebaseAuth.instance.currentUser.uid;
+  List<ex.Exercise> chestExercises = [];
+  List<ex.Exercise> backExercises = [];
+  List<ex.Exercise> legExercises = [];
+  List<ex.Exercise> abExercises = [];
+  List<ex.Exercise> tricepExercises = [];
+  List<ex.Exercise> bicepExercises = [];
+  List<ex.Exercise> shoulderExercises = [];
+  List<ex.Exercise> cardioExercises = [];
 
   //all exercises in list form;
+  void initState() {
+    chestExercises = getSuitableExercises(ex.Focus.Chest);
+    backExercises = getSuitableExercises(ex.Focus.Back);
+    legExercises = getSuitableExercises(ex.Focus.Legs);
+    abExercises = getSuitableExercises(ex.Focus.Abs);
+    tricepExercises = getSuitableExercises(ex.Focus.Tricep);
+    bicepExercises = getSuitableExercises(ex.Focus.Bicep);
+    shoulderExercises = getSuitableExercises(ex.Focus.Shoulder);
+    cardioExercises = getSuitableExercises(ex.Focus.Cardio);
 
-  List<ex.Exercise> chestExercises = getSuitableExercises(ex.Focus.Chest);
-  List<ex.Exercise> backExercises = getSuitableExercises(ex.Focus.Back);
-  List<ex.Exercise> legExercises = getSuitableExercises(ex.Focus.Legs);
-  List<ex.Exercise> abExercises = getSuitableExercises(ex.Focus.Abs);
-  List<ex.Exercise> tricepExercises = getSuitableExercises(ex.Focus.Tricep);
-  List<ex.Exercise> bicepExercises = getSuitableExercises(ex.Focus.Bicep);
-  List<ex.Exercise> shoulderExercises = getSuitableExercises(ex.Focus.Shoulder);
-  List<ex.Exercise> cardioExercises = getSuitableExercises(ex.Focus.Cardio);
+    super.initState();
+  }
 
   int daysInWeek = 7;
   int weeksInMonth = 4;
@@ -141,6 +152,15 @@ class _SuggesterState extends State<Suggester> {
             ],
           ),
         ));
+  }
+
+  List<ex.Exercise> getSuitableExercises(ex.Focus focus) {
+    int difficultyLevel = widget.userFitness.index;
+    return Workout.allExercises
+        .where((exercise) =>
+            exercise.focus.contains(focus) &&
+            exercise.difficulty.index <= difficultyLevel)
+        .toList();
   }
 
   List<Workout> getBeginnerExercises() {
@@ -423,15 +443,6 @@ class _SuggesterState extends State<Suggester> {
 
     return monthlyWorkouts;
   }
-}
-
-List<ex.Exercise> getSuitableExercises(ex.Focus focus) {
-  int difficultyLevel = Suggester().userFitness.index;
-  return Workout.allExercises
-      .where((exercise) =>
-          exercise.focus.contains(focus) &&
-          exercise.difficulty.index <= difficultyLevel)
-      .toList();
 }
 
 List<int> getRandomIntList(int x) {
