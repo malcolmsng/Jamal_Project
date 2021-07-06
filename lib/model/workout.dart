@@ -1,5 +1,8 @@
 import 'package:jamal_v1/model/exercise.dart';
 import 'package:flutter/material.dart';
+import 'package:jamal_v1/util/advanced_exercise_constants.dart';
+import 'package:jamal_v1/util/beginner_exercise_constants.dart';
+import 'package:jamal_v1/util/intermediate_exercise_constants.dart';
 
 class Workout {
   Duration rest; //rest between sets
@@ -8,6 +11,11 @@ class Workout {
   List<int> reps;
   List<int> time;
   DateTime date; //time per set
+  static List<Exercise> allExercises = [
+    ...beginnerExercises,
+    ...intermediateExercises,
+    ...advancedExercises
+  ];
 
   Workout({
     @required this.rest,
@@ -18,11 +26,13 @@ class Workout {
     this.date,
   });
 
-  void setDate(DateTime dt) {
-    this.date = dt;
-    for (Exercise e in exercises) {
-      e.date = dt;
-    }
+  Workout setDate(DateTime dt) {
+    return Workout(
+        rest: this.rest,
+        exercises: this.exercises.map((exercise) {
+          exercise.date = dt;
+        }).toList(),
+        date: dt);
   }
 
   List<Exercise> getWorkout() {

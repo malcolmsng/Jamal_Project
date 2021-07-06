@@ -92,28 +92,25 @@ class Exercise {
   bool isTimed;
   DateTime date;
 
-  Exercise({
-    this.picURL,
-    this.vidURL,
-    this.difficulty,
-    this.equipmentNeeded,
-    this.name,
-    this.sets = 1,
-    this.reps,
-    this.focus,
-    this.time,
-    this.isTimed = false,
-  }) {
+  Exercise(
+      {this.picURL,
+      this.vidURL,
+      this.difficulty,
+      this.equipmentNeeded,
+      this.name,
+      this.sets = 1,
+      this.reps,
+      this.focus,
+      this.time,
+      this.isTimed = false,
+      this.date}) {
     this.sortFocus();
   }
 
   //setters
-  set setReps(int x) {
-    this.reps = x;
-  }
 
-  set setSets(int x) {
-    this.sets = x;
+  set setDate(DateTime dt) {
+    this.date = dt;
   }
   //getters
 
