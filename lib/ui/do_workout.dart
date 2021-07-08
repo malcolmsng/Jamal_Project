@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:jamal_v1/model/fitness.dart';
 import 'package:jamal_v1/ui/custom_exercises.dart';
 import 'package:jamal_v1/ui/suggester.dart';
