@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jamal_v1/net/database.dart';
 import 'package:jamal_v1/util/intermediate_exercise_constants.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
@@ -14,10 +15,14 @@ class CustomExercisesPage extends StatefulWidget {
 }
 
 class _CustomExercisesPageState extends State<CustomExercisesPage> {
+  final _formkey = GlobalKey<FormState>();
   String uid = FirebaseAuth.instance.currentUser.uid;
   TextEditingController _setsField = TextEditingController();
   TextEditingController _repsField = TextEditingController();
   List<ex.Exercise> availableExercises = intermediateExercises;
+
+  List<List<String>> currentWorkoutList = [];
+
   // List<String> selectedValues = [];
   List<int> top = <int>[];
   List<int> bottom = <int>[0];
@@ -29,52 +34,80 @@ class _CustomExercisesPageState extends State<CustomExercisesPage> {
     S2Choice<String>(value: 'Squat', title: 'Squat'),
   ];
 
+  // pop out box for users to add exercises
   Future<void> addExercisesDialog() async {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Padding(
-              padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-              child: Column(children: [
-                SmartSelect<String>.single(
-                    title: "",
-                    value: selectedValue,
-                    choiceItems: options,
-                    onChange: (state) =>
-                        setState(() => selectedValue = state.value)),
-                Container(
-                  child: TextFormField(
-                    controller: _setsField,
-                    decoration: InputDecoration(
-                      labelText: "No. of sets",
-                      labelStyle: TextStyle(
-                        color: Colors.black,
+            title: Form(
+              key: _formkey,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                child: Column(children: [
+                  SmartSelect<String>.single(
+                      title: "",
+                      value: selectedValue,
+                      choiceItems: options,
+                      onChange: (state) =>
+                          setState(() => selectedValue = state.value)),
+                  Container(
+                    child: TextFormField(
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        return value.isNotEmpty
+                            ? null
+                            : "No. of sets cannot be empty";
+                      },
+                      controller: _setsField,
+                      decoration: InputDecoration(
+                        labelText: "No. of sets",
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Container(
-                  child: TextFormField(
-                    controller: _repsField,
-                    decoration: InputDecoration(
-                      labelText: "No. of reps",
-                      labelStyle: TextStyle(
-                        color: Colors.black,
+                  Container(
+                    child: TextFormField(
+                      validator: (value) {
+                        return value.isNotEmpty
+                            ? null
+                            : "No. of reps cannot be empty";
+                      },
+                      controller: _repsField,
+                      decoration: InputDecoration(
+                        labelText: "No. of reps",
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ]),
+                ]),
+              ),
             ),
             actions: [
-              TextButton(
+              MaterialButton(
                 child: Text('Add exercise'),
-                onPressed: () {
+                onPressed: () async {
+                  _formkey.currentState.validate();
                   print('Confirmed');
                   print(selectedValue);
                   print(_setsField.text);
                   print(_repsField.text);
+                  List<String> toAdd = [
+                    selectedValue.toLowerCase(),
+                    _setsField.text.length < 2
+                        ? "0" + _setsField.text
+                        : _setsField.text,
+                    _repsField.text.length < 2
+                        ? "0" + _repsField.text
+                        : _repsField.text,
+                  ];
+                  currentWorkoutList.add(toAdd);
+                  print(currentWorkoutList);
                   selectedValues.add(selectedValue);
                   Navigator.pop(context);
                 },
@@ -84,6 +117,7 @@ class _CustomExercisesPageState extends State<CustomExercisesPage> {
         });
   }
 
+  // pop out box when user presses "Finished workout"
   Future<void> finishedWorkoutDialog() async {
     return showDialog<void>(
       context: context,
@@ -110,6 +144,7 @@ class _CustomExercisesPageState extends State<CustomExercisesPage> {
     );
   }
 
+  // main body of page
   @override
   Widget build(BuildContext context) {
     const Key centerKey = ValueKey<String>('bottom-sliver-list');
@@ -195,7 +230,7 @@ class _CustomExercisesPageState extends State<CustomExercisesPage> {
               onPressed: () async {
                 finishedWorkoutDialog();
                 await DatabaseService(uid: uid)
-                    .addWorkout("custom workout", "pushup");
+                    .addWorkoutList(currentWorkoutList);
               },
             )
           ],

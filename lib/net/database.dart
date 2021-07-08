@@ -20,13 +20,13 @@ class DatabaseService {
       String bodyFatPercentage,
       String fitnessLevel) async {
     // retrieve current date
-    String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
-    print(now);
+    String dateNow = DateFormat("yyyy-MM-dd").format(DateTime.now());
+    print(dateNow);
 
     await particularsCollection
         .doc(uid)
         .collection('measurements')
-        .doc(now)
+        .doc(dateNow)
         .set({
       'height': height,
       'weight': weight,
@@ -54,6 +54,31 @@ class DatabaseService {
     return await workoutsCollection.doc(workoutType).set({
       "exercise": workout,
     });
+  }
+
+  Future addWorkoutList(List<List<String>> listOfListOfWorkouts) async {
+    String dateNow = DateFormat("yyyy-MM-dd").format(DateTime.now());
+    print(dateNow);
+
+    final CollectionReference workoutsCollection = FirebaseFirestore.instance
+        .collection('particulars')
+        .doc(uid)
+        .collection('workouts');
+
+    for (var i in listOfListOfWorkouts) {
+      print(i);
+      String combinedSetsAndReps = i[1] + i[2];
+      await workoutsCollection.doc(dateNow).update({
+        i[0]: combinedSetsAndReps,
+      });
+    }
+
+    // return await workoutsCollection.doc(dateNow).set({
+    //   for (var  i in listOfWorkouts) {
+    //     "exercise": i;
+    //   }
+    // }
+    // );
   }
 
   Future addMeasurements(

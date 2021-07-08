@@ -42,13 +42,12 @@ class Auth {
 
   Future<bool> login(String email, String password) async {
     try {
-      print('1');
+      print(email);
       await _auth.signInWithEmailAndPassword(
-
         email: email.trim(),
         password: password.trim(),
       );
-      print(email);
+      print(password);
 
       return true;
     } on FirebaseAuthException catch (e) {
