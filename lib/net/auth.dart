@@ -72,6 +72,15 @@ class Auth {
     }
   }
 
+  Future<bool> logout() async {
+    try {
+      await _auth.signOut();
+      return true;
+    } on FirebaseAuthException {
+      return false;
+    }
+  }
+
   // get user UID
   Future<String> getCurrentID() async {
     return (await _auth.currentUser).uid;

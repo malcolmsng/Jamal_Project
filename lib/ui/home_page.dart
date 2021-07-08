@@ -115,18 +115,25 @@ class _HomePageState extends State<HomePage> {
       //   child: Icon(Icons.add),
       // ),
       //bottomNavigationBar: BottomFeaturesBar(),
-      body: CustomScrollView(
-        physics: BouncingScrollPhysics(),
-        slivers: [
-          buildUserInfoSection(context),
-          SliverList(
-              delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-              print(index);
-              return buildProgressGraph(index);
-            },
-            childCount: 3,
-          ))
+      body: Stack(
+        children: [
+          SizedBox(
+            child: Image.asset("assets/bg.jpg"),
+          ),
+          CustomScrollView(
+            physics: BouncingScrollPhysics(),
+            slivers: [
+              buildUserInfoSection(context),
+              SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  print(index);
+                  return buildProgressGraph(index);
+                },
+                childCount: 3,
+              ))
+            ],
+          ),
         ],
       ),
     );

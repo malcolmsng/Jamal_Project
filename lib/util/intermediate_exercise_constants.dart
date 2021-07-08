@@ -66,12 +66,6 @@ ex.Exercise waiterCurl = ex.Exercise(
       'https://cdn2.coachmag.co.uk/sites/coachmag/files/2016/06/lateral-raise.jpg',
 );
 
-List<List<ex.Exercise>> difficultyLevel = [
-  beginnerExercises,
-  intermediateExercises,
-  advancedExercises
-];
-
 List<ex.Exercise> intermediateExercises = [
   pushup,
   situp,

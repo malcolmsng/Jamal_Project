@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jamal_v1/model/exercise.dart' as ex;
 import 'package:jamal_v1/model/fitness.dart';
 import 'package:jamal_v1/ui/demonstration.dart';
+import 'package:jamal_v1/util/enum_methods.dart';
 
 class ExerciseCard extends StatefulWidget {
   final ex.Exercise exercise;
@@ -64,7 +65,7 @@ class _ExerciseCardState extends State<ExerciseCard> {
     //since i placed the exercise property there
     String name = widget.exercise.name;
     String focuses =
-        widget.exercise.focus.map((e) => enumToString(e)).join(', ');
+        widget.exercise.focus.map((e) => Enums.enumToString(e)).join(', ');
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

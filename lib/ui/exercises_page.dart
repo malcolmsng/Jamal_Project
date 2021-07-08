@@ -7,6 +7,7 @@ import 'package:jamal_v1/model/fitness.dart';
 import 'package:jamal_v1/widgets/exercise_card.dart';
 import 'package:jamal_v1/model/exercise.dart' as ex;
 import 'package:jamal_v1/widgets/search_exercises.dart';
+import 'package:jamal_v1/util/enum_methods.dart';
 
 class ExercisePage extends StatefulWidget {
   @override
@@ -75,7 +76,7 @@ class _ExercisePageState extends State<ExercisePage> {
     return Row(
       children: FitnessLevel.values.map(
         (fitness) {
-          String name = enumToString(fitness);
+          String name = Enums.enumToString(fitness);
           FontWeight font =
               fitness == selectedFitness ? FontWeight.bold : FontWeight.normal;
 

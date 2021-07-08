@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+
+import 'package:jamal_v1/model/fitness.dart';
 import 'package:jamal_v1/ui/custom_exercises.dart';
 import 'package:jamal_v1/ui/suggester.dart';
 import 'package:jamal_v1/ui/workout_plan.dart';
-import 'package:jamal_v1/widgets/features.dart';
+import 'package:jamal_v1/util/enum_methods.dart';
+// import 'package:jamal_v1/widgets/features.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:jamal_v1/net/database.dart';
+import 'package:jamal_v1/widgets/navigation_menu.dart';
 
 class DoWorkout extends StatefulWidget {
   @override
@@ -10,12 +16,16 @@ class DoWorkout extends StatefulWidget {
 }
 
 class _DoWorkoutState extends State<DoWorkout> {
+  String uid = FirebaseAuth.instance.currentUser.uid;
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      bottomNavigationBar: BottomFeaturesBar(),
+      appBar: AppBar(),
+      drawer: NavigationDrawerWidget(),
+      // bottomNavigationBar: BottomFeaturesBar(),
       body: Stack(children: [
         SizedBox(
           child: Image.asset("assets/bg.jpg"),
@@ -44,13 +54,22 @@ class _DoWorkoutState extends State<DoWorkout> {
               ),
               TextButton(
                 child: Text("Recommend me a workout!"),
-                onPressed: () {
-                  print('Confirmed');
+                onPressed: () async {
+                  print(uid);
+
+                  FitnessLevel userFitness = await DatabaseService()
+                      .getFitnessLevel(uid)
+                      .then((value) => (Enums.enumFromString<FitnessLevel>(
+                          value, FitnessLevel.values)));
+
+                  print(userFitness);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Suggester(),
-                    ),
+                        // settings: RouteSettings(arguments: userFitness),
+                        builder: (context) => Suggester(
+                              userFitness: userFitness,
+                            )),
                   );
                 },
               ),

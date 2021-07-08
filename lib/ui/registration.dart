@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/net/auth.dart';
+import 'package:jamal_v1/ui/authentication.dart';
 import 'package:jamal_v1/ui/home_page.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:jamal_v1/model/fitness.dart';
+import 'package:jamal_v1/util/enum_methods.dart';
 
 class Registration extends StatefulWidget {
   @override
@@ -8,7 +12,13 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
+  List<FitnessLevel> selectedFitnessLevel = [];
+
+  List<MultiSelectItem> fitnessLevel = FitnessLevel.values
+      .map((e) => MultiSelectItem<FitnessLevel>(e, Enums.enumToString(e)))
+      .toList();
   final _formkey = GlobalKey<FormState>();
+  final _multiformkey = GlobalKey<FormFieldState>();
 
   TextEditingController _emailField = TextEditingController();
   TextEditingController _passwordField = TextEditingController();
@@ -17,7 +27,7 @@ class _RegistrationState extends State<Registration> {
   TextEditingController _heightField = TextEditingController();
   TextEditingController _weightField = TextEditingController();
   TextEditingController _bodyFatField = TextEditingController();
-  TextEditingController _fitnessField = TextEditingController();
+
   //for password field
   bool obscure = true;
   IconData passIcon = Icons.visibility;
@@ -32,6 +42,20 @@ class _RegistrationState extends State<Registration> {
           children: [
             SizedBox(
               child: Image.asset("assets/bg.jpg"),
+            ),
+            SafeArea(
+              child: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Authentication(),
+                    ),
+                  );
+                },
+                icon: Icon(Icons.arrow_back_ios_new),
+                color: Colors.black,
+              ),
             ),
             SafeArea(
                 child: Padding(
@@ -136,6 +160,7 @@ class _RegistrationState extends State<Registration> {
                         Container(
                           width: MediaQuery.of(context).size.width / 1.3,
                           child: TextFormField(
+                            keyboardType: TextInputType.number,
                             controller: _ageField,
                             decoration: InputDecoration(
                               labelText: "Age",
@@ -193,7 +218,7 @@ class _RegistrationState extends State<Registration> {
                         Container(
                           width: MediaQuery.of(context).size.width / 1.3,
                           child: TextFormField(
-                            controller: _fitnessField,
+                            enabled: false,
                             decoration: InputDecoration(
                               labelText: "Fitness Level",
                               labelStyle: TextStyle(
@@ -202,20 +227,45 @@ class _RegistrationState extends State<Registration> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 80),
+                        MultiSelectChipField<FitnessLevel>(
+                          items: fitnessLevel,
+                          key: _multiformkey,
+                          title: Text('Select Fitness Level'),
+                          headerColor: Colors.transparent,
+                          decoration: BoxDecoration(color: Colors.transparent),
+                          textStyle: TextStyle(
+                            color: Colors.black,
+                          ),
+                          chipColor: Colors.white,
+                          validator: (values) {
+                            return values.length > 1
+                                ? 'You can only select one fitness level'
+                                : values.length < 1
+                                    ? 'Select a fitness level'
+                                    : '';
+                          },
+                          showHeader: false,
+                          onTap: (values) {
+                            selectedFitnessLevel = values;
+                            print(selectedFitnessLevel);
+                            _multiformkey.currentState.validate();
+                          },
+                        ),
+                        SizedBox(height: 40),
                         MaterialButton(
                           onPressed: () async {
                             _formkey.currentState.validate();
                             Auth auth = Auth();
                             bool shouldNavigate = await auth.register(
-                                _emailField.text,
-                                _passwordField.text,
-                                _nameField.text,
-                                _ageField.text,
-                                _heightField.text,
-                                _weightField.text,
-                                _bodyFatField.text,
-                                _fitnessField.text);
+                              _emailField.text,
+                              _passwordField.text,
+                              _nameField.text,
+                              _ageField.text,
+                              _heightField.text,
+                              _weightField.text,
+                              _bodyFatField.text,
+                              Enums.enumToString(selectedFitnessLevel[0]),
+                            );
                             if (shouldNavigate) {
                               Navigator.push(
                                 context,
@@ -228,6 +278,7 @@ class _RegistrationState extends State<Registration> {
                           child: Text("Proceed"),
                           color: Colors.lightBlueAccent,
                         ),
+                        SizedBox(height: 40),
                       ],
                     ))))
           ],

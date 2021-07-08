@@ -174,6 +174,92 @@ class _AuthenticationState extends State<Authentication> {
               ],
             )),
       ),
+//               ),
+//               SizedBox(height: MediaQuery.of(context).size.height / 35),
+//               Container(
+//                 width: MediaQuery.of(context).size.width / 1.4,
+//                 height: 45,
+//                 decoration: BoxDecoration(
+//                   borderRadius: BorderRadius.circular(15),
+//                   color: Colors.white,
+//                 ),
+//                 child: MaterialButton(
+//                   onPressed: () async {
+//                     Navigator.push(
+//                       context,
+//                       MaterialPageRoute(
+//                         builder: (context) => Registration(),
+//                       ),
+//                     );
+//                   },
+//                   child: Text("Register"),
+//                 ),
+//               ),
+//               SizedBox(height: MediaQuery.of(context).size.height / 35),
+//               Container(
+//                 width: MediaQuery.of(context).size.width / 1.4,
+//                 height: 45,
+//                 decoration: BoxDecoration(
+//                   borderRadius: BorderRadius.circular(15),
+//                   color: Colors.white,
+//                 ),
+//                 child: MaterialButton(
+//                   onPressed: () async {
+//                     print(_emailField.text.toString());
+//                     Auth auth = Auth();
+//                     bool shouldNavigate =
+//                         await auth.login(_emailField.text, _passwordField.text);
+//                     if (shouldNavigate) {
+//                       Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                           builder: (context) => HomePage(),
+//                         ),
+//                       );
+//                     }
+//                   },
+//                   child: Text("Login"),
+//                 ),
+//               ),
+              // SizedBox(height: MediaQuery.of(context).size.height / 35),
+              // Container(
+              //   width: MediaQuery.of(context).size.width / 1.4,
+              //   height: 45,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(15),
+              //     color: Colors.white,
+              //   ),
+              //   child: MaterialButton(
+              //     onPressed: () async {
+              //       Auth auth = Auth();
+              //       bool shouldNavigate = await auth.anon();
+              //       if (shouldNavigate) {
+              //         Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //             builder: (context) => HomePage(),
+              //           ),
+              //         );
+              //       }
+              //     },
+              //     child: Text("Anon Login"),
+              //   ),
+              // ),
+              // SizedBox(height: MediaQuery.of(context).size.height / 35),
+              // Container(
+              //   width: MediaQuery.of(context).size.width / 1.4,
+              //   height: 45,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(15),
+              //     color: Colors.white,
+              //   ),
+              //   child: MaterialButton(
+              //     onPressed: () {},
+              //     child: Text("testing page"),
+              //   ),
+              // )
+            ],
+          )),
     );
   }
 }
