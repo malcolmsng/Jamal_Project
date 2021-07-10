@@ -1,9 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:jamal_v1/model/workout.dart';
+import 'package:jamal_v1/model/workout_datasource.dart';
 
 class Calendar extends StatelessWidget {
-  const Calendar({Key key}) : super(key: key);
+  List<Workout> monthlyWorkout;
+  Calendar({Key key, this.monthlyWorkout}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,12 +14,12 @@ class Calendar extends StatelessWidget {
       initialSelectedDate: DateTime.now(),
       firstDayOfWeek: 1,
       cellBorderColor: Colors.transparent,
-      dataSource: WorkoutDataSource(getAppointments()),
+      dataSource: WorkoutDataSource(monthlyWorkout),
     );
   }
 }
 
-List<Appointment> getAppointments() {
+List<Appointment> getAppointments(List<Workout> work) {
   List<Appointment> workouts = <Appointment>[];
   final DateTime today = DateTime.now();
   final DateTime startTime =
@@ -28,10 +30,3 @@ List<Appointment> getAppointments() {
       .add(Appointment(startTime: startTime, endTime: endTime, isAllDay: true));
   return workouts;
 }
-
-class WorkoutDataSource extends CalendarDataSource {
-  WorkoutDataSource(List<Appointment> source) {
-    appointments = source;
-  }
-}
-

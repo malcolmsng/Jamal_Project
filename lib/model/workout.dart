@@ -27,12 +27,13 @@ class Workout {
   });
 
   Workout setDate(DateTime dt) {
-    return Workout(
-        rest: this.rest,
-        exercises: this.exercises.map((exercise) {
-          exercise.date = dt;
-        }).toList(),
-        date: dt);
+    List<Exercise> tempList = List<Exercise>.from(this.exercises);
+    tempList.forEach((exercise) {
+      exercise.date = dt;
+    });
+    Workout temp = Workout(rest: this.rest, exercises: tempList, date: dt);
+
+    return temp;
   }
 
   List<Exercise> getWorkout() {
