@@ -1,9 +1,9 @@
 import 'dart:math';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/model/workout.dart';
 import 'package:jamal_v1/model/exercise.dart' as ex;
+import 'package:jamal_v1/ui/workout_plan.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:jamal_v1/ui/suggested_workouts.dart';
 import 'package:jamal_v1/model/equipment.dart';
@@ -28,25 +28,41 @@ class _SuggesterState extends State<Suggester> {
   List<Equipment> selectedEquipment = [];
 
   String uid = FirebaseAuth.instance.currentUser.uid;
-  List<ex.Exercise> chestExercises = [];
-  List<ex.Exercise> backExercises = [];
-  List<ex.Exercise> legExercises = [];
-  List<ex.Exercise> abExercises = [];
-  List<ex.Exercise> tricepExercises = [];
-  List<ex.Exercise> bicepExercises = [];
-  List<ex.Exercise> shoulderExercises = [];
-  List<ex.Exercise> cardioExercises = [];
+  List<ex.Exercise> chestExercises;
+  List<ex.Exercise> backExercises;
+  List<ex.Exercise> legExercises;
+  List<ex.Exercise> abExercises;
+  List<ex.Exercise> tricepExercises;
+  List<ex.Exercise> bicepExercises;
+  List<ex.Exercise> shoulderExercises;
+  List<ex.Exercise> cardioExercises;
 
   //all exercises in list form;
   void initState() {
-    chestExercises = getSuitableExercises(ex.Focus.Chest);
-    backExercises = getSuitableExercises(ex.Focus.Back);
-    legExercises = getSuitableExercises(ex.Focus.Legs);
-    abExercises = getSuitableExercises(ex.Focus.Abs);
-    tricepExercises = getSuitableExercises(ex.Focus.Tricep);
-    bicepExercises = getSuitableExercises(ex.Focus.Bicep);
-    shoulderExercises = getSuitableExercises(ex.Focus.Shoulder);
-    cardioExercises = getSuitableExercises(ex.Focus.Cardio);
+    chestExercises = getSuitableExercises(
+      ex.Focus.Chest,
+    );
+    backExercises = getSuitableExercises(
+      ex.Focus.Back,
+    );
+    legExercises = getSuitableExercises(
+      ex.Focus.Legs,
+    );
+    abExercises = getSuitableExercises(
+      ex.Focus.Abs,
+    );
+    tricepExercises = getSuitableExercises(
+      ex.Focus.Tricep,
+    );
+    bicepExercises = getSuitableExercises(
+      ex.Focus.Bicep,
+    );
+    shoulderExercises = getSuitableExercises(
+      ex.Focus.Shoulder,
+    );
+    cardioExercises = getSuitableExercises(
+      ex.Focus.Cardio,
+    );
 
     super.initState();
   }
@@ -114,8 +130,11 @@ class _SuggesterState extends State<Suggester> {
                         },
                         showHeader: false,
                         onTap: (values) {
-                          selectedEquipment = values;
-                          print(Scrollable.of(context).position.pixels);
+                          setState(() {
+                            selectedEquipment = values;
+                          });
+
+                          print(selectedEquipment);
 
                           _multiformkey.currentState.validate();
                         },
@@ -132,19 +151,41 @@ class _SuggesterState extends State<Suggester> {
                           primary: Colors.orangeAccent),
                       child: Text('Get Suggestions!'),
                       onPressed: () {
-                        print('Confirmed');
+                        List<Workout> tempWorkout;
+                        if (widget.userFitness == FitnessLevel.Beginner) {
+                          tempWorkout = getBeginnerExercises();
+                        } else if (widget.userFitness ==
+                            FitnessLevel.Intermediate) {
+                          tempWorkout = getIntermediateExercises();
+                        } else {
+                          tempWorkout = getAdvancedExercises();
+                        }
+                        print(tempWorkout);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SuggestedWorkout(),
+                            // builder: (context) => SuggestedWorkout(),
+                            builder: (context) => WorkoutPlan(),
+                            settings: RouteSettings(arguments: tempWorkout),
                           ),
                         );
                       },
                     ),
                     TextButton(
-                        child: Text('nice'),
+                        child: Text('Selected Eq'),
                         onPressed: () {
-                          print(widget.userFitness.index);
+                          List<Workout> tempWorkout;
+
+                          if (widget.userFitness == FitnessLevel.Beginner) {
+                            tempWorkout = getBeginnerExercises();
+                          } else if (widget.userFitness ==
+                              FitnessLevel.Intermediate) {
+                            tempWorkout = getIntermediateExercises();
+                          } else {
+                            tempWorkout = getIntermediateExercises();
+                          }
+
+                          print(tempWorkout);
                         }),
                   ],
                 ),
@@ -171,6 +212,40 @@ class _SuggesterState extends State<Suggester> {
 // Sets = weeksInMonth
 // 10 <= Reps <= 20
 // 10 <= Time <= 30
+
+    chestExercises = chestExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    backExercises = backExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    legExercises = legExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    shoulderExercises = shoulderExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    bicepExercises = bicepExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    tricepExercises = tricepExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    cardioExercises = cardioExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    abExercises = abExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+
     int sets = 4;
     int minReps = 10;
     int minTime = 10;
@@ -181,14 +256,14 @@ class _SuggesterState extends State<Suggester> {
 
     List<ex.Exercise> weeklyExercise1 = [
       chestExercises[rnd.nextInt(chestExercises.length)],
-      backExercises[rnd.nextInt(chestExercises.length)],
+      backExercises[rnd.nextInt(backExercises.length)],
       legExercises[rnd.nextInt(legExercises.length)],
       abExercises[rnd.nextInt(abExercises.length)],
     ];
     List<ex.Exercise> weeklyExercise2 = [
       shoulderExercises[rnd.nextInt(shoulderExercises.length)],
       bicepExercises[rnd.nextInt(bicepExercises.length)],
-      tricepExercises[rnd.nextInt(bicepExercises.length)],
+      tricepExercises[rnd.nextInt(tricepExercises.length)],
       legExercises[rnd.nextInt(legExercises.length)],
       abExercises[rnd.nextInt(abExercises.length)],
     ];
@@ -244,8 +319,40 @@ class _SuggesterState extends State<Suggester> {
 // Sets = weeksInMonth
 // 10 <= Reps <= 20
 // 10 <= Time <= 30
+    chestExercises = chestExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    backExercises = backExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    legExercises = legExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    shoulderExercises = shoulderExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    bicepExercises = bicepExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    tricepExercises = tricepExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    cardioExercises = cardioExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    abExercises = abExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
 
-    int sets = weeksInMonth;
+    int sets = 4;
     int minReps = 10;
     int minTime = 10;
     int repsIncrease = 2;
@@ -255,14 +362,14 @@ class _SuggesterState extends State<Suggester> {
 
     List<ex.Exercise> weeklyExercise1 = [
       chestExercises[rnd.nextInt(chestExercises.length)],
-      backExercises[rnd.nextInt(chestExercises.length)],
+      backExercises[rnd.nextInt(backExercises.length)],
       legExercises[rnd.nextInt(legExercises.length)],
       abExercises[rnd.nextInt(abExercises.length)],
     ];
     List<ex.Exercise> weeklyExercise2 = [
       shoulderExercises[rnd.nextInt(shoulderExercises.length)],
       bicepExercises[rnd.nextInt(bicepExercises.length)],
-      tricepExercises[rnd.nextInt(bicepExercises.length)],
+      tricepExercises[rnd.nextInt(tricepExercises.length)],
       legExercises[rnd.nextInt(legExercises.length)],
       abExercises[rnd.nextInt(abExercises.length)],
     ];
@@ -335,17 +442,51 @@ class _SuggesterState extends State<Suggester> {
   }
 
   List<Workout> getAdvancedExercises() {
-//     Intermediate:
-// 3 Workouts per week:
+//     Advanced:
+// 4 Workouts per week:
 // 1) Chest, Back, Legs, Abs
 // 2) Shoulder, Bicep, Triceps, Legs, Abs
-// 3) 3 x Cardio Exercises
+// 3)  4 x Cardio Exercises
+// 4) Chest, Back, Legs, Abs
 
-// Sets = weeksInMonth
+// Sets = 5
 // 10 <= Reps <= 20
 // 10 <= Time <= 30
 
-    int sets = weeksInMonth;
+    chestExercises = chestExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    backExercises = backExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    legExercises = legExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    shoulderExercises = shoulderExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    bicepExercises = bicepExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    tricepExercises = tricepExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    cardioExercises = cardioExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+    abExercises = abExercises
+        .where(
+            (exercise) => selectedEquipment.contains(exercise.equipmentNeeded))
+        .toList();
+
+    int sets = 5;
     int minReps = 10;
     int minTime = 10;
     int repsIncrease = 2;
@@ -355,14 +496,14 @@ class _SuggesterState extends State<Suggester> {
 
     List<ex.Exercise> weeklyExercise1 = [
       chestExercises[rnd.nextInt(chestExercises.length)],
-      backExercises[rnd.nextInt(chestExercises.length)],
+      backExercises[rnd.nextInt(backExercises.length)],
       legExercises[rnd.nextInt(legExercises.length)],
       abExercises[rnd.nextInt(abExercises.length)],
     ];
     List<ex.Exercise> weeklyExercise2 = [
       shoulderExercises[rnd.nextInt(shoulderExercises.length)],
       bicepExercises[rnd.nextInt(bicepExercises.length)],
-      tricepExercises[rnd.nextInt(bicepExercises.length)],
+      tricepExercises[rnd.nextInt(tricepExercises.length)],
       legExercises[rnd.nextInt(legExercises.length)],
       abExercises[rnd.nextInt(abExercises.length)],
     ];
@@ -372,23 +513,15 @@ class _SuggesterState extends State<Suggester> {
       cardioExercises[tempList[0]],
       cardioExercises[tempList[1]],
       cardioExercises[tempList[2]],
+      cardioExercises[tempList[3]],
     ];
 
     List<ex.Exercise> weeklyExercise4 = [
       chestExercises[rnd.nextInt(chestExercises.length)],
-      backExercises[rnd.nextInt(chestExercises.length)],
+      backExercises[rnd.nextInt(backExercises.length)],
       legExercises[rnd.nextInt(legExercises.length)],
       abExercises[rnd.nextInt(abExercises.length)],
     ];
-
-    Workout weeklyWorkout1 =
-        Workout(rest: Duration(minutes: 1), exercises: weeklyExercise1);
-    Workout weeklyWorkout2 =
-        Workout(rest: Duration(minutes: 1), exercises: weeklyExercise2);
-    Workout weeklyWorkout3 =
-        Workout(rest: Duration(minutes: 1), exercises: weeklyExercise3);
-    Workout weeklyWorkout4 =
-        Workout(rest: Duration(minutes: 1), exercises: weeklyExercise4);
 
     weeklyExercise1.map((exercise) {
       exercise.sets = sets;
@@ -417,6 +550,24 @@ class _SuggesterState extends State<Suggester> {
       }
     });
 
+    weeklyExercise4.map((exercise) {
+      exercise.sets = sets;
+      if (exercise.isTimed) {
+        exercise.time = Duration(seconds: minTime);
+      } else {
+        exercise.reps = minReps;
+      }
+    });
+
+    Workout weeklyWorkout1 =
+        Workout(rest: Duration(minutes: 1), exercises: weeklyExercise1);
+    Workout weeklyWorkout2 =
+        Workout(rest: Duration(minutes: 1), exercises: weeklyExercise2);
+    Workout weeklyWorkout3 =
+        Workout(rest: Duration(minutes: 1), exercises: weeklyExercise3);
+    Workout weeklyWorkout4 =
+        Workout(rest: Duration(minutes: 1), exercises: weeklyExercise4);
+
     List<Workout> weeklyWorkoutList = [
       weeklyWorkout1,
       weeklyWorkout2,
@@ -431,7 +582,7 @@ class _SuggesterState extends State<Suggester> {
       int interWeekMultiplier = 7 * i;
       for (Workout workout in weeklyWorkoutList) {
         int intraWeekMultiplier =
-            (daysInWeek / weeklyWorkoutList.length).floor() *
+            (daysInWeek / weeklyWorkoutList.length).ceil() *
                 weeklyWorkoutList.indexOf(workout);
 
         Workout tempWorkout = workout.setDate(DateTime.now()

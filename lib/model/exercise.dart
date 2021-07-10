@@ -92,21 +92,18 @@ class Exercise {
   bool isTimed;
   DateTime date;
 
-
-  Exercise({
-    this.picURL,
-    this.vidURL,
-    this.difficulty,
-    this.equipmentNeeded,
-    this.name,
-    this.sets = 1,
-    this.reps,
-    this.focus,
-    this.time,
-    this.isTimed = false,
-    this.date
-  }) {
-
+  Exercise(
+      {this.picURL,
+      this.vidURL,
+      this.difficulty,
+      this.equipmentNeeded,
+      this.name,
+      this.sets = 1,
+      this.reps,
+      this.focus,
+      this.time,
+      this.isTimed = false,
+      this.date}) {
     this.sortFocus();
   }
 
@@ -131,5 +128,10 @@ class Exercise {
     if (focus.length > 1) {
       focus.sort((a, b) => a.compareTo(b));
     }
+  }
+
+  @override
+  String toString() {
+    return this.name;
   }
 }
