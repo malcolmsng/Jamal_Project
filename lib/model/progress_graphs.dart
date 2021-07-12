@@ -59,6 +59,7 @@ SfCartesianChart buildProgressGraph(int index) {
 }
 
 List<SalesData> getChartData(int index) {
+  // get workouts done for the past week
   if (index == 0) {
     final List<SalesData> chartData = [
       SalesData(2, 3),

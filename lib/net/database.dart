@@ -89,21 +89,76 @@ class DatabaseService {
     // );
   }
 
-  Future addMeasurements(
-      String height, String weight, String fitnessLevel) async {
-    // retrieve current date
-    String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
-    print(now);
+  Future addWorkoutListWithDate(
+      String workoutDate, List<List<String>> listOfListOfWorkouts) async {
+    final CollectionReference workoutsCollection = FirebaseFirestore.instance
+        .collection('particulars')
+        .doc(uid)
+        .collection('workouts');
 
+    for (var i in listOfListOfWorkouts) {
+      print(i);
+      String combinedSetsAndReps = i[1] + i[2];
+      await workoutsCollection.doc(workoutDate).set({
+        'placeholder': 'place',
+      });
+      await workoutsCollection.doc(workoutDate).update({
+        i[0]: combinedSetsAndReps,
+      });
+    }
+  }
+
+  Future addMeasurementsWithDate(
+      String workoutDate, String height, String weight, String bodyFat) async {
     return await particularsCollection
         .doc(uid)
         .collection('measurements')
-        .doc(now)
+        .doc(workoutDate)
         .set({
       'height': height,
       'weight': weight,
-      'bodyFat': '30',
+      'bodyFat': bodyFat,
     });
+  }
+
+  Future retrieveWorkoutData() async {
+    var docRef = FirebaseFirestore.instance.collection("particulars").doc(uid);
+
+    docRef.get().then((doc) => {
+          if (doc.exists)
+            {
+              //console.log("Document data:", doc.data());
+              print(doc.data())
+            }
+          else
+            {
+              // doc.data() will be undefined in this case
+              // console.log("No such document!");
+              print("no such data")
+            }
+        });
+  }
+
+  Future retrieveMeasurements() async {
+    var docRef = FirebaseFirestore.instance
+        .collection("particulars")
+        .doc(uid)
+        .collection("measurements")
+        .doc("height");
+
+    docRef.get().then((doc) => {
+          if (doc.exists)
+            {
+              //console.log("Document data:", doc.data());
+              print(doc.data())
+            }
+          else
+            {
+              // doc.data() will be undefined in this case
+              // console.log("No such document!");
+              print("no such data")
+            }
+        });
   }
 
   // get a particulars list from snapshot so we dont have to keep retrieving

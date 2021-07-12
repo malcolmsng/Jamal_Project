@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/net/auth.dart';
+import 'package:jamal_v1/ui/tempo.dart';
 import 'registration.dart';
 import 'home_page.dart';
 
@@ -167,7 +168,7 @@ class _AuthenticationState extends State<Authentication> {
                     color: Colors.white,
                   ),
                   child: MaterialButton(
-                    onPressed: () {},
+                    onPressed: () async {},
                     child: Text("testing page"),
                   ),
                 )
