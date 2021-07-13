@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import 'bmi.dart';
 
 SfCartesianChart buildProgressGraph(int index) {
   if (index == 0) {
@@ -57,6 +60,17 @@ SfCartesianChart buildProgressGraph(int index) {
         primaryYAxis: NumericAxis());
   }
 }
+
+// List<BMI> getBMIData(int index) {
+//   // get workouts done for the past week
+//   if (index == 0) {
+//     List<BMI> sales = FirebaseFirestore.instance.collection('sales').data.docs
+//         // documents
+//         .map((documentSnapshot) => BMI.fromMap(documentSnapshot.data()))
+//         .toList();
+//     return sales;
+//   }
+// }
 
 List<SalesData> getChartData(int index) {
   // get workouts done for the past week

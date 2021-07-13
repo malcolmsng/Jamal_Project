@@ -168,7 +168,14 @@ class _AuthenticationState extends State<Authentication> {
                     color: Colors.white,
                   ),
                   child: MaterialButton(
-                    onPressed: () async {},
+                    onPressed: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BMIHomePage(),
+                        ),
+                      );
+                    },
                     child: Text("testing page"),
                   ),
                 )
