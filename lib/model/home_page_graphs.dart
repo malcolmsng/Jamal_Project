@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/model/progress_graphs.dart';
 import 'package:jamal_v1/ui/custom_exercises.dart';
-import 'package:jamal_v1/ui/tempo.dart';
 import 'package:jamal_v1/widgets/line_chart.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
 

@@ -11,6 +11,8 @@ class AddMeasurementsPage extends StatefulWidget {
 }
 
 class _AddMeasurementsPageState extends State<AddMeasurementsPage> {
+  DateTime currentDate = DateTime.now();
+
   String uid = FirebaseAuth.instance.currentUser.uid;
 
   TextEditingController _heightField = TextEditingController();
@@ -78,6 +80,20 @@ class _AddMeasurementsPageState extends State<AddMeasurementsPage> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 80),
+                      Text(
+                        "Select date",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      MaterialButton(
+                        onPressed: () => _selectDate(context),
+                        child: Text(
+                          currentDate.toString().substring(0, 10),
+                        ),
+                        color: Colors.lightBlueAccent,
+                      ),
                       Container(
                         width: MediaQuery.of(context).size.width / 1.3,
                         child: TextFormField(
@@ -86,6 +102,7 @@ class _AddMeasurementsPageState extends State<AddMeasurementsPage> {
                             labelText: "Height (cm)",
                             labelStyle: TextStyle(
                               color: Colors.black,
+                              fontSize: 18,
                             ),
                           ),
                         ),
@@ -101,6 +118,7 @@ class _AddMeasurementsPageState extends State<AddMeasurementsPage> {
                             labelText: "Weight (kg)",
                             labelStyle: TextStyle(
                               color: Colors.black,
+                              fontSize: 18,
                             ),
                           ),
                         ),
@@ -116,6 +134,7 @@ class _AddMeasurementsPageState extends State<AddMeasurementsPage> {
                             labelText: "Body Fat Percentage (%)",
                             labelStyle: TextStyle(
                               color: Colors.black,
+                              fontSize: 18,
                             ),
                           ),
                         ),
@@ -123,22 +142,43 @@ class _AddMeasurementsPageState extends State<AddMeasurementsPage> {
                       SizedBox(
                         height: 20,
                       ),
-                      MaterialButton(
+                      ElevatedButton(
                         onPressed: () async {
                           _showMyDialog();
-                          await DatabaseService(uid: uid).addMeasurements(
-                              _heightField.text,
-                              _weightField.text,
-                              _bodyFatField.text);
+                          await DatabaseService(uid: uid)
+                              .addMeasurementsWithDate(
+                                  currentDate.toString().substring(0, 10),
+                                  _heightField.text,
+                                  _weightField.text,
+                                  _bodyFatField.text);
                         },
                         child: Text("Log Measurements"),
-                        color: Colors.lightBlueAccent,
                       ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          await DatabaseService(uid: uid)
+                              .retrieveMeasurements();
+                        },
+                        child: Text("testing"),
+                      )
                     ],
                   ))))
         ],
       ),
     );
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime pickedDate = await showDatePicker(
+        context: context,
+        initialDate: currentDate,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2050));
+    if (pickedDate != null && pickedDate != currentDate)
+      setState(() {
+        currentDate = pickedDate;
+        print(currentDate.toString().substring(0, 10));
+      });
   }
 }
 
