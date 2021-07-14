@@ -11,6 +11,7 @@ class Workout {
   List<int> reps;
   List<int> time;
   DateTime date; //time per set
+
   static List<Exercise> allExercises = [
     ...beginnerExercises,
     ...intermediateExercises,
