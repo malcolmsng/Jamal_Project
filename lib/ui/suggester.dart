@@ -5,7 +5,6 @@ import 'package:jamal_v1/model/workout.dart';
 import 'package:jamal_v1/model/exercise.dart' as ex;
 import 'package:jamal_v1/ui/workout_plan.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import 'package:jamal_v1/ui/suggested_workouts.dart';
 import 'package:jamal_v1/model/equipment.dart';
 import 'package:jamal_v1/model/fitness.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
@@ -19,8 +18,10 @@ class Suggester extends StatefulWidget {
 }
 
 class _SuggesterState extends State<Suggester> {
-  //user's available time
   final _multiformkey = GlobalKey<FormFieldState>();
+
+  bool disabled = true;
+
   List<MultiSelectItem> equipment = Equipment.values
       .map((e) => MultiSelectItem<Equipment>(e, getEquipment(e)))
       .toList();
@@ -118,6 +119,7 @@ class _SuggesterState extends State<Suggester> {
                       child: MultiSelectChipField<Equipment>(
                         items: equipment,
                         key: _multiformkey,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         title: Text('Select Available Equipment'),
                         headerColor: Colors.transparent,
                         decoration: BoxDecoration(color: Colors.transparent),
@@ -132,6 +134,11 @@ class _SuggesterState extends State<Suggester> {
                         onTap: (values) {
                           setState(() {
                             selectedEquipment = values;
+                            if (selectedEquipment.isEmpty) {
+                              disabled = true;
+                            } else {
+                              disabled = false;
+                            }
                           });
 
                           print(selectedEquipment);
@@ -146,47 +153,39 @@ class _SuggesterState extends State<Suggester> {
                     SizedBox(
                       height: 30,
                     ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.orangeAccent),
-                      child: Text('Get Suggestions!'),
-                      onPressed: () {
-                        List<Workout> tempWorkout;
-                        if (widget.userFitness == FitnessLevel.Beginner) {
-                          tempWorkout = getBeginnerExercises();
-                        } else if (widget.userFitness ==
-                            FitnessLevel.Intermediate) {
-                          tempWorkout = getIntermediateExercises();
-                        } else {
-                          tempWorkout = getAdvancedExercises();
-                        }
-                        print(tempWorkout);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            // builder: (context) => SuggestedWorkout(),
-                            builder: (context) => WorkoutPlan(),
-                            settings: RouteSettings(arguments: tempWorkout),
+                    !disabled
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.orangeAccent),
+                            child: Text('Get Suggestions!'),
+                            onPressed: () {
+                              List<Workout> tempWorkout;
+                              if (widget.userFitness == FitnessLevel.Beginner) {
+                                tempWorkout = getBeginnerExercises();
+                              } else if (widget.userFitness ==
+                                  FitnessLevel.Intermediate) {
+                                tempWorkout = getIntermediateExercises();
+                              } else {
+                                tempWorkout = getAdvancedExercises();
+                              }
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  // builder: (context) => SuggestedWorkout(),
+                                  builder: (context) => WorkoutPlan(),
+                                  settings:
+                                      RouteSettings(arguments: tempWorkout),
+                                ),
+                              );
+                            },
+                          )
+                        : OutlinedButton(
+                            style:
+                                OutlinedButton.styleFrom(primary: Colors.grey),
+                            child: Text('Get Suggestions!'),
+                            onPressed: () {},
                           ),
-                        );
-                      },
-                    ),
-                    TextButton(
-                        child: Text('Selected Eq'),
-                        onPressed: () {
-                          List<Workout> tempWorkout;
-
-                          if (widget.userFitness == FitnessLevel.Beginner) {
-                            tempWorkout = getBeginnerExercises();
-                          } else if (widget.userFitness ==
-                              FitnessLevel.Intermediate) {
-                            tempWorkout = getIntermediateExercises();
-                          } else {
-                            tempWorkout = getIntermediateExercises();
-                          }
-
-                          print(tempWorkout);
-                        }),
                   ],
                 ),
               ),
