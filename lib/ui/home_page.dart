@@ -2,30 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jamal_v1/model/progress_graphs.dart';
-import 'package:jamal_v1/ui/custom_exercises.dart';
-import 'package:jamal_v1/ui/tempo.dart';
-import 'package:jamal_v1/widgets/line_chart.dart';
+import 'package:jamal_v1/model/bmi.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
-
-SliverAppBar buildAppBar(BuildContext context) => SliverAppBar(
-      flexibleSpace: FlexibleSpaceBar(background: LineChartWidget()),
-      expandedHeight: MediaQuery.of(context).size.height * 0.5,
-      stretch: true,
-      title: Text('Home Page'),
-      centerTitle: true,
-      pinned: true,
-      /*leading: ElevatedButton.icon(
-          onPressed: () {
-            NavigationDrawerWidget().build(context);
-          },
-          icon: Icon(Icons.menu),
-          label: Text('')),
-      actions: [
-        Icon(Icons.person, size: 28),
-        SizedBox(width: 12),
-      ],*/
-    );
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class HomePage extends StatefulWidget {
   @override
@@ -36,6 +15,70 @@ class _HomePageState extends State<HomePage> {
   String uid = FirebaseAuth.instance.currentUser.uid;
   String urlImage =
       'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80';
+
+  List<charts.Series<BMI, String>> _seriesBarData;
+  List<BMI> mydata;
+  _generateData(mydata) {
+    _seriesBarData = [];
+    // _seriesBarData = List<charts.Series<BMI, String>>();
+    _seriesBarData.add(
+      charts.Series(
+        domainFn: (BMI bmi, _) => bmi.weight.toString(),
+        measureFn: (BMI bmi, _) => bmi.height,
+        // colorFn: (BMI bmi, _) =>
+        //     charts.ColorUtil.fromDartColor(Color(int.parse(bmi.colorVal))),
+        id: 'BMI',
+        data: mydata,
+        labelAccessorFn: (BMI row, _) => "${row.weight}",
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //var screenSize = MediaQuery.of(context).size;
+    //var user = Provider.of<User>(context);
+
+    return Scaffold(
+      drawer: NavigationDrawerWidget(),
+      body: Stack(
+        children: [
+          SizedBox(
+            child: Image.asset("assets/bg.jpg"),
+          ),
+          CustomScrollView(
+            physics: BouncingScrollPhysics(),
+            slivers: [
+              buildUserInfoSection(context),
+              SliverList(
+                // itemExtent: 50.0,
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return _buildBody(context);
+                    // return Container(
+                    //   height: 500,
+                    //   alignment: Alignment.center,
+                    //   color: Colors.lightBlue[100 * (index % 9)],
+                    //   child: Text('List Item $index'),
+                    // );
+                  },
+                  childCount: 3,
+                ),
+              )
+              // SliverList(
+              //     delegate: SliverChildBuilderDelegate(
+              //   (BuildContext context, int index) {
+              //     print(index);
+              //     return buildProgressGraph(index);
+              //   },
+              //   childCount: 3,
+              // )),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   SliverAppBar buildUserInfoSection(BuildContext context) => SliverAppBar(
       expandedHeight: MediaQuery.of(context).size.height * 0.3,
@@ -84,7 +127,8 @@ class _HomePageState extends State<HomePage> {
                             SizedBox(height: 24),
                             FittedBox(
                               fit: BoxFit.contain,
-                              child: Text("${document.data()['name']}",
+                              child: Text(
+                                  "Welcome back, ${document.data()['name']}",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 30)),
@@ -96,49 +140,80 @@ class _HomePageState extends State<HomePage> {
                     );
                   }))));
 
-  @override
-  Widget build(BuildContext context) {
-    //var screenSize = MediaQuery.of(context).size;
-    //var user = Provider.of<User>(context);
+  Widget _buildBody(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('sales').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return LinearProgressIndicator();
+        } else {
+          List<BMI> sales = snapshot.data.docs
+              // documents
+              .map((documentSnapshot) => BMI.fromMap(documentSnapshot.data()))
+              .toList();
+          return _buildChart(context, sales);
+        }
+      },
+    );
+  }
 
-    return Scaffold(
-      drawer: NavigationDrawerWidget(),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (context) => CustomExercisesPage(),
-      //       ),
-      //     );
-      //     print("button");
-      //   },
-      //   child: Icon(Icons.add),
-      // ),
-      //bottomNavigationBar: BottomFeaturesBar(),
-      body: Stack(
-        children: [
-          SizedBox(
-            child: Image.asset("assets/bg.jpg"),
-          ),
-          CustomScrollView(
-            physics: BouncingScrollPhysics(),
-            slivers: [
-              buildUserInfoSection(context),
-              SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  print(index);
-                  return buildProgressGraph(index);
-                },
-                childCount: 3,
-              ))
+  Widget _buildChart(BuildContext context, List<BMI> saledata) {
+    mydata = saledata;
+    _generateData(mydata);
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Container(
+        height: 300,
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Text(
+                'Sales by Year',
+                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Expanded(
+                child: charts.BarChart(
+                  _seriesBarData,
+                  animate: true,
+                  animationDuration: Duration(seconds: 2),
+                  behaviors: [
+                    new charts.DatumLegend(
+                      entryTextStyle: charts.TextStyleSpec(
+                          color: charts.MaterialPalette.purple.shadeDefault,
+                          fontFamily: 'Georgia',
+                          fontSize: 18),
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
+
+  //  SliverAppBar buildAppBar(BuildContext context) => SliverAppBar(
+  //       flexibleSpace: FlexibleSpaceBar(background: LineChartWidget()),
+  //       expandedHeight: MediaQuery.of(context).size.height * 0.5,
+  //       stretch: true,
+  //       title: Text('Home Page'),
+  //       centerTitle: true,
+  //       pinned: true,
+  //       /*leading: ElevatedButton.icon(
+  //         onPressed: () {
+  //           NavigationDrawerWidget().build(context);
+  //         },
+  //         icon: Icon(Icons.menu),
+  //         label: Text('')),
+  //     actions: [
+  //       Icon(Icons.person, size: 28),
+  //       SizedBox(width: 12),
+  //     ],*/
+  //     );
 
   /*Stack(
         children: [
