@@ -12,24 +12,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // generate username and profile picture
   String uid = FirebaseAuth.instance.currentUser.uid;
   String urlImage =
       'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80';
 
+  // generate data for BMI graph
   List<charts.Series<BMI, String>> _seriesBarData;
   List<BMI> mydata;
   _generateData(mydata) {
     _seriesBarData = [];
+    // for (BMI i in mydata) {
+    //   print(i.date);
+    //   print(i.value);
+    // }
     // _seriesBarData = List<charts.Series<BMI, String>>();
     _seriesBarData.add(
       charts.Series(
-        domainFn: (BMI bmi, _) => bmi.weight.toString(),
-        measureFn: (BMI bmi, _) => bmi.height,
+        domainFn: (BMI bmi, _) => bmi.date,
+        measureFn: (BMI bmi, _) => bmi.value,
         // colorFn: (BMI bmi, _) =>
         //     charts.ColorUtil.fromDartColor(Color(int.parse(bmi.colorVal))),
         id: 'BMI',
         data: mydata,
-        labelAccessorFn: (BMI row, _) => "${row.weight}",
+        // labelAccessorFn: (BMI row, _) => "${row.weight}",
       ),
     );
   }
@@ -80,6 +86,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // build "Welcome back" portion
   SliverAppBar buildUserInfoSection(BuildContext context) => SliverAppBar(
       expandedHeight: MediaQuery.of(context).size.height * 0.3,
       stretch: true,
@@ -140,9 +147,15 @@ class _HomePageState extends State<HomePage> {
                     );
                   }))));
 
+  // 1st function to build 3 graphs
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('sales').snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection('particulars')
+          .doc(uid)
+          .collection('measurements')
+          .snapshots(),
+      // stream: FirebaseFirestore.instance.collection('sales').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return LinearProgressIndicator();
@@ -157,6 +170,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // 2nd function to build 3 graphs
   Widget _buildChart(BuildContext context, List<BMI> saledata) {
     mydata = saledata;
     _generateData(mydata);
@@ -168,8 +182,8 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: <Widget>[
               Text(
-                'Sales by Year',
-                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                'BMI changes over the past 7 days',
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: 10.0,
@@ -178,7 +192,7 @@ class _HomePageState extends State<HomePage> {
                 child: charts.BarChart(
                   _seriesBarData,
                   animate: true,
-                  animationDuration: Duration(seconds: 2),
+                  animationDuration: Duration(seconds: 1),
                   behaviors: [
                     new charts.DatumLegend(
                       entryTextStyle: charts.TextStyleSpec(
