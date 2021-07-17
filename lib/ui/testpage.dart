@@ -1,18 +1,20 @@
-
-import 'package:jamal_v1/model/workout.dart';
 import 'package:flutter/material.dart';
 
-class EditTest extends StatefulWidget {
-  final Workout workout;
-  const EditTest({Key key, this.workout}) : super(key: key);
+class FlaskTest extends StatefulWidget {
+  const FlaskTest({Key key}) : super(key: key);
 
   @override
-  _EditTestState createState() => _EditTestState();
+  _FlaskTestState createState() => _FlaskTestState();
 }
 
-class _EditTestState extends State<EditTest> {
+class _FlaskTestState extends State<FlaskTest> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(),
+      body: Container(
+        child: Text('hi'),
+      ),
+    );
   }
 }

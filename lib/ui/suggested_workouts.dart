@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:jamal_v1/model/workout.dart';
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/net/database.dart';
 import 'package:jamal_v1/ui/demonstration.dart';
@@ -10,36 +11,16 @@ import 'package:jamal_v1/util/intermediate_exercise_constants.dart';
 import 'home_page.dart';
 
 class SuggestedWorkout extends StatefulWidget {
+  Workout workout;
+
+  SuggestedWorkout({Key key, this.workout}) : super(key: key);
+
   @override
   _SuggestedWorkoutState createState() => _SuggestedWorkoutState();
 }
 
 class _SuggestedWorkoutState extends State<SuggestedWorkout> {
   String uid = FirebaseAuth.instance.currentUser.uid;
-
-  List<ex.Exercise> exercises;
-  List<int> sets;
-  List<int> reps;
-  List<int> time;
-
-  Equipment noEquip;
-
-  void initState() {
-    exercises = [
-      pushup,
-      situp,
-      jumpSquat,
-      toeTouches,
-    ];
-
-    sets = [4, 4, 4, 4];
-
-    reps = [15, 15, 15, 15];
-
-    time = [0, 0, 0, 0];
-
-    super.initState();
-  }
 
   Future<void> finishedWorkoutDialog() async {
     return showDialog<void>(
@@ -69,6 +50,7 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
 
   @override
   Widget build(BuildContext context) {
+    List<ex.Exercise> exercises = widget.workout.exercises;
     MediaQueryData queryData = MediaQuery.of(context);
 
     return Scaffold(
@@ -85,10 +67,11 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
                 itemCount: exercises.length,
                 itemBuilder: (context, index) {
                   ex.Exercise current = exercises[index];
-                  int currentSet = sets[index];
+                  int currentSet = current.reps;
 
-                  int currentRep = reps[index];
-                  int currentTime = time[index];
+                  int currentRep = current.reps;
+                  int currentTime =
+                      current.time != null ? current.time.inSeconds : 0;
 
                   return InkWell(
                     borderRadius: BorderRadius.circular(24),

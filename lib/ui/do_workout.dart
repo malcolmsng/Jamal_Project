@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jamal_v1/model/fitness.dart';
 import 'package:jamal_v1/ui/custom_exercises.dart';
 import 'package:jamal_v1/ui/suggester.dart';
+import 'package:jamal_v1/ui/testpage.dart';
 import 'package:jamal_v1/ui/workout_plan.dart';
 import 'package:jamal_v1/util/enum_methods.dart';
 // import 'package:jamal_v1/widgets/features.dart';
@@ -55,14 +56,11 @@ class _DoWorkoutState extends State<DoWorkout> {
               TextButton(
                 child: Text("Recommend me a workout!"),
                 onPressed: () async {
-                  print(uid);
-
                   FitnessLevel userFitness = await DatabaseService()
                       .getFitnessLevel(uid)
                       .then((value) => (Enums.enumFromString<FitnessLevel>(
                           value, FitnessLevel.values)));
 
-                  print(userFitness);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -86,12 +84,12 @@ class _DoWorkoutState extends State<DoWorkout> {
               ),
 
               TextButton(
-                child: Text('Calendar Test'),
+                child: Text('Flask'),
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => WorkoutPlan(),
+                      builder: (context) => FlaskTest(),
                     ),
                   );
                 },

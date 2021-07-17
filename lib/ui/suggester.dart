@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:jamal_v1/model/user_particulars.dart';
 import 'package:jamal_v1/model/workout.dart';
 import 'package:jamal_v1/model/exercise.dart' as ex;
 import 'package:jamal_v1/ui/workout_plan.dart';
@@ -266,7 +267,7 @@ class _SuggesterState extends State<Suggester> {
       legExercises[rnd.nextInt(legExercises.length)],
       abExercises[rnd.nextInt(abExercises.length)],
     ];
-    weeklyExercise1.map((exercise) {
+    weeklyExercise1.forEach((exercise) {
       exercise.sets = sets;
       if (exercise.isTimed) {
         exercise.time = Duration(seconds: minTime);
@@ -274,7 +275,7 @@ class _SuggesterState extends State<Suggester> {
         exercise.reps = minReps;
       }
     });
-    weeklyExercise2.map((exercise) {
+    weeklyExercise2.forEach((exercise) {
       exercise.sets = sets;
       if (exercise.isTimed) {
         exercise.time = Duration(seconds: minTime);
@@ -304,7 +305,7 @@ class _SuggesterState extends State<Suggester> {
         monthlyWorkouts.add(tempWorkout);
       }
     }
-
+    UserParticulars.setCurrentWorkout = monthlyWorkouts;
     return monthlyWorkouts;
   }
 
@@ -387,7 +388,7 @@ class _SuggesterState extends State<Suggester> {
     Workout weeklyWorkout3 =
         Workout(rest: Duration(minutes: 1), exercises: weeklyExercise3);
 
-    weeklyExercise1.map((exercise) {
+    weeklyExercise1.forEach((exercise) {
       exercise.sets = sets;
       if (exercise.isTimed) {
         exercise.time = Duration(seconds: minTime);
@@ -396,7 +397,7 @@ class _SuggesterState extends State<Suggester> {
       }
     });
 
-    weeklyExercise2.map((exercise) {
+    weeklyExercise2.forEach((exercise) {
       exercise.sets = sets;
       if (exercise.isTimed) {
         exercise.time = Duration(seconds: minTime);
@@ -405,7 +406,7 @@ class _SuggesterState extends State<Suggester> {
       }
     });
 
-    weeklyExercise3.map((exercise) {
+    weeklyExercise3.forEach((exercise) {
       exercise.sets = sets;
       if (exercise.isTimed) {
         exercise.time = Duration(seconds: minTime);
@@ -436,7 +437,7 @@ class _SuggesterState extends State<Suggester> {
         monthlyWorkouts.add(tempWorkout);
       }
     }
-
+    UserParticulars.setCurrentWorkout = monthlyWorkouts;
     return monthlyWorkouts;
   }
 
@@ -522,7 +523,18 @@ class _SuggesterState extends State<Suggester> {
       abExercises[rnd.nextInt(abExercises.length)],
     ];
 
-    weeklyExercise1.map((exercise) {
+    weeklyExercise1.forEach((exercise) {
+      exercise.sets = sets;
+      if (exercise.isTimed) {
+        exercise.time = Duration(seconds: minTime);
+      } else {
+        exercise.reps = minReps;
+      }
+      print(exercise.sets);
+      print(exercise.reps);
+    });
+
+    weeklyExercise2.forEach((exercise) {
       exercise.sets = sets;
       if (exercise.isTimed) {
         exercise.time = Duration(seconds: minTime);
@@ -531,7 +543,7 @@ class _SuggesterState extends State<Suggester> {
       }
     });
 
-    weeklyExercise2.map((exercise) {
+    weeklyExercise3.forEach((exercise) {
       exercise.sets = sets;
       if (exercise.isTimed) {
         exercise.time = Duration(seconds: minTime);
@@ -540,16 +552,7 @@ class _SuggesterState extends State<Suggester> {
       }
     });
 
-    weeklyExercise3.map((exercise) {
-      exercise.sets = sets;
-      if (exercise.isTimed) {
-        exercise.time = Duration(seconds: minTime);
-      } else {
-        exercise.reps = minReps;
-      }
-    });
-
-    weeklyExercise4.map((exercise) {
+    weeklyExercise4.forEach((exercise) {
       exercise.sets = sets;
       if (exercise.isTimed) {
         exercise.time = Duration(seconds: minTime);
@@ -590,7 +593,7 @@ class _SuggesterState extends State<Suggester> {
         monthlyWorkouts.add(tempWorkout);
       }
     }
-
+    UserParticulars.setCurrentWorkout = monthlyWorkouts;
     return monthlyWorkouts;
   }
 }
