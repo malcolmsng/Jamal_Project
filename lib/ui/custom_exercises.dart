@@ -15,6 +15,7 @@ class CustomExercisesPage extends StatefulWidget {
 }
 
 class _CustomExercisesPageState extends State<CustomExercisesPage> {
+  DateTime currentDate = DateTime.now();
   final _formkey = GlobalKey<FormState>();
   String uid = FirebaseAuth.instance.currentUser.uid;
   TextEditingController _setsField = TextEditingController();
@@ -153,6 +154,7 @@ class _CustomExercisesPageState extends State<CustomExercisesPage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () async {
+          await DatabaseService(uid: uid).retrieveWorkoutData();
           await addExercisesDialog();
           setState(() {
             // top.add(-top.length - 1);
@@ -225,18 +227,39 @@ class _CustomExercisesPageState extends State<CustomExercisesPage> {
           alignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             ElevatedButton(
+                onPressed: () => _selectDate(context),
+                child: Text(currentDate.toString().substring(0, 10))
+                //child: Text('Select date'),
+                ),
+            ElevatedButton(
               style: ElevatedButton.styleFrom(primary: Colors.orangeAccent),
               child: Text('End Workout'),
               onPressed: () async {
                 finishedWorkoutDialog();
-                await DatabaseService(uid: uid)
-                    .addWorkoutList(currentWorkoutList);
+                // await DatabaseService(uid: uid)
+                //     .addWorkoutList(currentWorkoutList);
+                await DatabaseService(uid: uid).addWorkoutListWithDate(
+                    currentDate.toString().substring(0, 10),
+                    currentWorkoutList);
               },
             )
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime pickedDate = await showDatePicker(
+        context: context,
+        initialDate: currentDate,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2050));
+    if (pickedDate != null && pickedDate != currentDate)
+      setState(() {
+        currentDate = pickedDate;
+        print(currentDate.toString().substring(0, 10));
+      });
   }
 }
 
