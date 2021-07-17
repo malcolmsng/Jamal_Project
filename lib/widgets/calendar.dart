@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/model/exercise.dart' as ex;
 import 'package:jamal_v1/util/enum_methods.dart';
-import 'package:jamal_v1/widgets/custom_agenda.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:jamal_v1/model/workout.dart';
 import 'package:jamal_v1/model/workout_datasource.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:intl/intl.dart';
 
 class Calendar extends StatelessWidget {
   List<Workout> monthlyWorkout;
@@ -14,12 +15,16 @@ class Calendar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SfCalendar(
       onTap: (calendarTapDetails) {
-        List<Workout> tempList =
-            List<Workout>.from(calendarTapDetails.appointments);
+        DateTime tempDate = calendarTapDetails.date;
+        print(calendarTapDetails.appointments[0].exercises[0].reps);
+        List<Workout> tempList = calendarTapDetails.appointments.isEmpty
+            ? []
+            : List<Workout>.from(calendarTapDetails.appointments);
 
-        showModalBottomSheet(
+        showCupertinoModalBottomSheet(
             context: context,
-            builder: (context) => CustomAgenda(selectedWorkout: tempList));
+            expand: false,
+            builder: (context) => buildModal(tempList, tempDate, context));
       },
       view: CalendarView.month,
       showDatePickerButton: true,
@@ -58,6 +63,7 @@ class Calendar extends StatelessWidget {
       BuildContext context, DateTime date, List<Workout> workout, Rect bounds) {
     if (workout.isNotEmpty && date.day != DateTime.now().day) {
       List<ex.Exercise> tempExercises = workout[0].exercises;
+
       List<String> workoutName =
           tempExercises.map((e) => Enums.enumToString(e.focus[0])).toList();
 
@@ -179,6 +185,81 @@ class Calendar extends StatelessWidget {
         ),
       );
     }
+  }
+
+  Widget buildModal(
+      List<Workout> workout, DateTime date, BuildContext context) {
+    List<ex.Exercise> exercises = workout.isEmpty ? [] : workout[0].exercises;
+    String dayName = DateFormat('EEE').format(date);
+    int day = date.day;
+    return Material(
+      child: Container(
+          height: MediaQuery.of(context).size.height * 0.5,
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: Row(children: [
+            Expanded(
+              flex: 1,
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      dayName,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.blueAccent,
+                          fontSize: 16),
+                    ),
+                  ),
+                  Container(
+                    height: 30,
+                    width: 30,
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Text(
+                        '$day',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.transparent),
+                        shape: BoxShape.circle,
+                        color: Colors.lightBlueAccent),
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+                flex: 7,
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.43,
+                  child: exercises.length == 0
+                      ? Center(
+                          child: Text('No workout scheduled today'),
+                        )
+                      : ListView.separated(
+                          itemBuilder: (context, index) {
+                            ex.Exercise current = exercises[index];
+                            Text subtitle = current.isTimed
+                                ? Text('${current.sets} X ${current.time}')
+                                : Text('${current.sets} X ${current.reps}');
+                            return ListTile(
+                              title: Text('${current.name}'),
+                              subtitle: subtitle,
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return Divider(
+                              thickness: 1,
+                              color: Colors.blueAccent,
+                            );
+                          },
+                          itemCount: exercises.length),
+                ))
+          ])),
+    );
   }
 }
 
