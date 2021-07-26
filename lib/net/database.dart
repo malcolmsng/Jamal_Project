@@ -115,9 +115,10 @@ class DatabaseService {
         .collection('measurements')
         .doc(workoutDate)
         .set({
-      'height': height,
-      'weight': weight,
-      'bodyFat': bodyFat,
+      'height': int.parse(height),
+      'weight': int.parse(weight),
+      'bodyFat': int.parse(bodyFat),
+      'date': workoutDate.substring(8, 10) + '/' + workoutDate.substring(5, 7),
     });
   }
 

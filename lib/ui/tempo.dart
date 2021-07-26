@@ -64,7 +64,7 @@ class _BMIHomePageState extends State<BMIHomePage> {
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: Container(
-        //height: 30,
+        height: 300,
         child: Center(
           child: Column(
             children: <Widget>[
