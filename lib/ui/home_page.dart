@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/model/bmi.dart';
+import 'package:jamal_v1/model/volume.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -19,8 +20,8 @@ class _HomePageState extends State<HomePage> {
 
   // generate data for BMI graph
   List<charts.Series<BMI, String>> _seriesBarData;
-  List<BMI> mydata;
-  _generateData(mydata) {
+  List<BMI> myBMIdata;
+  _generateBMIData(myBMIdata) {
     _seriesBarData = [];
     // for (BMI i in mydata) {
     //   print(i.date);
@@ -34,7 +35,30 @@ class _HomePageState extends State<HomePage> {
         // colorFn: (BMI bmi, _) =>
         //     charts.ColorUtil.fromDartColor(Color(int.parse(bmi.colorVal))),
         id: 'BMI',
-        data: mydata,
+        data: myBMIdata,
+        // labelAccessorFn: (BMI row, _) => "${row.weight}",
+      ),
+    );
+  }
+
+  // generate data for Volume graph
+  List<charts.Series<Volume, String>> _seriesVolumeData;
+  List<Volume> myVolumedata;
+  _generateVolumeData(myVolumedata) {
+    _seriesVolumeData = [];
+    // for (BMI i in mydata) {
+    //   print(i.date);
+    //   print(i.value);
+    // }
+    // _seriesBarData = List<charts.Series<BMI, String>>();
+    _seriesVolumeData.add(
+      charts.Series(
+        domainFn: (Volume volume, _) => volume.date,
+        measureFn: (Volume volume, _) => volume.amount,
+        // colorFn: (BMI bmi, _) =>
+        //     charts.ColorUtil.fromDartColor(Color(int.parse(bmi.colorVal))),
+        id: 'BMI',
+        data: myVolumedata,
         // labelAccessorFn: (BMI row, _) => "${row.weight}",
       ),
     );
@@ -60,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                 // itemExtent: 50.0,
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    return _buildBody(context);
+                    return _buildBody(context, index);
                     // return Container(
                     //   height: 500,
                     //   alignment: Alignment.center,
@@ -147,33 +171,73 @@ class _HomePageState extends State<HomePage> {
                     );
                   }))));
 
-  // 1st function to build 3 graphs
-  Widget _buildBody(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('particulars')
-          .doc(uid)
-          .collection('measurements')
-          .snapshots(),
-      // stream: FirebaseFirestore.instance.collection('sales').snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return LinearProgressIndicator();
-        } else {
-          List<BMI> sales = snapshot.data.docs
-              // documents
-              .map((documentSnapshot) => BMI.fromMap(documentSnapshot.data()))
-              .toList();
-          return _buildChart(context, sales);
-        }
-      },
-    );
+  // general function to retrieve data
+  Widget _buildBody(BuildContext context, int index) {
+    // BUILD BMI GRAPH
+    if (index == 0) {
+      print(index);
+      return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('particulars')
+            .doc(uid)
+            .collection('measurements')
+            .snapshots(),
+        // stream: FirebaseFirestore.instance.collection('sales').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return LinearProgressIndicator();
+          } else {
+            List<BMI> sales = snapshot.data.docs
+                // documents
+                .map((documentSnapshot) => BMI.fromMap(documentSnapshot.data()))
+                .toList();
+            return _buildBMIChart(context, sales);
+          }
+        },
+      );
+      // BUILD VOLUME GRAPH
+    } else if (index == 1) {
+      return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('particulars')
+            .doc(uid)
+            .collection('workouts')
+            .snapshots(),
+        // stream: FirebaseFirestore.instance.collection('sales').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return LinearProgressIndicator();
+          } else {
+            List<Volume> totalVolume = [];
+            // snapshot.data.docs.forEach(x =>
+            //   Map<String, dynamic> obj = doc.data;
+            //   totalVolume.add(obj);
+            // convert this Map to your custom object and add it to your list
+            //);
+            // List<Volume> totalVolume = [
+            //   Volume("12/07", 50),
+            //   Volume("13/07", 70)
+            // ];
+            // List<Volume> totalVolume = snapshot.data.docs
+            //     // documents
+            //     .map((documentSnapshot) => Volume(documentSnapshot.data()))
+            //     .toList();
+            return _buildVolumeChart(context, totalVolume);
+          }
+        },
+      );
+      // BUILD LAST GRAPH
+    } else if (index == 2) {
+      return Text("temp");
+    } else {
+      return Text("error: too many graphs to plot");
+    }
   }
 
-  // 2nd function to build 3 graphs
-  Widget _buildChart(BuildContext context, List<BMI> saledata) {
-    mydata = saledata;
-    _generateData(mydata);
+  // function to build BMI graph
+  Widget _buildBMIChart(BuildContext context, List<BMI> saledata) {
+    myBMIdata = saledata;
+    _generateBMIData(myBMIdata);
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: Container(
@@ -191,6 +255,46 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                 child: charts.BarChart(
                   _seriesBarData,
+                  animate: true,
+                  animationDuration: Duration(seconds: 1),
+                  behaviors: [
+                    new charts.DatumLegend(
+                      entryTextStyle: charts.TextStyleSpec(
+                          color: charts.MaterialPalette.purple.shadeDefault,
+                          fontFamily: 'Georgia',
+                          fontSize: 18),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // function to build volume graph
+  Widget _buildVolumeChart(BuildContext context, List<Volume> data) {
+    myVolumedata = data;
+    _generateVolumeData(myVolumedata);
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Container(
+        height: 300,
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Text(
+                'Total volume for the past 7 workouts',
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Expanded(
+                child: charts.BarChart(
+                  _seriesVolumeData,
                   animate: true,
                   animationDuration: Duration(seconds: 1),
                   behaviors: [
