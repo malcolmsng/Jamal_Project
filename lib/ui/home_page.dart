@@ -64,6 +64,64 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // Definition of BMI
+  Future<void> _whatIsBMIDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('BMI'),
+          actions: <Widget>[
+            Text(
+                'BMI is calculated by dividing the weight of a user (in kg) by the square of their height (in m).'),
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.pop(context);
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => HomePage(),
+                //   ),
+                // );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Definition of volume
+  Future<void> _whatIsVolumeDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Volume'),
+          actions: <Widget>[
+            Text(
+                'Volume is calculated by multiplying the number of sets with number of reps for each exercise in a workout. If weights are used, they are multiplied in as well (in kg).'),
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.pop(context);
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => HomePage(),
+                //   ),
+                // );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     //var screenSize = MediaQuery.of(context).size;
@@ -208,16 +266,23 @@ class _HomePageState extends State<HomePage> {
           if (!snapshot.hasData) {
             return LinearProgressIndicator();
           } else {
-            List<Volume> totalVolume = [];
+            //hardcode values for now
+            List<Volume> totalVolume = [
+              Volume("07/07", 290),
+              Volume("08/07", 320),
+              Volume("09/07", 350),
+              Volume("10/07", 390),
+              Volume("11/07", 420),
+              Volume("12/07", 410),
+              Volume("13/07", 440)
+            ];
+            // List<Volume> totalVolume = [];
             // snapshot.data.docs.forEach(x =>
             //   Map<String, dynamic> obj = doc.data;
             //   totalVolume.add(obj);
             // convert this Map to your custom object and add it to your list
             //);
-            // List<Volume> totalVolume = [
-            //   Volume("12/07", 50),
-            //   Volume("13/07", 70)
-            // ];
+
             // List<Volume> totalVolume = snapshot.data.docs
             //     // documents
             //     .map((documentSnapshot) => Volume(documentSnapshot.data()))
@@ -245,10 +310,20 @@ class _HomePageState extends State<HomePage> {
         child: Center(
           child: Column(
             children: <Widget>[
-              Text(
-                'BMI changes over the past 7 days',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-              ),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                Text(
+                  'BMI changes over the past 7 days',
+                  style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+                IconButton(
+                    onPressed: () async {
+                      _whatIsBMIDialog();
+                    },
+                    icon: new Icon(Icons.help_outline))
+              ]),
               SizedBox(
                 height: 10.0,
               ),
@@ -285,10 +360,20 @@ class _HomePageState extends State<HomePage> {
         child: Center(
           child: Column(
             children: <Widget>[
-              Text(
-                'Total volume for the past 7 workouts',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-              ),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                Text(
+                  'Total volume for the past 7 workouts',
+                  style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+                IconButton(
+                    onPressed: () async {
+                      _whatIsVolumeDialog();
+                    },
+                    icon: new Icon(Icons.help_outline))
+              ]),
               SizedBox(
                 height: 10.0,
               ),
