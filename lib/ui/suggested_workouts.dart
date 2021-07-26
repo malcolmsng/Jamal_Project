@@ -5,9 +5,7 @@ import 'package:jamal_v1/net/database.dart';
 import 'package:jamal_v1/ui/demonstration.dart';
 import 'package:jamal_v1/ui/workout_timer.dart';
 import 'package:jamal_v1/model/exercise.dart' as ex;
-import 'package:jamal_v1/model/equipment.dart';
-import 'package:jamal_v1/util/intermediate_exercise_constants.dart';
-
+import 'dart:math';
 import 'home_page.dart';
 
 class SuggestedWorkout extends StatefulWidget {
@@ -21,6 +19,15 @@ class SuggestedWorkout extends StatefulWidget {
 
 class _SuggestedWorkoutState extends State<SuggestedWorkout> {
   String uid = FirebaseAuth.instance.currentUser.uid;
+  bool isRest = false;
+  List restOrWork;
+  List<ex.Exercise> exercises;
+  @override
+  void initState() {
+    restOrWork = widget.workout.exercises.map((e) => false).toList();
+    exercises = widget.workout.exercises;
+    super.initState();
+  }
 
   Future<void> finishedWorkoutDialog() async {
     return showDialog<void>(
@@ -50,16 +57,23 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
 
   @override
   Widget build(BuildContext context) {
-    List<ex.Exercise> exercises = widget.workout.exercises;
     MediaQueryData queryData = MediaQuery.of(context);
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Suggested Workout'),
-        backgroundColor: Colors.black,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(16))),
+        backgroundColor: Colors.transparent,
       ),
       body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/bg.jpg"),
+                fit: BoxFit.fitWidth,
+                alignment: Alignment.topCenter)),
         child: Column(
           children: [
             Expanded(
@@ -67,77 +81,152 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
                 itemCount: exercises.length,
                 itemBuilder: (context, index) {
                   ex.Exercise current = exercises[index];
-                  int currentSet = current.reps;
+
+                  int currentSet = current.sets;
 
                   int currentRep = current.reps;
                   int currentTime =
                       current.time != null ? current.time.inSeconds : 0;
 
-                  return InkWell(
-                    borderRadius: BorderRadius.circular(24),
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => WorkoutTimer(),
-                      ));
-                    },
-                    onLongPress: () {
-                      print(current.focus[0]);
-                      Navigator.of(context).push(MaterialPageRoute(
-                        settings: RouteSettings(arguments: current),
-                        builder: (context) => ExerciseDemonstration(),
-                      )
-                          //
-                          );
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      height: queryData.size.height / 5,
-                      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                      decoration: BoxDecoration(
-                        color: ex.getColour(current.focus[0]),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Column(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.values.first,
+                  return restOrWork[index]
+                      ? InkWell(
+                          borderRadius: BorderRadius.circular(24),
+                          onTap: () {
+                            setState(() {
+                              restOrWork[index] = !restOrWork[index];
+                            });
+                          },
+                          onLongPress: () {
+                            print(current.focus[0]);
+                            Navigator.of(context).push(MaterialPageRoute(
+                              settings: RouteSettings(arguments: current),
+                              builder: (context) => ExerciseDemonstration(),
+                            )
+                                //
+                                );
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            height: queryData.size.height / 5,
+                            margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                            decoration: BoxDecoration(
+                              color: ex.getColour(current.focus[0]),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Row(
                               children: [
-                                Text(
-                                  '${current.name}',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  height: 70,
-                                ),
-                                Text(
-                                  (currentRep == 0
-                                      ? '$currentSet sets x $currentTime seconds'
-                                      : '$currentSet sets x $currentRep reps'),
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black,
+                                Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.values.first,
+                                    children: [
+                                      Text(
+                                        '${current.name}',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        (currentRep == 0
+                                            ? '$currentSet sets x $currentTime seconds'
+                                            : '$currentSet sets x $currentRep reps'),
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
+                                Expanded(
+                                    flex: 1,
+                                    child: buildTimer(
+                                        widget.workout.rest, current.picURL,
+                                        () {
+                                      setState(() {
+                                        restOrWork[index] = !restOrWork[index];
+                                        exercises[index].sets -= 1;
+                                      });
+                                    })),
+
+                                // backgroundImage: NetworkImage(current.picURL),
                               ],
                             ),
                           ),
-                          Expanded(
-                            child: CircleAvatar(
-                              radius: 100,
-                              backgroundImage: NetworkImage(current.picURL),
+                        )
+                      : InkWell(
+                          borderRadius: BorderRadius.circular(24),
+                          onTap: () {
+                            setState(() {
+                              restOrWork[index] = !restOrWork[index];
+                            });
+                          },
+                          onLongPress: () {
+                            print(current.focus[0]);
+                            Navigator.of(context).push(MaterialPageRoute(
+                              settings: RouteSettings(arguments: current),
+                              builder: (context) => ExerciseDemonstration(),
+                            )
+                                //
+                                );
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            height: queryData.size.height / 5,
+                            margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                            decoration: BoxDecoration(
+                              color: ex.getColour(current.focus[0]),
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.values.first,
+                                    children: [
+                                      Text(
+                                        '${current.name}',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        (currentRep == 0
+                                            ? '$currentSet sets x $currentTime seconds'
+                                            : '$currentSet sets x $currentRep reps'),
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                    flex: 1,
+                                    child: CircleAvatar(
+                                      radius: 60,
+                                      backgroundImage:
+                                          NetworkImage(current.picURL),
+                                    )
+
+                                    // backgroundImage: NetworkImage(current.picURL),
+                                    ),
+                              ],
+                            ),
+                          ),
+                        );
                 },
               ),
             ),
@@ -167,6 +256,51 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildTimer(Duration time, String imageUrl, [VoidCallback callBack]) {
+    print('buildTimer');
+    return TweenAnimationBuilder(
+      onEnd: callBack,
+      tween: Tween(begin: 0.0, end: 1.0),
+      duration: Duration(seconds: time.inSeconds),
+      builder: (context, value, child) {
+        int percentage = (value * 100).ceil();
+        return Container(
+          width: 100,
+          height: 100,
+          child: Stack(
+            children: [
+              ShaderMask(
+                  shaderCallback: (rect) {
+                    return SweepGradient(
+                        startAngle: 0.0,
+                        endAngle: 2 * pi,
+                        stops: [value, value],
+                        // 0.0 , 0.5 , 0.5 , 1.0
+                        center: Alignment.center,
+                        colors: [
+                          Colors.white.withAlpha(200),
+                          Colors.transparent,
+                        ]).createShader(rect);
+                  },
+                  child: CircleAvatar(
+                    radius: 100,
+                    backgroundImage: NetworkImage(imageUrl),
+                  )
+                  // child: Container(
+                  //   width: 100,
+                  //   height: 100,
+                  //   decoration: BoxDecoration(
+                  //       shape: BoxShape.circle,
+                  //       image: DecorationImage(image: NetworkImage(imageUrl))),
+                  // ),
+                  ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

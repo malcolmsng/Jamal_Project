@@ -77,122 +77,115 @@ class _SuggesterState extends State<Suggester> {
     // final userFitness =
     //     ModalRoute.of(context).settings.arguments as FitnessLevel;
     return Scaffold(
+        extendBodyBehindAppBar: true,
         drawer: NavigationDrawerWidget(),
         appBar: AppBar(
-          title: Text('Workout Suggester'),
-          centerTitle: true,
-          //backgroundColor: Colors.black87,
-        ),
-        body: SafeArea(
-          child: Stack(
-            children: [
-              SizedBox(
-                child: Image.asset("assets/bg.jpg"),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                // decoration: BoxDecoration(
-                //   color: Colors.blueAccent,
-                // ),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        "Select Available Equipment ",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      margin: EdgeInsets.all(20),
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
-                      child: MultiSelectChipField<Equipment>(
-                        items: equipment,
-                        key: _multiformkey,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        title: Text('Select Available Equipment'),
-                        headerColor: Colors.transparent,
-                        decoration: BoxDecoration(color: Colors.transparent),
-                        textStyle: TextStyle(
-                          color: Colors.black,
-                        ),
-                        chipColor: Colors.white,
-                        validator: (values) {
-                          return values.length < 1 ? 'Select at least one' : '';
-                        },
-                        showHeader: false,
-                        onTap: (values) {
-                          setState(() {
-                            selectedEquipment = values;
-                            if (selectedEquipment.isEmpty) {
-                              disabled = true;
-                            } else {
-                              disabled = false;
-                            }
-                          });
 
-                          print(selectedEquipment);
-
-                          _multiformkey.currentState.validate();
-                        },
-                        scrollControl: (controller) {
-                          scrollAnimation(controller);
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    !disabled
-                        ? ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: Colors.orangeAccent),
-                            child: Text('Get Suggestions!'),
-                            onPressed: () {
-                              List<Workout> tempWorkout;
-                              if (widget.userFitness == FitnessLevel.Beginner) {
-                                tempWorkout = getBeginnerExercises();
-                              } else if (widget.userFitness ==
-                                  FitnessLevel.Intermediate) {
-                                tempWorkout = getIntermediateExercises();
-                              } else {
-                                tempWorkout = getAdvancedExercises();
-                              }
-
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  // builder: (context) => SuggestedWorkout(),
-                                  builder: (context) => WorkoutPlan(),
-                                  settings:
-                                      RouteSettings(arguments: tempWorkout),
-                                ),
-                              );
-                            },
-                          )
-                        : OutlinedButton(
-                            style:
-                                OutlinedButton.styleFrom(primary: Colors.grey),
-                            child: Text('Get Suggestions!'),
-                            onPressed: () {},
-                          ),
-                  ],
-                ),
-              ),
-            ],
+            //backgroundColor: Colors.black87,
+            ),
+        body: Stack(children: [
+          SizedBox(
+            child: Image.asset("assets/bg.jpg"),
           ),
-        ));
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            // decoration: BoxDecoration(
+            //   color: Colors.blueAccent,
+            // ),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                ),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    "Select Available Equipment ",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline4
+                        .copyWith(fontWeight: FontWeight.w900),
+                  ),
+                  margin: EdgeInsets.all(20),
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+                  child: MultiSelectChipField<Equipment>(
+                    items: equipment,
+                    key: _multiformkey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: BoxDecoration(color: Colors.transparent),
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(fontWeight: FontWeight.w900),
+                    chipColor: Colors.white,
+                    validator: (values) {
+                      return values.length < 1 ? 'Select at least one' : '';
+                    },
+                    showHeader: false,
+                    onTap: (values) {
+                      setState(() {
+                        selectedEquipment = values;
+                        if (selectedEquipment.isEmpty) {
+                          disabled = true;
+                        } else {
+                          disabled = false;
+                        }
+                      });
+
+                      print(selectedEquipment);
+
+                      _multiformkey.currentState.validate();
+                    },
+                    scrollControl: (controller) {
+                      scrollAnimation(controller);
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                !disabled
+                    ? ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.orangeAccent),
+                        child: Text('Get Suggestions!'),
+                        onPressed: () {
+                          List<Workout> tempWorkout;
+                          if (widget.userFitness == FitnessLevel.Beginner) {
+                            tempWorkout = getBeginnerExercises();
+                          } else if (widget.userFitness ==
+                              FitnessLevel.Intermediate) {
+                            tempWorkout = getIntermediateExercises();
+                          } else {
+                            tempWorkout = getAdvancedExercises();
+                          }
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              // builder: (context) => SuggestedWorkout(),
+                              builder: (context) => WorkoutPlan(),
+                              settings: RouteSettings(arguments: tempWorkout),
+                            ),
+                          );
+                        },
+                      )
+                    : OutlinedButton(
+                        style: OutlinedButton.styleFrom(primary: Colors.grey),
+                        child: Text('Get Suggestions!'),
+                        onPressed: () {},
+                      ),
+              ],
+            ),
+          ),
+        ]));
   }
 
   List<ex.Exercise> getSuitableExercises(ex.Focus focus) {

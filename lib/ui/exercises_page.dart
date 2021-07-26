@@ -36,39 +36,37 @@ class _ExercisePageState extends State<ExercisePage> {
     }).toList();
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(),
       drawer: NavigationDrawerWidget(),
-      body: CustomScrollView(slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.all(16),
-          sliver: SliverList(
-              delegate: SliverChildListDelegate([
-            SizedBox(
-              height: 8,
+      body: Stack(
+        children: [
+          SizedBox(
+            child: Image.asset(
+              "assets/bg.jpg",
+              colorBlendMode: BlendMode.overlay,
             ),
-            Text(
-              'Exercises',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-              ),
+          ),
+          CustomScrollView(slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.all(16),
+              sliver: SliverList(
+                  delegate: SliverChildListDelegate([
+                SizedBox(
+                  height: 60,
+                ),
+                buildSearch(),
+                buildFitnessLevels(context),
+                SizedBox(
+                  height: 8,
+                ),
+                buildExercise(filteredExercises),
+              ])),
             ),
-            SizedBox(
-              height: 8,
-            ),
-            buildSearch(),
-            SizedBox(
-              height: 8,
-            ),
-            buildFitnessLevels(context),
-            SizedBox(
-              height: 8,
-            ),
-            buildExercise(filteredExercises),
-          ])),
-        ),
-        //ExerciseCard(exercise: pushup)
-      ]),
+            //ExerciseCard(exercise: pushup)
+          ]),
+        ],
+      ),
     );
   }
 
@@ -143,10 +141,12 @@ class _ExercisePageState extends State<ExercisePage> {
     });
   }
 
-  Widget buildSearch() => SearchWidget(
-        query,
-        searchExercise,
-        'Search by exercise',
+  Widget buildSearch() => SizedBox(
+        child: SearchWidget(
+          query,
+          searchExercise,
+          'Search by exercise',
+        ),
       );
 
   void searchExercise(String query) {

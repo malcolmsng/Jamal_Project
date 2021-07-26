@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/ui/authentication.dart';
 import 'package:provider/provider.dart';
+import 'util/styles.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +26,13 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: "jamal",
         home: Authentication(),
+        theme: ThemeData(
+            textTheme:
+                TextTheme(headline1: title, bodyText1: body1, bodyText2: body2),
+            appBarTheme: AppBarTheme(
+                color: Colors.transparent,
+                elevation: 0,
+                iconTheme: IconThemeData(color: Colors.black))),
       ),
     );
   }

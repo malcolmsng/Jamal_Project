@@ -24,104 +24,109 @@ class _DoWorkoutState extends State<DoWorkout> {
     var screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(),
       drawer: NavigationDrawerWidget(),
       // bottomNavigationBar: BottomFeaturesBar(),
-      body: Stack(children: [
-        SizedBox(
-          child: Image.asset("assets/bg.jpg"),
-        ),
-        Container(
-          width: screenSize.width,
-          child: Column(
-            children: [
-              SizedBox(
-                height: screenSize.height * 0.1,
-              ),
-              Text(
-                // insert user's name here
-                "Add a workout",
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/testbg2.png'),
+                fit: BoxFit.contain,
+                alignment: Alignment.topCenter)),
+        width: screenSize.width,
+        child: Column(
+          children: [
+            SizedBox(
+              height: screenSize.height * 0.1,
+            ),
+            Text(
+              // insert user's name here
+              "Add a workout",
+              style: Theme.of(context)
+                  .textTheme
+                  .headline4
+                  .copyWith(fontWeight: FontWeight.w900),
+            ),
+            SizedBox(
+              height: screenSize.height * 0.02,
+            ),
+            Text("Choose an option below",
                 style: Theme.of(context)
                     .textTheme
-                    .headline4
-                    .copyWith(fontWeight: FontWeight.w900),
-              ),
-              SizedBox(
-                height: screenSize.height * 0.02,
-              ),
-              Text("Choose an option below"),
-              SizedBox(
-                height: screenSize.height * 0.1,
-              ),
-              TextButton(
-                child: Text("Recommend me a workout!"),
-                onPressed: () async {
-                  FitnessLevel userFitness = await DatabaseService()
-                      .getFitnessLevel(uid)
-                      .then((value) => (Enums.enumFromString<FitnessLevel>(
-                          value, FitnessLevel.values)));
+                    .bodyText1
+                    .copyWith(fontWeight: FontWeight.w400)),
+            SizedBox(
+              height: screenSize.height * 0.1,
+            ),
+            TextButton(
+              child: Text("Recommend me a workout!"),
+              onPressed: () async {
+                FitnessLevel userFitness = await DatabaseService()
+                    .getFitnessLevel(uid)
+                    .then((value) => (Enums.enumFromString<FitnessLevel>(
+                        value, FitnessLevel.values)));
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        // settings: RouteSettings(arguments: userFitness),
-                        builder: (context) => Suggester(
-                              userFitness: userFitness,
-                            )),
-                  );
-                },
-              ),
-              TextButton(
-                child: Text('Add custom workout!'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CustomExercisesPage(),
-                    ),
-                  );
-                },
-              ),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      // settings: RouteSettings(arguments: userFitness),
+                      builder: (context) => Suggester(
+                            userFitness: userFitness,
+                          )),
+                );
+              },
+            ),
+            TextButton(
+              child: Text('Add custom workout!'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CustomExercisesPage(),
+                  ),
+                );
+              },
+            ),
 
-              TextButton(
-                child: Text('Flask'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FlaskTest(),
-                    ),
-                  );
-                },
-              ),
-              // TextButton(
-              //   child: Text('Back to dashboard'),
-              //   onPressed: () {
-              //     print('Confirmed');
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) => ExerciseDemonstration(),
-              //       ),
-              //     );
-              //   },
-              // ),
-              // TextButton(
-              //   child: Text('Back to dashboard'),
-              //   onPressed: () {
-              //     print('Confirmed');
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) => SuggestedWorkout(),
-              //       ),
-              //     );
-              //   },
-              // ),
-            ],
-          ),
+            // TextButton(
+            //   child: Text('Flask'),
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) => FlaskTest(),
+            //       ),
+            //     );
+            //   },
+            // ),
+            // TextButton(
+            //   child: Text('Back to dashboard'),
+            //   onPressed: () {
+            //     print('Confirmed');
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) => ExerciseDemonstration(),
+            //       ),
+            //     );
+            //   },
+            // ),
+            // TextButton(
+            //   child: Text('Back to dashboard'),
+            //   onPressed: () {
+            //     print('Confirmed');
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) => SuggestedWorkout(),
+            //       ),
+            //     );
+            //   },
+            // ),
+          ],
         ),
-      ]),
+      ),
     );
   }
 }

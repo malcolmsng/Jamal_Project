@@ -91,6 +91,8 @@ class Exercise {
   Duration time; //time per set
   bool isTimed;
   DateTime date;
+  bool isWeighted;
+  double weight;
 
   Exercise(
       {this.picURL,
@@ -103,6 +105,8 @@ class Exercise {
       this.focus,
       this.time,
       this.isTimed = false,
+      this.isWeighted = false,
+      this.weight = 0,
       this.date}) {
     this.sortFocus();
   }

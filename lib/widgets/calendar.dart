@@ -13,50 +13,55 @@ class Calendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SfCalendar(
-      onTap: (calendarTapDetails) {
-        DateTime tempDate = calendarTapDetails.date;
-        print(calendarTapDetails.appointments[0].exercises[0].reps);
-        List<Workout> tempList = calendarTapDetails.appointments.isEmpty
-            ? []
-            : List<Workout>.from(calendarTapDetails.appointments);
+    return Stack(children: [
+      SizedBox(
+        child: Image.asset("assets/bg.jpg"),
+      ),
+      SfCalendar(
+        onTap: (calendarTapDetails) {
+          DateTime tempDate = calendarTapDetails.date;
 
-        showCupertinoModalBottomSheet(
-            context: context,
-            expand: false,
-            builder: (context) => buildModal(tempList, tempDate, context));
-      },
-      view: CalendarView.month,
-      showDatePickerButton: true,
-      monthCellBuilder: (context, details) {
-        List<Workout> tempList = List<Workout>.from(details.appointments);
+          List<Workout> tempList = calendarTapDetails.appointments.isEmpty
+              ? []
+              : List<Workout>.from(calendarTapDetails.appointments);
 
-        return buildCell(context, details.date, tempList, details.bounds);
-      },
-      monthViewSettings: MonthViewSettings(
-          agendaStyle: AgendaStyle(
-              backgroundColor: Color(0xFF355C7D),
-              appointmentTextStyle: TextStyle(fontSize: 16),
-              dayTextStyle: TextStyle(
-                fontSize: 18,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-              dateTextStyle: TextStyle(
-                fontSize: 18,
-                color: Colors.white,
-              )),
-          dayFormat: 'EEE',
-          agendaItemHeight: MediaQuery.of(context).size.height * 0.10,
-          agendaViewHeight: MediaQuery.of(context).size.height * 0.25,
-          showTrailingAndLeadingDates: false,
-          showAgenda: false,
-          appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
-      initialSelectedDate: DateTime.now(),
-      firstDayOfWeek: 1,
-      cellBorderColor: Colors.lightGreen,
-      dataSource: WorkoutDataSource(monthlyWorkout),
-    );
+          showCupertinoModalBottomSheet(
+              context: context,
+              expand: false,
+              builder: (context) => buildModal(tempList, tempDate, context));
+        },
+        view: CalendarView.month,
+        showDatePickerButton: true,
+        monthCellBuilder: (context, details) {
+          List<Workout> tempList = List<Workout>.from(details.appointments);
+
+          return buildCell(context, details.date, tempList, details.bounds);
+        },
+        monthViewSettings: MonthViewSettings(
+            agendaStyle: AgendaStyle(
+                backgroundColor: Color(0xFF355C7D),
+                appointmentTextStyle: TextStyle(fontSize: 16),
+                dayTextStyle: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+                dateTextStyle: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                )),
+            dayFormat: 'EEE',
+            agendaItemHeight: MediaQuery.of(context).size.height * 0.10,
+            agendaViewHeight: MediaQuery.of(context).size.height * 0.25,
+            showTrailingAndLeadingDates: false,
+            showAgenda: false,
+            appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
+        initialSelectedDate: DateTime.now(),
+        firstDayOfWeek: 1,
+        cellBorderColor: Colors.lightGreen,
+        dataSource: WorkoutDataSource(monthlyWorkout),
+      ),
+    ]);
   }
 
   Widget buildCell(
@@ -66,12 +71,12 @@ class Calendar extends StatelessWidget {
 
       List<String> workoutName =
           tempExercises.map((e) => Enums.enumToString(e.focus[0])).toList();
-
+      print(bounds.height);
       return Container(
         height: bounds.height,
         child: Column(children: [
           Container(
-            height: bounds.height * 1.5 / 8,
+            height: bounds.height * 1.4 / 8,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -83,15 +88,15 @@ class Calendar extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: bounds.height * 0.5 / 8,
+            height: bounds.height * 0.1 / 8,
           ),
           Container(
-              height: bounds.height * 6 / 8,
+              height: bounds.height * 6.5 / 8,
               child: ListView.builder(
                   itemCount: workoutName.length,
                   itemBuilder: (context, index) {
                     return Container(
-                      margin: EdgeInsets.all(0.5),
+                      margin: EdgeInsets.all(1),
                       height: bounds.height * 1 / 7,
                       child: Text(
                         '${workoutName[index]}',
@@ -118,35 +123,40 @@ class Calendar extends StatelessWidget {
         height: bounds.height,
         child: Column(children: [
           Container(
-            height: bounds.height * 2 / 8,
+            height: bounds.height * 1.4 / 8,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  height: 23,
-                  width: 23,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.transparent),
-                      color: Colors.lightBlueAccent),
-                  child: Text(
-                    date.day.toString(),
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
+                Expanded(
+                  child: Container(
+                    height: 25,
+                    width: 25,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(color: Colors.transparent),
+                        color: Colors.lightBlue[200]),
+                    child: Text(
+                      date.day.toString(),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
           ),
+          SizedBox(
+            height: bounds.height * 0.1 / 8,
+          ),
           Container(
-              height: bounds.height * 6 / 8,
+              height: bounds.height * 6.5 / 8,
               child: ListView.builder(
                   itemCount: workoutName.length,
                   itemBuilder: (context, index) {
                     return Container(
-                      margin: EdgeInsets.all(0.5),
+                      margin: EdgeInsets.all(1),
                       height: bounds.height * 1 / 7,
                       child: Text(
                         '${workoutName[index]}',
@@ -175,12 +185,13 @@ class Calendar extends StatelessWidget {
                 children: [
                   Text(
                     date.day.toString(),
+                    textAlign: TextAlign.center,
                     style: TextStyle(fontWeight: FontWeight.w500),
                   )
                 ],
               ),
             ),
-            Expanded(flex: 3, child: SizedBox())
+            Expanded(flex: 4, child: SizedBox())
           ],
         ),
       );
@@ -192,13 +203,14 @@ class Calendar extends StatelessWidget {
     List<ex.Exercise> exercises = workout.isEmpty ? [] : workout[0].exercises;
     String dayName = DateFormat('EEE').format(date);
     int day = date.day;
+
     return Material(
       child: Container(
           height: MediaQuery.of(context).size.height * 0.5,
           width: MediaQuery.of(context).size.width * 0.9,
           child: Row(children: [
             Expanded(
-              flex: 1,
+              flex: 3,
               child: Column(
                 children: [
                   Container(
@@ -211,28 +223,48 @@ class Calendar extends StatelessWidget {
                           fontSize: 16),
                     ),
                   ),
-                  Container(
-                    height: 30,
-                    width: 30,
-                    child: Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: Text(
-                        '$day',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.transparent),
-                        shape: BoxShape.circle,
-                        color: Colors.lightBlueAccent),
-                  )
+                  day == DateTime.now().day
+                      ? Container(
+                          height: 30,
+                          width: 30,
+                          child: Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: Text(
+                              '$day',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.transparent),
+                              shape: BoxShape.circle,
+                              color: Colors.lightBlue[200]),
+                        )
+                      : Container(
+                          height: 30,
+                          width: 30,
+                          child: Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: Text(
+                              '$day',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.transparent),
+                              shape: BoxShape.circle,
+                              color: Colors.transparent),
+                        )
                 ],
               ),
             ),
             Expanded(
-                flex: 7,
+                flex: 13,
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.43,
                   child: exercises.length == 0

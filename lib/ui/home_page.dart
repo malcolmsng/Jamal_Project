@@ -85,9 +85,7 @@ class _HomePageState extends State<HomePage> {
                             FittedBox(
                               fit: BoxFit.contain,
                               child: Text("${document.data()['name']}",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30)),
+                                  style: Theme.of(context).textTheme.headline1),
                               //Text( "Price: ${getValue(document.id, document.data()['Amount'])}"),
                             ),
                           ],
@@ -116,26 +114,26 @@ class _HomePageState extends State<HomePage> {
       //   child: Icon(Icons.add),
       // ),
       //bottomNavigationBar: BottomFeaturesBar(),
-      body: Stack(
-        children: [
-          SizedBox(
-            child: Image.asset("assets/bg.jpg"),
-          ),
-          CustomScrollView(
-            physics: BouncingScrollPhysics(),
-            slivers: [
-              buildUserInfoSection(context),
-              SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  print(index);
-                  return buildProgressGraph(index);
-                },
-                childCount: 3,
-              ))
-            ],
-          ),
-        ],
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/bg.jpg"),
+                fit: BoxFit.fitWidth,
+                alignment: Alignment.topCenter)),
+        child: CustomScrollView(
+          physics: BouncingScrollPhysics(),
+          slivers: [
+            buildUserInfoSection(context),
+            SliverList(
+                delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                print(index);
+                return buildProgressGraph(index);
+              },
+              childCount: 3,
+            ))
+          ],
+        ),
       ),
     );
   }

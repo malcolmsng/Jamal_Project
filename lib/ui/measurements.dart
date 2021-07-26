@@ -49,6 +49,7 @@ class _AddMeasurementsPageState extends State<AddMeasurementsPage> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(),
       drawer: NavigationDrawerWidget(),
       body: Stack(

@@ -39,10 +39,10 @@ class _WorkoutTimerState extends State<WorkoutTimer> {
         controller: _controller,
 
         // Width of the Countdown Widget.
-        width: MediaQuery.of(context).size.width / 2,
+        width: 100,
 
         // Height of the Countdown Widget.
-        height: MediaQuery.of(context).size.height / 2,
+        height: 100,
 
         // Ring Color for Countdown Widget.
         ringColor: Colors.grey[300],
@@ -66,7 +66,7 @@ class _WorkoutTimerState extends State<WorkoutTimer> {
         strokeWidth: 20.0,
 
         // Begin and end contours with a flat edge and no extension.
-        strokeCap: StrokeCap.round,
+        strokeCap: StrokeCap.butt,
 
         // Text Style for Countdown Text.
         textStyle: TextStyle(
@@ -79,7 +79,7 @@ class _WorkoutTimerState extends State<WorkoutTimer> {
         isReverse: true,
 
         // Handles Animation Direction (true for Reverse Animation, false for Forward Animation).
-        isReverseAnimation: true,
+        isReverseAnimation: false,
 
         // Handles visibility of the Countdown Text.
         isTimerTextShown: true,

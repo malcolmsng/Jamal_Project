@@ -19,17 +19,23 @@ class _WorkoutPlanState extends State<WorkoutPlan> {
         .where((workout) => workout.date.day == DateTime.now().day)
         .toList()[0];
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.blue,
-          child: Icon(Icons.add),
+      floatingActionButton: FloatingActionButton.extended(
+          label: Text("Start Today's Workout"),
+          backgroundColor: Colors.orange,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           onPressed: () => Navigator.of(context).push(MaterialPageRoute(
               builder: ((context) => (SuggestedWorkout(
                     workout: currentWorkout,
                   )))))),
       appBar: AppBar(),
-      body: Calendar(
-        monthlyWorkout: monthlyWorkout,
-      ),
+      body: Stack(children: [
+        SizedBox(
+          child: Image.asset("assets/bg.jpg"),
+        ),
+        Calendar(
+          monthlyWorkout: monthlyWorkout,
+        ),
+      ]),
     );
   }
 }

@@ -88,6 +88,8 @@ flutter:
     - assets/icons/levels.png
     - assets/icons/settings.png
     - assets/icons/measurements.png
+    - assets/testbg.jpg
+    - assets/testbg2.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -101,17 +103,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: assets\fonts\Montserrat-Regular.ttf
+        - asset: assets\fonts\Montserrat-Bold.ttf
+          weight: 700
+    - family: OpenSans
+      fonts:
+        - asset: assets\fonts\OpenSans-Regular.ttf
+        - asset: assets\fonts\OpenSans-Bold.ttf
+          weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

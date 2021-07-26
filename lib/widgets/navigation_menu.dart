@@ -5,7 +5,7 @@ import 'package:jamal_v1/ui/authentication.dart';
 import 'package:jamal_v1/ui/do_workout.dart';
 import 'package:jamal_v1/ui/user_info.dart';
 import 'package:jamal_v1/ui/exercises_page.dart';
-import 'package:jamal_v1/ui/forums.dart';
+
 import 'package:jamal_v1/ui/home_page.dart';
 import 'package:jamal_v1/ui/measurements.dart';
 import 'package:jamal_v1/ui/settings.dart';
@@ -69,12 +69,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                     icon: Icons.add,
                     onClicked: () => selectedItem(context, 3),
                   ),
-                  // const SizedBox(height: 20),
-                  // buildMenuItem(
-                  //   text: 'Jamal Forum',
-                  //   icon: Icons.forum,
-                  //   onClicked: () => selectedItem(context, 4),
-                  // ),
+
                   const SizedBox(height: 20),
                   buildMenuItem(
                     text: 'Settings',
@@ -176,30 +171,6 @@ class NavigationDrawerWidget extends StatelessWidget {
                 );
               }));
 
-  Widget buildSearchField() {
-    final color = Colors.white;
-
-    return TextField(
-      style: TextStyle(color: color),
-      decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        hintText: 'Search',
-        hintStyle: TextStyle(color: color),
-        prefixIcon: Icon(Icons.search, color: color),
-        filled: true,
-        fillColor: Colors.white12,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide(color: color.withOpacity(0.7)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide(color: color.withOpacity(0.7)),
-        ),
-      ),
-    );
-  }
-
   Widget buildMenuItem({
     String text,
     IconData icon,
@@ -241,11 +212,7 @@ class NavigationDrawerWidget extends StatelessWidget {
           builder: (context) => AddMeasurementsPage(),
         ));
         break;
-      case 4:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ForumsPage(),
-        ));
-        break;
+
       case 5:
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => LocalSettings(),
