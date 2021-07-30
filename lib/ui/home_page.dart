@@ -203,22 +203,31 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             SizedBox(height: 50),
                             ClipOval(
+                              //                     SizedBox(
+                              //   child: Image.asset("assets/bg.jpg"),
+                              // ),
                               child: Material(
                                 color: Colors.transparent,
-                                child: Ink.image(
-                                    image: NetworkImage(urlImage),
-                                    fit: BoxFit.cover,
-                                    width: 128,
-                                    height: 128,
-                                    child: InkWell(onTap: () {})),
+                                child: Image.asset(
+                                    "assets/avatars/avatar${document.data()['avatarChoice']}.png",
+                                    width: 128),
+
+                                // Ink.image(
+                                //     image: NetworkImage(urlImage),
+                                //     fit: BoxFit.cover,
+                                //     width: 128,
+                                //     height: 128,
+                                //     child: InkWell(onTap: () {})),
                               ),
                             ),
                             SizedBox(height: 24),
                             FittedBox(
                               fit: BoxFit.contain,
 
-                              child: Text("${document.data()['name']}",
-                                  style: Theme.of(context).textTheme.headline1),
+                              child: Text(
+                                "${document.data()['name']}",
+                                // style: Theme.of(context).textTheme.headline1
+                              ),
 
                               //Text( "Price: ${getValue(document.id, document.data()['Amount'])}"),
                             ),
@@ -233,6 +242,7 @@ class _HomePageState extends State<HomePage> {
     // BUILD BMI GRAPH
     if (index == 0) {
       print(index);
+      //return Text("holder");
       return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('particulars')
@@ -281,7 +291,6 @@ class _HomePageState extends State<HomePage> {
             //   totalVolume.add(obj);
             // convert this Map to your custom object and add it to your list
             //);
-
 
             // List<Volume> totalVolume = snapshot.data.docs
             //     // documents
@@ -394,7 +403,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-
         ),
       ),
     );

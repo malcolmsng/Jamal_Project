@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:jamal_v1/model/user_particulars.dart';
-import 'package:jamal_v1/model/fitness.dart';
 
 class DatabaseService {
   final String uid;
@@ -19,6 +18,7 @@ class DatabaseService {
   }
 
   Future updateUserData(
+      String avatarChoice,
       String email,
       String password,
       String name,
@@ -36,12 +36,22 @@ class DatabaseService {
         .collection('measurements')
         .doc(dateNow)
         .set({
-      'height': height,
-      'weight': weight,
-      'bodyFat': '30',
+      'height': int.parse(height),
+      'weight': int.parse(weight),
+      'bodyFat': int.parse(bodyFatPercentage),
+      'date': dateNow.substring(8, 10) + '/' + dateNow.substring(5, 7),
+    });
+
+    await particularsCollection
+        .doc(uid)
+        .collection('workout')
+        .doc(dateNow)
+        .set({
+      'placeholder': "hold",
     });
 
     return await particularsCollection.doc(uid).set({
+      "avatarChoice": avatarChoice,
       "email": email,
       "password": password,
       "name": name,
