@@ -90,6 +90,15 @@ flutter:
     - assets/icons/measurements.png
     - assets/testbg.jpg
     - assets/testbg2.png
+    - assets/avatars/avatar1.png
+    - assets/avatars/avatar2.png
+    - assets/avatars/avatar3.png
+    - assets/avatars/avatar4.png
+    - assets/avatars/avatar5.png
+    - assets/avatars/avatar6.png
+    - assets/avatars/avatar7.png
+    - assets/avatars/avatar8.png
+    - assets/avatars/avatar9.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -103,17 +112,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: Montserrat
-      fonts:
-        - asset: assets\fonts\Montserrat-Regular.ttf
-        - asset: assets\fonts\Montserrat-Bold.ttf
-          weight: 700
-    - family: OpenSans
-      fonts:
-        - asset: assets\fonts\OpenSans-Regular.ttf
-        - asset: assets\fonts\OpenSans-Bold.ttf
-          weight: 700
+  # fonts:
+  #   - family: Montserrat
+  #     fonts:
+  #       - asset: assets\fonts\Montserrat-Regular.ttf
+  #       - asset: assets\fonts\Montserrat-Bold.ttf
+  #         weight: 700
+  #   - family: OpenSans
+  #     fonts:
+  #       - asset: assets\fonts\OpenSans-Regular.ttf
+  #       - asset: assets\fonts\OpenSans-Bold.ttf
+  #         weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

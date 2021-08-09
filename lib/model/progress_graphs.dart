@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import 'bmi.dart';
+// OUTDATED, not using these functions to plot graphs anymore
+// just keeping here in case its needed next time
 
 SfCartesianChart buildProgressGraph(int index) {
   if (index == 0) {

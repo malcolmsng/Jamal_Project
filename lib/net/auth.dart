@@ -5,6 +5,7 @@ class Auth {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<bool> register(
+      String avatarChoice,
       String email,
       String password,
       String name,
@@ -21,8 +22,8 @@ class Auth {
       User user = result.user;
 
       // create default values for now
-      await DatabaseService(uid: user.uid).updateUserData(email, password, name,
-          age, height, weight, bodyFatPercentage, fitnessLevel);
+      await DatabaseService(uid: user.uid).updateUserData(avatarChoice, email,
+          password, name, age, height, weight, bodyFatPercentage, fitnessLevel);
 
       return true;
     } on FirebaseAuthException catch (e) {
