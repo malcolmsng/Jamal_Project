@@ -1,7 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.jamal_v1">
+    <uses-permission
+     android:name="android.permission.INTERNET"
+      />
    <application
-        android:label="jamal_v1"
+        android:label="Jamal"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
