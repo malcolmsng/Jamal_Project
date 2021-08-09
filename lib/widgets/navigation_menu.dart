@@ -11,6 +11,9 @@ import 'package:jamal_v1/ui/measurements.dart';
 import 'package:jamal_v1/ui/settings.dart';
 import 'package:jamal_v1/ui/suggester.dart';
 import 'package:jamal_v1/net/auth.dart' as auth;
+import 'package:jamal_v1/model/fitness.dart';
+import 'package:jamal_v1/util/enum_methods.dart';
+import 'package:jamal_v1/net/database.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   final String uid = FirebaseAuth.instance.currentUser.uid;
@@ -55,7 +58,18 @@ class NavigationDrawerWidget extends StatelessWidget {
                   buildMenuItem(
                     text: 'Do a Workout',
                     icon: Icons.fitness_center_outlined,
-                    onClicked: () => selectedItem(context, 1),
+                    onClicked: () async {
+                      FitnessLevel userFitness = await DatabaseService()
+                          .getFitnessLevel(uid)
+                          .then((value) => (Enums.enumFromString<FitnessLevel>(
+                              value, FitnessLevel.values)));
+
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => DoWorkout(
+                          userFitness: userFitness,
+                        ),
+                      ));
+                    },
                   ),
                   const SizedBox(height: 20),
                   buildMenuItem(
