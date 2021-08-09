@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/ui/do_workout.dart';
-import 'package:jamal_v1/ui/forums.dart';
+
 import 'package:jamal_v1/ui/home_page.dart';
 import 'package:jamal_v1/ui/measurements.dart';
 import 'package:jamal_v1/ui/settings.dart';
@@ -10,7 +10,6 @@ class BottomFeaturesBar extends StatelessWidget {
     BottomIcon("assets/icons/graph.png", "Progress", HomePage()),
     BottomIcon("assets/icons/measurements.png", "Track", AddMeasurementsPage()),
     BottomIcon("assets/icons/add.png", "Add", DoWorkout()),
-    BottomIcon("assets/icons/forums.png", "Forums", ForumsPage()),
     BottomIcon("assets/icons/settings.png", "Settings", LocalSettings()),
   ];
 

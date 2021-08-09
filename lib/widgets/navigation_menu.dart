@@ -63,6 +63,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                     icon: Icons.directions_run_outlined,
                     onClicked: () => selectedItem(context, 2),
                   ),
+
                   const SizedBox(height: 20),
                   buildMenuItem(
                     text: 'Add Measurements',
