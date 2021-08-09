@@ -5,6 +5,7 @@ import 'package:jamal_v1/ui/home_page.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:jamal_v1/model/fitness.dart';
 import 'package:jamal_v1/util/enum_methods.dart';
+import 'package:smart_select/smart_select.dart';
 
 class Registration extends StatefulWidget {
   @override
@@ -12,6 +13,19 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
+  String avatarChoice = '1';
+  List<S2Choice<String>> options = [
+    S2Choice<String>(value: '1', title: '1'),
+    S2Choice<String>(value: '2', title: '2'),
+    S2Choice<String>(value: '3', title: '3'),
+    S2Choice<String>(value: '4', title: '4'),
+    S2Choice<String>(value: '5', title: '5'),
+    S2Choice<String>(value: '6', title: '6'),
+    S2Choice<String>(value: '7', title: '7'),
+    S2Choice<String>(value: '8', title: '8'),
+    S2Choice<String>(value: '9', title: '9'),
+  ];
+
   List<FitnessLevel> selectedFitnessLevel = [];
 
   List<MultiSelectItem> fitnessLevel = FitnessLevel.values
@@ -65,10 +79,10 @@ class _RegistrationState extends State<Registration> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: screenSize.height * 0.05,
+                          height: screenSize.height * 0.1,
                         ),
                         Text(
-                          // insert usen's name here
+                          // insert user's name here
                           "Registration",
                           style: Theme.of(context)
                               .textTheme
@@ -77,10 +91,67 @@ class _RegistrationState extends State<Registration> {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          "Fill in the fields below truthfully",
+                          "Fill in the fields below.",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 80),
+                        SizedBox(height: 30),
+                        Text(
+                          "Choose an avatar!",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              children: [
+                                Image.asset("assets/avatars/avatar1.png",
+                                    width: 100),
+                                Text("1"),
+                                Image.asset("assets/avatars/avatar4.png",
+                                    width: 100),
+                                Text("4"),
+                                Image.asset("assets/avatars/avatar7.png",
+                                    width: 100),
+                                Text("7"),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Image.asset("assets/avatars/avatar2.png",
+                                    width: 100),
+                                Text("2"),
+                                Image.asset("assets/avatars/avatar5.png",
+                                    width: 100),
+                                Text("5"),
+                                Image.asset("assets/avatars/avatar8.png",
+                                    width: 100),
+                                Text("8"),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Image.asset("assets/avatars/avatar3.png",
+                                    width: 100),
+                                Text("3"),
+                                Image.asset("assets/avatars/avatar6.png",
+                                    width: 100),
+                                Text("6"),
+                                Image.asset("assets/avatars/avatar9.png",
+                                    width: 100),
+                                Text("9"),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Card(
+                          child: SmartSelect<String>.single(
+                              title: 'Select a number',
+                              value: avatarChoice,
+                              choiceItems: options,
+                              onChange: (state) =>
+                                  setState(() => avatarChoice = state.value)),
+                        ),
+                        SizedBox(height: 10),
                         Container(
                           width: MediaQuery.of(context).size.width / 1.3,
                           child: TextFormField(
@@ -257,6 +328,7 @@ class _RegistrationState extends State<Registration> {
                             _formkey.currentState.validate();
                             Auth auth = Auth();
                             bool shouldNavigate = await auth.register(
+                              avatarChoice,
                               _emailField.text,
                               _passwordField.text,
                               _nameField.text,

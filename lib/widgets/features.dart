@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/ui/do_workout.dart';
-
 import 'package:jamal_v1/ui/home_page.dart';
 import 'package:jamal_v1/ui/measurements.dart';
 import 'package:jamal_v1/ui/settings.dart';
