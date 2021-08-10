@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:jamal_v1/net/database.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
 
+import 'home_page.dart';
+
 class ChangeProfilePic extends StatefulWidget {
   @override
   _ChangeProfilePicState createState() => _ChangeProfilePicState();
@@ -13,6 +15,32 @@ class _ChangeProfilePicState extends State<ChangeProfilePic> {
 
   TextEditingController _choiceField = TextEditingController();
 
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Picture updated!'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Back to dashboard'),
+              onPressed: () {
+                print('Confirmed');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -22,9 +50,9 @@ class _ChangeProfilePicState extends State<ChangeProfilePic> {
       drawer: NavigationDrawerWidget(),
       body: Stack(
         children: [
-          SizedBox(
-            child: Image.asset("assets/bg.jpg"),
-          ),
+          // SizedBox(
+          //   child: Image.asset("assets/bg.jpg"),
+          // ),
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -104,6 +132,7 @@ class _ChangeProfilePicState extends State<ChangeProfilePic> {
                     ),
                     ElevatedButton(
                       onPressed: () async {
+                        _showMyDialog();
                         await DatabaseService(uid: uid)
                             .updateProfilePicture(_choiceField.text);
                       },

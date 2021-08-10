@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jamal_v1/ui/change_password.dart';
 import 'package:jamal_v1/ui/change_prof_pic.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
 
@@ -82,7 +83,14 @@ class _LocalSettingsState extends State<LocalSettings> {
                           ]),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChangePassword(),
+                          ),
+                        );
+                      },
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

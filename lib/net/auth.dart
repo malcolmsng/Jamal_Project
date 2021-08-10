@@ -41,6 +41,28 @@ class Auth {
     return false;
   }
 
+  Future<bool> changePassword(String password) async {
+    try {
+      await _auth.currentUser.updatePassword(
+        password,
+      );
+
+      return true;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+        return false;
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+    return false;
+  }
+
   Future<bool> login(String email, String password) async {
     try {
       print(email);
