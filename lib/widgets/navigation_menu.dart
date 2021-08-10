@@ -141,8 +141,12 @@ class NavigationDrawerWidget extends StatelessWidget {
                       return Row(
                         children: [
                           CircleAvatar(
-                              radius: 30,
-                              backgroundImage: NetworkImage(urlImage)),
+                            radius: 30,
+                            child: Image.asset(
+                              "assets/avatars/avatar${document.data()['avatarChoice']}.png",
+                            ),
+                            //backgroundImage: NetworkImage(urlImage)
+                          ),
                           SizedBox(width: 15),
                           MaterialButton(
                             onPressed: () {

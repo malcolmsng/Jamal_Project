@@ -63,6 +63,14 @@ class DatabaseService {
     });
   }
 
+  Future updateProfilePicture(
+    String avatarChoice,
+  ) async {
+    return await particularsCollection.doc(uid).update({
+      "avatarChoice": avatarChoice,
+    });
+  }
+
   Future addWorkout(String workoutType, String workout) async {
     final CollectionReference workoutsCollection = FirebaseFirestore.instance
         .collection('particulars')
