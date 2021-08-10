@@ -119,7 +119,7 @@ class _AuthenticationState extends State<Authentication> {
                   child: MaterialButton(
                     onPressed: () async {
                       _formkey.currentState.validate();
-                      print(_emailField.text.toString());
+                      print(_emailField.text);
                       Auth auth = Auth();
                       bool shouldNavigate = await auth.login(
                           _emailField.text, _passwordField.text);

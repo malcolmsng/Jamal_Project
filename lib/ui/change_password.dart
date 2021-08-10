@@ -83,8 +83,10 @@ class _ChangePasswordState extends State<ChangePassword> {
                     ElevatedButton(
                       onPressed: () async {
                         print("here");
-                        print(_passwordField.toString());
+                        print(_passwordField.text);
                         Auth auth = Auth();
+                        print("here2");
+
                         bool shouldNavigate =
                             await auth.changePassword(_passwordField.text);
                         if (shouldNavigate) {
