@@ -42,13 +42,13 @@ class DatabaseService {
       'date': dateNow.substring(8, 10) + '/' + dateNow.substring(5, 7),
     });
 
-    await particularsCollection
-        .doc(uid)
-        .collection('workout')
-        .doc(dateNow)
-        .set({
-      'placeholder': "hold",
-    });
+    // await particularsCollection
+    //     .doc(uid)
+    //     .collection('workout')
+    //     .doc(dateNow)
+    //     .set({
+    //   'placeholder': "hold",
+    // });
 
     return await particularsCollection.doc(uid).set({
       "avatarChoice": avatarChoice,
@@ -107,23 +107,29 @@ class DatabaseService {
     // );
   }
 
-  Future addWorkoutListWithDate(
-      String workoutDate, List<List<String>> listOfListOfWorkouts) async {
+  Future addWorkoutListWithDate(String workoutDate,
+      List<List<String>> listOfListOfWorkouts, int volume) async {
     final CollectionReference workoutsCollection = FirebaseFirestore.instance
         .collection('particulars')
         .doc(uid)
         .collection('workouts');
 
+    await workoutsCollection.doc(workoutDate).set({
+      'placeholder': 'place',
+    });
+
     for (var i in listOfListOfWorkouts) {
       print(i);
       String combinedSetsAndReps = i[1] + i[2];
-      await workoutsCollection.doc(workoutDate).set({
-        'placeholder': 'place',
-      });
+
       await workoutsCollection.doc(workoutDate).update({
         i[0]: combinedSetsAndReps,
       });
     }
+    return await workoutsCollection.doc(workoutDate).update({
+      'date': workoutDate.substring(8, 10) + '/' + workoutDate.substring(5, 7),
+      'volume': volume,
+    });
   }
 
   Future addMeasurementsWithDate(
