@@ -13,101 +13,116 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    String urlImage =
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80';
+    var screenSize = MediaQuery.of(context).size;
 
     // UserInformation userInfo = UserInformation(uid);
     return Scaffold(
-        appBar: AppBar(
-            // backgroundColor: Colors.transparent,
-            // elevation: 0,
-            ),
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(),
         drawer: NavigationDrawerWidget(),
-        body: Center(
-            child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection('particulars')
-                    //.doc(FirebaseAuth.instance.currentUser.uid)
-                    // .collection('Coins')
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
+        body: Stack(children: [
+          SizedBox(
+            child: Image.asset("assets/bg.jpg"),
+          ),
+          Center(
+              child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('particulars')
+                      //.doc(FirebaseAuth.instance.currentUser.uid)
+                      // .collection('Coins')
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
 
-                  return ListView(
-                    physics: BouncingScrollPhysics(),
-                    children: snapshot.data.docs
-                        .where((document) => document.id == uid)
-                        .map((document) {
-                      // print(document.id);
-                      // if (document.id == uid) {
-                      return Container(
-                          child: Column(
-                        children: [
-                          SizedBox(height: 24),
-                          ClipOval(
-                            child: Material(
-                              color: Colors.transparent,
-                              child: Ink.image(
-                                  image: NetworkImage(urlImage),
-                                  fit: BoxFit.cover,
-                                  width: 128,
-                                  height: 128,
-                                  child: InkWell(onTap: () {})),
-                            ),
-                          ),
-                          SizedBox(height: 24),
-                          FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text("${document.data()['name']}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 30)),
-                            //Text( "Price: ${getValue(document.id, document.data()['Amount'])}"),
-                          ),
-                          SizedBox(height: 24),
-                          FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text("${document.data()['email']}",
-                                style: TextStyle(fontSize: 24)),
-                            //Text( "Price: ${getValue(document.id, document.data()['Amount'])}"),
-                          ),
-                          SizedBox(height: 24),
-                          FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text("Age: ${document.data()['age']}",
-                                style: TextStyle(fontSize: 24)),
-                            //Text( "Price: ${getValue(document.id, document.data()['Amount'])}"),
-                          ),
-                          SizedBox(height: 24),
-                          FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text(
-                                "Fitness Level: ${document.data()['fitnessLevel']}",
-                                style: TextStyle(fontSize: 24)),
-                            //Text( "Price: ${getValue(document.id, document.data()['Amount'])}"),
-                          ),
-                          SizedBox(height: 24),
-                          FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text("Height: ${document.data()['height']}",
-                                style: TextStyle(fontSize: 24)),
-                            //Text( "Price: ${getValue(document.id, document.data()['Amount'])}"),
-                          ),
-                          SizedBox(height: 24),
-                          FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text("Weight: ${document.data()['weight']}",
-                                style: TextStyle(fontSize: 24)),
-                            //Text( "Price: ${getValue(document.id, document.data()['Amount'])}"),
-                          ),
-                        ],
-                      ));
-                    }).toList(),
-                  );
-                })));
+                    return ListView(
+                      physics: BouncingScrollPhysics(),
+                      children: snapshot.data.docs
+                          .where((document) => document.id == uid)
+                          .map((document) {
+                        // print(document.id);
+                        // if (document.id == uid) {
+                        return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: screenSize.height * 0.05,
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Profile page",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline4
+                                        .copyWith(fontWeight: FontWeight.w900),
+                                  ),
+                                ),
+                                ClipOval(
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: Image.asset(
+                                        "assets/avatars/avatar${document.data()['avatarChoice']}.png",
+                                        width: 128),
+                                  ),
+                                ),
+                                SizedBox(height: 24),
+                                FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: Text("${document.data()['name']}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 30)),
+                                  //Text( "Price: ${getValue(document.id, document.data()['Amount'])}"),
+                                ),
+                                SizedBox(height: 24),
+                                FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: Text("${document.data()['email']}",
+                                      style: TextStyle(fontSize: 24)),
+                                  //Text( "Price: ${getValue(document.id, document.data()['Amount'])}"),
+                                ),
+                                SizedBox(height: 24),
+                                FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: Text("Age: ${document.data()['age']}",
+                                      style: TextStyle(fontSize: 24)),
+                                  //Text( "Price: ${getValue(document.id, document.data()['Amount'])}"),
+                                ),
+                                SizedBox(height: 24),
+                                FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: Text(
+                                      "Fitness Level: ${document.data()['fitnessLevel']}",
+                                      style: TextStyle(fontSize: 24)),
+                                  //Text( "Price: ${getValue(document.id, document.data()['Amount'])}"),
+                                ),
+                                SizedBox(height: 24),
+                                FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: Text(
+                                      "Height: ${document.data()['height']}",
+                                      style: TextStyle(fontSize: 24)),
+                                  //Text( "Price: ${getValue(document.id, document.data()['Amount'])}"),
+                                ),
+                                SizedBox(height: 24),
+                                FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: Text(
+                                      "Weight: ${document.data()['weight']}",
+                                      style: TextStyle(fontSize: 24)),
+                                  //Text( "Price: ${getValue(document.id, document.data()['Amount'])}"),
+                                ),
+                              ],
+                            ));
+                      }).toList(),
+                    );
+                  })),
+        ]));
   }
 }
