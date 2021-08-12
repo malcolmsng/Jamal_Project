@@ -15,8 +15,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // generate username and profile picture
   String uid = FirebaseAuth.instance.currentUser.uid;
-  String urlImage =
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80';
 
   // generate data for BMI graph
   List<charts.Series<BMI, String>> _seriesBarData;
@@ -42,8 +40,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   // generate data for Volume graph
-  List<charts.Series<Volume, String>> _seriesVolumeData;
-  List<Volume> myVolumedata;
+  List<charts.Series<VolumePerWorkout, String>> _seriesVolumeData;
+  List<VolumePerWorkout> myVolumedata;
   _generateVolumeData(myVolumedata) {
     _seriesVolumeData = [];
     // for (BMI i in mydata) {
@@ -53,8 +51,8 @@ class _HomePageState extends State<HomePage> {
     // _seriesBarData = List<charts.Series<BMI, String>>();
     _seriesVolumeData.add(
       charts.Series(
-        domainFn: (Volume volume, _) => volume.date,
-        measureFn: (Volume volume, _) => volume.amount,
+        domainFn: (VolumePerWorkout volume, _) => volume.date,
+        measureFn: (VolumePerWorkout volume, _) => volume.amount,
         // colorFn: (BMI bmi, _) =>
         //     charts.ColorUtil.fromDartColor(Color(int.parse(bmi.colorVal))),
         id: 'BMI',
@@ -254,11 +252,11 @@ class _HomePageState extends State<HomePage> {
           if (!snapshot.hasData) {
             return LinearProgressIndicator();
           } else {
-            List<BMI> sales = snapshot.data.docs
+            List<BMI> databaseData = snapshot.data.docs
                 // documents
                 .map((documentSnapshot) => BMI.fromMap(documentSnapshot.data()))
                 .toList();
-            return _buildBMIChart(context, sales);
+            return _buildBMIChart(context, databaseData);
           }
         },
       );
@@ -275,28 +273,21 @@ class _HomePageState extends State<HomePage> {
           if (!snapshot.hasData) {
             return LinearProgressIndicator();
           } else {
+            List<VolumePerWorkout> totalVolumePerWorkout = snapshot.data.docs
+                .map((documentSnapshot) =>
+                    VolumePerWorkout.fromMap(documentSnapshot.data()))
+                .toList();
             //hardcode values for now
-            List<Volume> totalVolume = [
-              Volume("07/07", 290),
-              Volume("08/07", 320),
-              Volume("09/07", 350),
-              Volume("10/07", 390),
-              Volume("11/07", 420),
-              Volume("12/07", 410),
-              Volume("13/07", 440)
-            ];
-            // List<Volume> totalVolume = [];
-            // snapshot.data.docs.forEach(x =>
-            //   Map<String, dynamic> obj = doc.data;
-            //   totalVolume.add(obj);
-            // convert this Map to your custom object and add it to your list
-            //);
-
-            // List<Volume> totalVolume = snapshot.data.docs
-            //     // documents
-            //     .map((documentSnapshot) => Volume(documentSnapshot.data()))
-            //     .toList();
-            return _buildVolumeChart(context, totalVolume);
+            // List<VolumePerWorkout> totalVolumePerWorkout = [
+            //   VolumePerWorkout("07/07", 290),
+            //   VolumePerWorkout("08/07", 320),
+            //   VolumePerWorkout("09/07", 350),
+            //   VolumePerWorkout("10/07", 390),
+            //   VolumePerWorkout("11/07", 420),
+            //   VolumePerWorkout("12/07", 410),
+            //   VolumePerWorkout("13/07", 440)
+            // ];
+            return _buildVolumeChart(context, totalVolumePerWorkout);
           }
         },
       );
@@ -341,14 +332,15 @@ class _HomePageState extends State<HomePage> {
                   _seriesBarData,
                   animate: true,
                   animationDuration: Duration(seconds: 1),
-                  behaviors: [
-                    new charts.DatumLegend(
-                      entryTextStyle: charts.TextStyleSpec(
-                          color: charts.MaterialPalette.purple.shadeDefault,
-                          fontFamily: 'Georgia',
-                          fontSize: 18),
-                    )
-                  ],
+                  // legend
+                  // behaviors: [
+                  //   new charts.DatumLegend(
+                  //     entryTextStyle: charts.TextStyleSpec(
+                  //         color: charts.MaterialPalette.purple.shadeDefault,
+                  //         fontFamily: 'Georgia',
+                  //         fontSize: 18),
+                  //   )
+                  // ],
                 ),
               ),
             ],
@@ -359,7 +351,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // function to build volume graph
-  Widget _buildVolumeChart(BuildContext context, List<Volume> data) {
+  Widget _buildVolumeChart(BuildContext context, List<VolumePerWorkout> data) {
     myVolumedata = data;
     _generateVolumeData(myVolumedata);
     return Padding(
@@ -391,14 +383,15 @@ class _HomePageState extends State<HomePage> {
                   _seriesVolumeData,
                   animate: true,
                   animationDuration: Duration(seconds: 1),
-                  behaviors: [
-                    new charts.DatumLegend(
-                      entryTextStyle: charts.TextStyleSpec(
-                          color: charts.MaterialPalette.purple.shadeDefault,
-                          fontFamily: 'Georgia',
-                          fontSize: 18),
-                    )
-                  ],
+                  // legend
+                  // behaviors: [
+                  //   new charts.DatumLegend(
+                  //     entryTextStyle: charts.TextStyleSpec(
+                  //         color: charts.MaterialPalette.purple.shadeDefault,
+                  //         fontFamily: 'Georgia',
+                  //         fontSize: 18),
+                  //   )
+                  // ],
                 ),
               ),
             ],

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jamal_v1/ui/change_password.dart';
+import 'package:jamal_v1/ui/change_prof_pic.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
 
 class LocalSettings extends StatefulWidget {
@@ -7,17 +9,6 @@ class LocalSettings extends StatefulWidget {
 }
 
 class _LocalSettingsState extends State<LocalSettings> {
-  final List<String> settingTitles = [
-    "Privacy",
-    "Profile",
-    "Notifications",
-    "Storage",
-    "FAQs",
-    "Invite friends",
-    "App theme",
-    "Log out"
-  ];
-
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -34,7 +25,7 @@ class _LocalSettingsState extends State<LocalSettings> {
             child: Column(
               children: [
                 SizedBox(
-                  height: screenSize.height * 0.1,
+                  height: screenSize.height * 0.02,
                 ),
                 Text(
                   // insert user's name here
@@ -59,32 +50,120 @@ class _LocalSettingsState extends State<LocalSettings> {
                 // ),
                 Column(
                   children: [
-                    for (final title in settingTitles)
-                      TextButton(
-                        onPressed: () {},
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                //padding: EdgeInsets.only(top: 10, bottom: 10),
-                                width: MediaQuery.of(context).size.width * 0.8,
-                                child: Text(title,
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.black,
-                                    )),
-                                // decoration: BoxDecoration(
-                                //   color: Colors.grey[200],
-                                //   border: Border.all(
-                                //     color: Colors.black,
-                                //   ),
-                                // ),
-                              ),
-                              Icon(IconData(61068,
-                                  fontFamily: 'MaterialIcons',
-                                  matchTextDirection: true))
-                            ]),
-                      ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChangeProfilePic(),
+                          ),
+                        );
+                      },
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              //padding: EdgeInsets.only(top: 10, bottom: 10),
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              child: Text("Change profile picture",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  )),
+                              // decoration: BoxDecoration(
+                              //   color: Colors.grey[200],
+                              //   border: Border.all(
+                              //     color: Colors.black,
+                              //   ),
+                              // ),
+                            ),
+                            Icon(IconData(61068,
+                                fontFamily: 'MaterialIcons',
+                                matchTextDirection: true))
+                          ]),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChangePassword(),
+                          ),
+                        );
+                      },
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              //padding: EdgeInsets.only(top: 10, bottom: 10),
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              child: Text("Change password",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  )),
+                              // decoration: BoxDecoration(
+                              //   color: Colors.grey[200],
+                              //   border: Border.all(
+                              //     color: Colors.black,
+                              //   ),
+                              // ),
+                            ),
+                            Icon(IconData(61068,
+                                fontFamily: 'MaterialIcons',
+                                matchTextDirection: true))
+                          ]),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              //padding: EdgeInsets.only(top: 10, bottom: 10),
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              child: Text("Toggle app theme",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  )),
+                              // decoration: BoxDecoration(
+                              //   color: Colors.grey[200],
+                              //   border: Border.all(
+                              //     color: Colors.black,
+                              //   ),
+                              // ),
+                            ),
+                            Icon(IconData(61068,
+                                fontFamily: 'MaterialIcons',
+                                matchTextDirection: true))
+                          ]),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              //padding: EdgeInsets.only(top: 10, bottom: 10),
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              child: Text("Log out",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  )),
+                              // decoration: BoxDecoration(
+                              //   color: Colors.grey[200],
+                              //   border: Border.all(
+                              //     color: Colors.black,
+                              //   ),
+                              // ),
+                            ),
+                            Icon(IconData(61068,
+                                fontFamily: 'MaterialIcons',
+                                matchTextDirection: true))
+                          ]),
+                    ),
                   ],
                 ),
               ],

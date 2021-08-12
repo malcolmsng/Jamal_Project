@@ -236,11 +236,17 @@ class _CustomExercisesPageState extends State<CustomExercisesPage> {
               child: Text('End Workout'),
               onPressed: () async {
                 finishedWorkoutDialog();
+                int volume = 0;
+                for (var i in currentWorkoutList) {
+                  print(i);
+                  volume += int.parse(i[1]) * int.parse(i[2]);
+                }
                 // await DatabaseService(uid: uid)
                 //     .addWorkoutList(currentWorkoutList);
                 await DatabaseService(uid: uid).addWorkoutListWithDate(
                     currentDate.toString().substring(0, 10),
-                    currentWorkoutList);
+                    currentWorkoutList,
+                    volume);
               },
             )
           ],
