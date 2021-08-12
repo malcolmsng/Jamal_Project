@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/model/exercise.dart' as ex;
 import 'package:jamal_v1/model/fitness.dart';
-import 'package:jamal_v1/ui/custom_exercises.dart';
+import 'package:jamal_v1/ui/add_exercise.dart';
+import 'package:jamal_v1/ui/add_exercise.dart';
 import 'package:jamal_v1/ui/suggester.dart';
+import 'package:jamal_v1/ui/workout_plan.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:jamal_v1/model/workout.dart';
 import 'package:jamal_v1/util/enum_methods.dart';
@@ -150,37 +152,53 @@ class _DoWorkoutState extends State<DoWorkout> {
               ),
             ),
             SizedBox(
-              height: screenSize.height * 0.1,
+              height: screenSize.height * 0.03,
             ),
-            TextButton(
-              child: Text("Recommend me a workout!"),
-              onPressed: () async {
-                FitnessLevel userFitness = await DatabaseService()
-                    .getFitnessLevel(uid)
-                    .then((value) => (Enums.enumFromString<FitnessLevel>(
-                        value, FitnessLevel.values)));
+            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              !disabled
+                  ? ElevatedButton(
+                      style:
+                          ElevatedButton.styleFrom(primary: Colors.blueAccent),
+                      child: Text('Get Suggestions!'),
+                      onPressed: () {
+                        List<Workout> tempWorkout;
+                        if (widget.userFitness == FitnessLevel.Beginner) {
+                          tempWorkout = getBeginnerExercises();
+                        } else if (widget.userFitness ==
+                            FitnessLevel.Intermediate) {
+                          tempWorkout = getIntermediateExercises();
+                        } else {
+                          tempWorkout = getAdvancedExercises();
+                        }
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      // settings: RouteSettings(arguments: userFitness),
-                      builder: (context) => Suggester(
-                            userFitness: userFitness,
-                          )),
-                );
-              },
-            ),
-            TextButton(
-              child: Text('Add custom workout!'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CustomExercisesPage(),
-                  ),
-                );
-              },
-            ),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            // builder: (context) => SuggestedWorkout(),
+                            builder: (context) => WorkoutPlan(),
+                            settings: RouteSettings(arguments: tempWorkout),
+                          ),
+                        );
+                      },
+                    )
+                  : OutlinedButton(
+                      style: OutlinedButton.styleFrom(primary: Colors.grey),
+                      child: Text('Get Suggestions'),
+                      onPressed: () {},
+                    ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: Colors.blueAccent),
+                child: Text('Add New Workout'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddExercisePage(),
+                    ),
+                  );
+                },
+              ),
+            ]),
           ],
         ),
       ),

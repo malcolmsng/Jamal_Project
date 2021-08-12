@@ -4,6 +4,14 @@ import 'package:jamal_v1/net/database.dart';
 class Auth {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
+  Future<bool> isFirstTime(String email, String password) async {
+    UserCredential user = await _auth.signInWithEmailAndPassword(
+      email: email.trim(),
+      password: password.trim(),
+    );
+    return user.additionalUserInfo.isNewUser;
+  }
+
   Future<bool> register(
       String avatarChoice,
       String email,
@@ -43,12 +51,10 @@ class Auth {
 
   Future<bool> login(String email, String password) async {
     try {
-      print(email);
       await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
-      print(password);
 
       return true;
     } on FirebaseAuthException catch (e) {

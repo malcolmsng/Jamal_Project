@@ -53,6 +53,9 @@ dependencies:
 
   charts_flutter: ^0.10.0
   modal_bottom_sheet: ^2.0.0
+  adaptive_dialog: ^1.1.0
+  showcaseview: ^1.1.0
+  numberpicker: ^2.1.1
 
 
 

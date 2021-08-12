@@ -92,7 +92,7 @@ class Exercise {
   bool isTimed;
   DateTime date;
   bool isWeighted;
-  double weight;
+ int weight;
 
   Exercise(
       {this.picURL,
