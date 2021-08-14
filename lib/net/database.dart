@@ -127,7 +127,7 @@ class DatabaseService {
       });
     }
     return await workoutsCollection.doc(workoutDate).update({
-      'date': workoutDate.substring(8, 10) + '/' + workoutDate.substring(5, 7),
+      'date': workoutDate.substring(5, 7) + '/' + workoutDate.substring(8, 10),
       'volume': volume,
     });
   }
@@ -142,7 +142,7 @@ class DatabaseService {
       'height': int.parse(height),
       'weight': int.parse(weight),
       'bodyFat': int.parse(bodyFat),
-      'date': workoutDate.substring(8, 10) + '/' + workoutDate.substring(5, 7),
+      'date': workoutDate.substring(5, 7) + '/' + workoutDate.substring(8, 10),
     });
   }
 

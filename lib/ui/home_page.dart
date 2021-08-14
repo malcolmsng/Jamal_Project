@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   bool animate;
 
 // generate data for Volume graph
-  List<charts.Series<VolumePerWorkout, String>> _seriesVolumeData;
+  List<charts.Series<VolumePerWorkout, DateTime>> _seriesVolumeData;
   List<VolumePerWorkout> myVolumedata;
   _generateVolumeData(myVolumedata) {
     _seriesVolumeData = [];
@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
         measureFn: (VolumePerWorkout volume, _) => volume.amount,
         // colorFn: (BMI bmi, _) =>
         //     charts.ColorUtil.fromDartColor(Color(int.parse(bmi.colorVal))),
-        id: 'BMI',
+        id: 'Volume',
         data: myVolumedata,
         // labelAccessorFn: (BMI row, _) => "${row.weight}",
       ),
@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // generate data for BMI graph
-  List<charts.Series<BMI, String>> _seriesBarData;
+  List<charts.Series<BMI, DateTime>> _seriesBarData;
   List<BMI> myBMIdata;
   _generateBMIData(myBMIdata) {
     _seriesBarData = [];
@@ -83,8 +83,11 @@ class _HomePageState extends State<HomePage> {
         return AlertDialog(
           title: Text('BMI'),
           actions: <Widget>[
-            Text(
-                'BMI is calculated by dividing the weight of a user (in kg) by the square of their height (in m).'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                  'BMI is calculated by dividing the weight of a user (in kg) by the square of their height (in m).'),
+            ),
             TextButton(
               child: Text('Close'),
               onPressed: () {
@@ -112,8 +115,43 @@ class _HomePageState extends State<HomePage> {
         return AlertDialog(
           title: Text('Volume'),
           actions: <Widget>[
-            Text(
-                'Volume is calculated by multiplying the number of sets with number of reps for each exercise in a workout. If weights are used, they are multiplied in as well (in kg).'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                  'Volume is calculated by multiplying the number of sets with number of reps for each exercise in a workout. If weights are used, they are multiplied in as well (in kg).'),
+            ),
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.pop(context);
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => HomePage(),
+                //   ),
+                // );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Definition of volume
+  Future<void> _whatIsBodyFatDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Body Fat %'),
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                  'Your body fat percetange can be found using most electronic weighing scale. The ideal amount is 25% and below for men, and 31% and below for women.'),
+            ),
             TextButton(
               child: Text('Close'),
               onPressed: () {
@@ -365,7 +403,7 @@ class _HomePageState extends State<HomePage> {
                 height: 10.0,
               ),
               Expanded(
-                child: charts.BarChart(
+                child: charts.TimeSeriesChart(
                   _seriesBarData,
                   animate: true,
                   animationDuration: Duration(seconds: 1),
@@ -416,7 +454,7 @@ class _HomePageState extends State<HomePage> {
                 height: 10.0,
               ),
               Expanded(
-                child: charts.BarChart(
+                child: charts.TimeSeriesChart(
                   _seriesVolumeData,
                   animate: true,
                   animationDuration: Duration(seconds: 1),
@@ -460,7 +498,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 IconButton(
                     onPressed: () async {
-                      _whatIsVolumeDialog();
+                      _whatIsBodyFatDialog();
                     },
                     icon: new Icon(Icons.help_outline))
               ]),

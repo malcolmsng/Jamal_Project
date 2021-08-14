@@ -1,14 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class VolumePerWorkout {
-  String date;
+  DateTime date;
   int amount;
 
   VolumePerWorkout(this.date, this.amount);
 
   VolumePerWorkout.fromMap(Map<String, dynamic> map) {
     // assert(map['weight'] != null),
-    date = map['date'];
+    date = DateTime(2021, int.parse(map['date'].substring(0, 2)),
+        int.parse(map['date'].substring(3, 5)));
     // var tempholder = 0;
     // if (map['situp'] != null) {
     //   tempholder += int.parse(map['pushup'].substring(0, 2)) +
