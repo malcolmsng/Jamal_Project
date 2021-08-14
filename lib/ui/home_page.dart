@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/model/bmi.dart';
+import 'package:jamal_v1/model/body_fat.dart';
 import 'package:jamal_v1/model/volume.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -15,31 +16,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // generate username and profile picture
   String uid = FirebaseAuth.instance.currentUser.uid;
+  List<charts.Series> seriesList;
+  bool animate;
 
-  // generate data for BMI graph
-  List<charts.Series<BMI, String>> _seriesBarData;
-  List<BMI> myBMIdata;
-  _generateBMIData(myBMIdata) {
-    _seriesBarData = [];
-    // for (BMI i in mydata) {
-    //   print(i.date);
-    //   print(i.value);
-    // }
-    // _seriesBarData = List<charts.Series<BMI, String>>();
-    _seriesBarData.add(
-      charts.Series(
-        domainFn: (BMI bmi, _) => bmi.date,
-        measureFn: (BMI bmi, _) => bmi.value,
-        // colorFn: (BMI bmi, _) =>
-        //     charts.ColorUtil.fromDartColor(Color(int.parse(bmi.colorVal))),
-        id: 'BMI',
-        data: myBMIdata,
-        // labelAccessorFn: (BMI row, _) => "${row.weight}",
-      ),
-    );
-  }
-
-  // generate data for Volume graph
+// generate data for Volume graph
   List<charts.Series<VolumePerWorkout, String>> _seriesVolumeData;
   List<VolumePerWorkout> myVolumedata;
   _generateVolumeData(myVolumedata) {
@@ -58,6 +38,38 @@ class _HomePageState extends State<HomePage> {
         id: 'BMI',
         data: myVolumedata,
         // labelAccessorFn: (BMI row, _) => "${row.weight}",
+      ),
+    );
+  }
+
+  // generate data for BMI graph
+  List<charts.Series<BMI, String>> _seriesBarData;
+  List<BMI> myBMIdata;
+  _generateBMIData(myBMIdata) {
+    _seriesBarData = [];
+
+    _seriesBarData.add(
+      charts.Series(
+        domainFn: (BMI bmi, _) => bmi.date,
+        measureFn: (BMI bmi, _) => bmi.value,
+        id: 'BMI',
+        data: myBMIdata,
+      ),
+    );
+  }
+
+// generate data for body fat graph
+  List<charts.Series<BodyFatPercentage, DateTime>> _seriesBodyFatData;
+  List<BodyFatPercentage> myBodyFatData;
+  _generateBodyFatData(myBodyFatData) {
+    _seriesBodyFatData = [];
+
+    _seriesBodyFatData.add(
+      charts.Series(
+        domainFn: (BodyFatPercentage bodyFat, _) => bodyFat.date,
+        measureFn: (BodyFatPercentage bodyFat, _) => bodyFat.percentage,
+        id: 'Body Fat',
+        data: myBodyFatData,
       ),
     );
   }
@@ -237,31 +249,8 @@ class _HomePageState extends State<HomePage> {
 
   // general function to retrieve data
   Widget _buildBody(BuildContext context, int index) {
-    // BUILD BMI GRAPH
+    // BUILD VOLUME GRAPH
     if (index == 0) {
-      print(index);
-      //return Text("holder");
-      return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('particulars')
-            .doc(uid)
-            .collection('measurements')
-            .snapshots(),
-        // stream: FirebaseFirestore.instance.collection('sales').snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return LinearProgressIndicator();
-          } else {
-            List<BMI> databaseData = snapshot.data.docs
-                // documents
-                .map((documentSnapshot) => BMI.fromMap(documentSnapshot.data()))
-                .toList();
-            return _buildBMIChart(context, databaseData);
-          }
-        },
-      );
-      // BUILD VOLUME GRAPH
-    } else if (index == 1) {
       return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('particulars')
@@ -291,9 +280,57 @@ class _HomePageState extends State<HomePage> {
           }
         },
       );
-      // BUILD LAST GRAPH
+      // BUILD BMI GRAPH
+    } else if (index == 1) {
+      print(index);
+      //return Text("holder");
+      return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('particulars')
+            .doc(uid)
+            .collection('measurements')
+            .snapshots(),
+        // stream: FirebaseFirestore.instance.collection('sales').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return LinearProgressIndicator();
+          } else {
+            List<BMI> databaseData = snapshot.data.docs
+                // documents
+                .map((documentSnapshot) => BMI.fromMap(documentSnapshot.data()))
+                .toList();
+            return _buildBMIChart(context, databaseData);
+          }
+        },
+      );
+      // BUILD BODY FAT GRAPH
     } else if (index == 2) {
-      return Text("temp");
+      return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('particulars')
+            .doc(uid)
+            .collection('measurements')
+            .snapshots(),
+        // stream: FirebaseFirestore.instance.collection('sales').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return LinearProgressIndicator();
+          } else {
+            List<BodyFatPercentage> totalBodyFatPercentage = snapshot.data.docs
+                .map((documentSnapshot) =>
+                    BodyFatPercentage.fromMap(documentSnapshot.data()))
+                .toList();
+            //hardcode values for now
+            // List<BodyFatPercentage> totalBodyFatPercentage = [
+            //   new BodyFatPercentage(new DateTime(2017, 9, 19), 5),
+            //   new BodyFatPercentage(new DateTime(2017, 9, 26), 25),
+            //   new BodyFatPercentage(new DateTime(2017, 10, 3), 100),
+            //   new BodyFatPercentage(new DateTime(2017, 10, 10), 75),
+            // ];
+            return _buildBodyFatChart(context, totalBodyFatPercentage);
+          }
+        },
+      );
     } else {
       return Text("error: too many graphs to plot");
     }
@@ -314,7 +351,7 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   'BMI changes over the past 7 days',
                   style: TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.black),
                 ),
@@ -365,7 +402,7 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   'Total volume for the past 7 workouts',
                   style: TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.black),
                 ),
@@ -392,6 +429,49 @@ class _HomePageState extends State<HomePage> {
                   //         fontSize: 18),
                   //   )
                   // ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // function to build body fat graph
+  Widget _buildBodyFatChart(
+      BuildContext context, List<BodyFatPercentage> data) {
+    myBodyFatData = data;
+    _generateBodyFatData(myBodyFatData);
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Container(
+        height: 300,
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                Text(
+                  'Changes in body fat for the past 7 workouts',
+                  style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+                IconButton(
+                    onPressed: () async {
+                      _whatIsVolumeDialog();
+                    },
+                    icon: new Icon(Icons.help_outline))
+              ]),
+              SizedBox(
+                height: 10.0,
+              ),
+              Expanded(
+                child: charts.TimeSeriesChart(
+                  _seriesBodyFatData,
+                  animate: true,
+                  animationDuration: Duration(seconds: 1),
                 ),
               ),
             ],
