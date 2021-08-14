@@ -1,7 +1,7 @@
 class BMI {
   final int height;
   final int weight;
-  final String date;
+  DateTime date;
   double value;
 
   BMI(this.height, this.weight, this.date);
@@ -12,7 +12,8 @@ class BMI {
         height = map['height'],
         weight = map['weight'],
         value = map['weight'] * 10000 / (map['height'] * map['height']),
-        date = map['date'];
+        date = DateTime(2021, int.parse(map['date'].substring(0, 2)),
+            int.parse(map['date'].substring(3, 5)));
 
   @override
   String toString() => "Record<$height:$weight>";
