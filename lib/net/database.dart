@@ -132,6 +132,31 @@ class DatabaseService {
     });
   }
 
+  Future addCompletedWorkoutWithDate(String workoutDate,
+      List<List<String>> listOfListOfWorkouts, int volume) async {
+    final CollectionReference workoutsCollection = FirebaseFirestore.instance
+        .collection('particulars')
+        .doc(uid)
+        .collection('workouts');
+
+    await workoutsCollection.doc(workoutDate).set({
+      'placeholder': 'place',
+    });
+
+    for (var i in listOfListOfWorkouts) {
+      print(i);
+      String combinedSetsRepsWeights = i[1] + i[2] + i[3];
+
+      await workoutsCollection.doc(workoutDate).update({
+        i[0]: combinedSetsRepsWeights,
+      });
+    }
+    return await workoutsCollection.doc(workoutDate).update({
+      'date': workoutDate.substring(5, 7) + '/' + workoutDate.substring(8, 10),
+      'volume': volume,
+    });
+  }
+
   Future addMeasurementsWithDate(
       String workoutDate, String height, String weight, String bodyFat) async {
     return await particularsCollection
