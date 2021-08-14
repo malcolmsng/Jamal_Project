@@ -5,6 +5,9 @@ import 'package:jamal_v1/ui/add_exercise.dart';
 import 'package:jamal_v1/ui/add_exercise.dart';
 import 'package:jamal_v1/ui/suggester.dart';
 import 'package:jamal_v1/ui/workout_plan.dart';
+import 'package:jamal_v1/util/beginner_exercise_constants.dart';
+import 'package:jamal_v1/util/intermediate_exercise_constants.dart';
+import 'package:jamal_v1/widgets/category_card.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:jamal_v1/model/workout.dart';
 import 'package:jamal_v1/util/enum_methods.dart';
@@ -14,9 +17,12 @@ import 'package:jamal_v1/widgets/navigation_menu.dart';
 import 'package:jamal_v1/model/equipment.dart';
 import 'package:jamal_v1/model/user_particulars.dart';
 import 'dart:math';
+import 'package:dotted_border/dotted_border.dart';
 
 class DoWorkout extends StatefulWidget {
   final FitnessLevel userFitness;
+  Workout bruh =
+      Workout(rest: Duration(minutes: 1), exercises: [pushup, situp, squat]);
 
   DoWorkout({Key key, @required this.userFitness}) : super(key: key);
 
@@ -45,9 +51,25 @@ class _DoWorkoutState extends State<DoWorkout> {
   List<ex.Exercise> bicepExercises;
   List<ex.Exercise> shoulderExercises;
   List<ex.Exercise> cardioExercises;
+  //temp workouts
+  List<Map<String, Workout>> userAddedWorkouts = [
+    {
+      'bruh':
+          Workout(rest: Duration(minutes: 1), exercises: [pushup, situp, squat])
+    },
+    {
+      'nice':
+          Workout(rest: Duration(minutes: 1), exercises: [pushup, situp, squat])
+    },
+    {
+      'lelelel':
+          Workout(rest: Duration(minutes: 1), exercises: [pushup, situp, squat])
+    }
+  ];
 
   //all exercises in list form;
   void initState() {
+    userAddedWorkouts.add({'null': null});
     chestExercises = getSuitableExercises(ex.Focus.Chest);
 
     backExercises = getSuitableExercises(
@@ -117,7 +139,7 @@ class _DoWorkoutState extends State<DoWorkout> {
                     .bodyText1
                     .copyWith(fontWeight: FontWeight.w400)),
             Padding(
-              padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+              padding: EdgeInsets.fromLTRB(13, 0, 13, 0),
               child: MultiSelectChipField<Equipment>(
                 items: equipment,
                 key: _multiformkey,
@@ -145,9 +167,6 @@ class _DoWorkoutState extends State<DoWorkout> {
                   print(selectedEquipment);
 
                   _multiformkey.currentState.validate();
-                },
-                scrollControl: (controller) {
-                  scrollAnimation(controller);
                 },
               ),
             ),
@@ -183,12 +202,12 @@ class _DoWorkoutState extends State<DoWorkout> {
                     )
                   : OutlinedButton(
                       style: OutlinedButton.styleFrom(primary: Colors.grey),
-                      child: Text('Get Suggestions'),
+                      child: Text('Get New Suggestions'),
                       onPressed: () {},
                     ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(primary: Colors.blueAccent),
-                child: Text('Add New Workout'),
+                child: Text('Current Suggestions'),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -199,6 +218,72 @@ class _DoWorkoutState extends State<DoWorkout> {
                 },
               ),
             ]),
+            Expanded(
+              child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  itemCount: userAddedWorkouts.length,
+                  itemBuilder: (context, index) {
+                    var current = userAddedWorkouts[index];
+
+                    return current.keys.first == 'null' &&
+                            current.values.first == null
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: DottedBorder(
+                              color: Colors.black54,
+                              radius: Radius.circular(16),
+                              dashPattern: [8, 8],
+                              borderType: BorderType.RRect,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(13),
+                                  child: Container(
+                                      child: Material(
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AddExercisePage(),
+                                              ),
+                                            );
+                                          },
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.add,
+                                              size: 40,
+                                              semanticLabel: 'Add',
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.transparent),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(16),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            offset: Offset(0, 17),
+                                            blurRadius: 17,
+                                            spreadRadius: -23,
+                                          ),
+                                        ],
+                                      ))),
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CategoryCard(
+                              workout: current.values.first,
+                              title: current.keys.first,
+                              press: () {},
+                            ),
+                          );
+                  }),
+            )
           ],
         ),
       ),

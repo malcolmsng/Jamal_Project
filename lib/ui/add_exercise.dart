@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/model/workout.dart';
+import 'package:jamal_v1/ui/do_workout.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:jamal_v1/util/advanced_exercise_constants.dart';
 import 'package:jamal_v1/util/beginner_exercise_constants.dart';
@@ -51,13 +52,19 @@ class _AddExercisePageState extends State<AddExercisePage> {
       floatingActionButton: ElevatedButton(
         style: ElevatedButton.styleFrom(primary: Colors.blueAccent),
         child: Text(
-          'Do Workout',
+          'Add Workout',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         onPressed: () {
           Workout tempWorkout =
               Workout(rest: Duration(minutes: 1), exercises: addedExercises);
+
           //added to list of workouts on firebase;
+          showDialog(
+              context: context,
+              builder: (_) {
+                return buildDialog(context: context, workout: tempWorkout);
+              });
         },
       ),
       extendBodyBehindAppBar: true,
@@ -325,6 +332,39 @@ class _AddExercisePageState extends State<AddExercisePage> {
             filled: true,
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+      ),
+    );
+  }
+
+  Widget buildDialog({BuildContext context, Workout workout}) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      actions: [
+        TextButton(
+          child: Text(
+            'Confirm',
+            style: TextStyle(fontSize: 16),
+          ),
+          onPressed: () {
+            Map<String, Workout> tempMap = {controller.text: workout};
+
+            var nav = Navigator.of(context);
+            nav.pop();
+            nav.pop();
+
+            // changed from pushReplacement, somehow pushReplacement goes to the wrong page
+          },
+        )
+      ],
+      title: Text('Name of Workout:'),
+      content: Container(
+        height: 42,
+        child: TextField(
+          decoration: InputDecoration(
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
+          controller: controller,
+        ),
       ),
     );
   }
