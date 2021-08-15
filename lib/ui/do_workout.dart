@@ -164,8 +164,6 @@ class _DoWorkoutState extends State<DoWorkout> {
                     }
                   });
 
-                  print(selectedEquipment);
-
                   _multiformkey.currentState.validate();
                 },
               ),
@@ -190,12 +188,12 @@ class _DoWorkoutState extends State<DoWorkout> {
                           tempWorkout = getAdvancedExercises();
                         }
 
+                        DatabaseService(uid: uid).addCurrentPlan(tempWorkout);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            // builder: (context) => SuggestedWorkout(),
-                            builder: (context) => WorkoutPlan(),
                             settings: RouteSettings(arguments: tempWorkout),
+                            builder: (context) => WorkoutPlan(),
                           ),
                         );
                       },
@@ -208,11 +206,16 @@ class _DoWorkoutState extends State<DoWorkout> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(primary: Colors.blueAccent),
                 child: Text('Current Suggestions'),
-                onPressed: () {
+                onPressed: () async {
+                  List tempWorkouts =
+                      await DatabaseService(uid: uid).retrieveCurrentPlan();
+                  List<Workout> workouts = tempWorkouts.cast<Workout>();
+                  print(workouts);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AddExercisePage(),
+                      settings: RouteSettings(arguments: workouts),
+                      builder: (context) => WorkoutPlan(),
                     ),
                   );
                 },

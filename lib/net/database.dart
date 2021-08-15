@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:jamal_v1/model/exercise.dart';
 import 'package:jamal_v1/model/user_particulars.dart';
+import 'package:jamal_v1/model/workout.dart';
 
 class DatabaseService {
   final String uid;
@@ -169,6 +171,60 @@ class DatabaseService {
       'bodyFat': int.parse(bodyFat),
       'date': workoutDate.substring(5, 7) + '/' + workoutDate.substring(8, 10),
     });
+  }
+
+  //adding current workout plan
+
+  Future addCurrentPlan(List<Workout> plan) async {
+    List<Exercise> tempExercises = [];
+
+    var docRef = FirebaseFirestore.instance.collection("particulars").doc(uid);
+    for (Workout workout in plan) {
+      tempExercises = workout.exercises;
+      DateTime tempDate = workout.date;
+      List exerciseNames = tempExercises.map((e) => e.name).toList();
+      List sets = tempExercises.map((e) => e.sets).toList();
+      List reps = tempExercises.map((e) => e.reps).toList();
+      List weights = tempExercises.map((e) {
+        return e.isWeighted ? e.weight : 0;
+      }).toList();
+      List date = [tempDate.year, tempDate.month, tempDate.day];
+
+      await docRef.collection('currentPlan').add({
+        'exerciseNames': exerciseNames,
+        'sets': sets,
+        'reps': reps,
+        'weights': weights,
+        'date': date
+      });
+    }
+  }
+
+ Future retrieveCurrentPlan() async {
+    List<Workout> workouts = [];
+    var docRef = FirebaseFirestore.instance.collection("particulars").doc(uid);
+    await docRef.collection('currentPlan').get().then((value) =>
+        value.docs.forEach((element) {
+          var workout = element.data();
+
+          var date = DateTime(
+              workout['date'][0], workout['date'][1], workout['date'][2]);
+
+          var tempExercises = [];
+          for (var i = 0; i < workout['exerciseNames'].length; i++) {
+            var exercise = Workout.allExercises
+                .where((element) => element.name == workout['exerciseNames'][i])
+                .elementAt(0);
+
+            exercise.sets = workout['sets'][i];
+            exercise.reps = workout['reps'][i];
+            exercise.weight = workout['weights'][i];
+            tempExercises.add(exercise);
+          }
+          List<Exercise> exercises = tempExercises.cast<Exercise>();
+          workouts.add(Workout(exercises: exercises, date: date));
+        }));
+    return workouts;
   }
 
   Future retrieveWorkoutData() async {
