@@ -1,6 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:jamal_v1/net/database.dart';
 import 'package:jamal_v1/ui/change_password.dart';
 import 'package:jamal_v1/ui/change_prof_pic.dart';
+import 'package:jamal_v1/ui/custom_exercises.dart';
+import 'package:jamal_v1/ui/tempo.dart';
 import 'package:jamal_v1/widgets/navigation_menu.dart';
 
 class LocalSettings extends StatefulWidget {
@@ -9,6 +13,8 @@ class LocalSettings extends StatefulWidget {
 }
 
 class _LocalSettingsState extends State<LocalSettings> {
+  String uid = FirebaseAuth.instance.currentUser.uid;
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -115,7 +121,13 @@ class _LocalSettingsState extends State<LocalSettings> {
                           ]),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CustomExercisesPage()),
+                        );
+                      },
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

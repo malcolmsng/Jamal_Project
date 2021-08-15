@@ -120,7 +120,7 @@ class DatabaseService {
 
     for (var i in listOfListOfWorkouts) {
       print(i);
-      String combinedSetsAndReps = i[1] + i[2];
+      String combinedSetsAndReps = i[1] + i[2] + i[3];
 
       await workoutsCollection.doc(workoutDate).update({
         i[0]: combinedSetsAndReps,
