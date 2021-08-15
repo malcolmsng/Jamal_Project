@@ -20,6 +20,7 @@ class _CustomExercisesPageState extends State<CustomExercisesPage> {
   String uid = FirebaseAuth.instance.currentUser.uid;
   TextEditingController _setsField = TextEditingController();
   TextEditingController _repsField = TextEditingController();
+  TextEditingController _weightsField = TextEditingController();
   List<ex.Exercise> availableExercises = intermediateExercises;
 
   List<List<String>> currentWorkoutList = [];
@@ -43,51 +44,63 @@ class _CustomExercisesPageState extends State<CustomExercisesPage> {
           return AlertDialog(
             title: Form(
               key: _formkey,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                child: Column(children: [
-                  SmartSelect<String>.single(
-                      title: "",
-                      value: selectedValue,
-                      choiceItems: options,
-                      onChange: (state) =>
-                          setState(() => selectedValue = state.value)),
-                  Container(
-                    child: TextFormField(
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        return value.isNotEmpty
-                            ? null
-                            : "No. of sets cannot be empty";
-                      },
-                      controller: _setsField,
-                      decoration: InputDecoration(
-                        labelText: "No. of sets",
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                        ),
+              child:
+                  // Padding(
+                  // padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  //child:
+                  Column(children: [
+                SmartSelect<String>.single(
+                    title: "",
+                    value: selectedValue,
+                    choiceItems: options,
+                    onChange: (state) =>
+                        setState(() => selectedValue = state.value)),
+                Container(
+                  child: TextFormField(
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      return value.isNotEmpty
+                          ? null
+                          : "No. of sets cannot be empty";
+                    },
+                    controller: _setsField,
+                    decoration: InputDecoration(
+                      labelText: "No. of sets",
+                      labelStyle: TextStyle(
+                        color: Colors.black,
                       ),
                     ),
                   ),
-                  Container(
-                    child: TextFormField(
-                      validator: (value) {
-                        return value.isNotEmpty
-                            ? null
-                            : "No. of reps cannot be empty";
-                      },
-                      controller: _repsField,
-                      decoration: InputDecoration(
-                        labelText: "No. of reps",
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                        ),
+                ),
+                Container(
+                  child: TextFormField(
+                    validator: (value) {
+                      return value.isNotEmpty
+                          ? null
+                          : "No. of reps cannot be empty";
+                    },
+                    controller: _repsField,
+                    decoration: InputDecoration(
+                      labelText: "No. of reps",
+                      labelStyle: TextStyle(
+                        color: Colors.black,
                       ),
                     ),
                   ),
-                ]),
-              ),
+                ),
+                Container(
+                  child: TextFormField(
+                    controller: _weightsField,
+                    decoration: InputDecoration(
+                      labelText: "Weights used (in kg)",
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ]),
             ),
             actions: [
               MaterialButton(
@@ -98,6 +111,7 @@ class _CustomExercisesPageState extends State<CustomExercisesPage> {
                   print(selectedValue);
                   print(_setsField.text);
                   print(_repsField.text);
+                  print(_weightsField);
                   List<String> toAdd = [
                     selectedValue.toLowerCase(),
                     _setsField.text.length < 2
@@ -106,6 +120,11 @@ class _CustomExercisesPageState extends State<CustomExercisesPage> {
                     _repsField.text.length < 2
                         ? "0" + _repsField.text
                         : _repsField.text,
+                    _weightsField.text.length < 3
+                        ? (_weightsField.text.length < 2
+                            ? "00" + _weightsField.text
+                            : "0" + _weightsField.text)
+                        : _weightsField.text,
                   ];
                   currentWorkoutList.add(toAdd);
                   print(currentWorkoutList);
@@ -213,6 +232,13 @@ class _CustomExercisesPageState extends State<CustomExercisesPage> {
                           fontSize: 20,
                         ),
                       ),
+                      SizedBox(width: 20),
+                      Text(
+                        "Weights used: ${_weightsField.text}",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
                     ])
                   ]),
                 );
@@ -239,7 +265,12 @@ class _CustomExercisesPageState extends State<CustomExercisesPage> {
                 int volume = 0;
                 for (var i in currentWorkoutList) {
                   print(i);
-                  volume += int.parse(i[1]) * int.parse(i[2]);
+                  if (int.parse(i[3]) != 0) {
+                    volume +=
+                        int.parse(i[1]) * int.parse(i[2]) * int.parse(i[3]);
+                  } else {
+                    volume += int.parse(i[1]) * int.parse(i[2]);
+                  }
                 }
                 // await DatabaseService(uid: uid)
                 //     .addWorkoutList(currentWorkoutList);

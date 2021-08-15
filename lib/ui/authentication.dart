@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/net/auth.dart';
-import 'package:jamal_v1/ui/tempo.dart';
 import 'registration.dart';
 import 'home_page.dart';
 
@@ -169,12 +168,12 @@ class _AuthenticationState extends State<Authentication> {
                   ),
                   child: MaterialButton(
                     onPressed: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BMIHomePage(),
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => BMIHomePage(),
+                      //   ),
+                      // );
                     },
                     child: Text("testing page"),
                   ),
