@@ -233,18 +233,6 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(primary: Colors.orangeAccent),
-                child: Text('Start Workout'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WorkoutTimer(),
-                    ),
-                  );
-                },
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(primary: Colors.orangeAccent),
                 child: Text('End Workout'),
                 onPressed: () async {
                   finishedWorkoutDialog();
