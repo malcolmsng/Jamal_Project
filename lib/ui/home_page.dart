@@ -180,7 +180,7 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           SizedBox(
-            child: Image.asset("assets/bg.jpg"),
+            child: Image.asset('assets/testbg2.png'),
           ),
           CustomScrollView(
             physics: BouncingScrollPhysics(),

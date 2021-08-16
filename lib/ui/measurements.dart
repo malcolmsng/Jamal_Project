@@ -55,7 +55,7 @@ class _AddMeasurementsPageState extends State<AddMeasurementsPage> {
       body: Stack(
         children: [
           SizedBox(
-            child: Image.asset("assets/bg.jpg"),
+            child: Image.asset('assets/testbg2.png'),
           ),
           SafeArea(
               child: Padding(
@@ -92,8 +92,9 @@ class _AddMeasurementsPageState extends State<AddMeasurementsPage> {
                         onPressed: () => _selectDate(context),
                         child: Text(
                           currentDate.toString().substring(0, 10),
+                          style: TextStyle(color: Colors.white),
                         ),
-                        color: Colors.lightBlueAccent,
+                        color: Colors.blueAccent,
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width / 1.3,
@@ -144,6 +145,8 @@ class _AddMeasurementsPageState extends State<AddMeasurementsPage> {
                         height: 20,
                       ),
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.blueAccent),
                         onPressed: () async {
                           _showMyDialog();
                           await DatabaseService(uid: uid)
@@ -155,13 +158,6 @@ class _AddMeasurementsPageState extends State<AddMeasurementsPage> {
                         },
                         child: Text("Log Measurements"),
                       ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          await DatabaseService(uid: uid)
-                              .retrieveMeasurements();
-                        },
-                        child: Text("testing"),
-                      )
                     ],
                   ))))
         ],

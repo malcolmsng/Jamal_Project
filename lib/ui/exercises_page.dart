@@ -43,7 +43,7 @@ class _ExercisePageState extends State<ExercisePage> {
         children: [
           SizedBox(
             child: Image.asset(
-              "assets/bg.jpg",
+              'assets/testbg2.png',
               colorBlendMode: BlendMode.overlay,
             ),
           ),

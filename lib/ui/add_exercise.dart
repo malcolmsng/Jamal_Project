@@ -28,9 +28,9 @@ class _AddExercisePageState extends State<AddExercisePage> {
 
   List<ex.Exercise> addedExercises = [];
 
-  int selectedSets = 1;
-  int selectedReps = 1;
-  int selectedWeight = 1;
+  int selectedSets = 4;
+  int selectedReps = 10;
+  int selectedWeight = 60;
   int selectedTime = 1;
 
   TextEditingController controller = TextEditingController();
@@ -77,7 +77,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
         children: [
           SizedBox(
             child: Image.asset(
-              "assets/bg.jpg",
+              'assets/testbg2.png',
               colorBlendMode: BlendMode.overlay,
             ),
           ),
@@ -248,8 +248,9 @@ class _AddExercisePageState extends State<AddExercisePage> {
                             value: selectedReps,
                             minValue: 0,
                             maxValue: 100,
-                            onChanged: (value) =>
-                                setState(() => selectedReps = value),
+                            onChanged: (value) => setState(() {
+                              selectedReps = value;
+                            }),
                           ),
                           SizedBox(
                             height: 16.0,
