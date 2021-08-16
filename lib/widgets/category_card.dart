@@ -97,7 +97,7 @@ class CategoryCard extends StatelessWidget {
                                 List<Map<String, Workout>> savedWorkouts =
                                     await DatabaseService(uid: uid)
                                         .retrieveSavedWorkout();
-                                Timer(Duration(milliseconds: 5), () {
+                                Timer(Duration(seconds: 1), () {
                                   Navigator.of(context)
                                       .pushReplacement(MaterialPageRoute(
                                     builder: (context) => DoWorkout(

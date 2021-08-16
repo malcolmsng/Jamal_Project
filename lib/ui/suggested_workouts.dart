@@ -235,9 +235,42 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
                 style: ElevatedButton.styleFrom(primary: Colors.orangeAccent),
                 child: Text('End Workout'),
                 onPressed: () async {
+                  List<String> names = exercises.map((e) => e.name).toList();
+                  List<String> sets =
+                      exercises.map((e) => e.sets.toString()).toList();
+                  List<String> reps =
+                      exercises.map((e) => e.reps.toString()).toList();
+                  List<String> weights =
+                      exercises.map((e) => e.weight.toString()).toList();
+
+                  DateTime currentDate = DateTime.now();
+                  String dates = currentDate.toString().substring(0, 10);
+
+                  List<List<String>> tempListList = [];
+                  for (var i = 0; i < names.length; i++) {
+                    List<String> tempList = [
+                      names[i],
+                      sets[i],
+                      reps[i],
+                      weights[i]
+                    ];
+
+                    tempListList.add(tempList);
+                  }
+
+                  int volume = 0;
+                  for (var i in tempListList) {
+                    print(i);
+                    if (int.parse(i[3]) != 0) {
+                      volume +=
+                          int.parse(i[1]) * int.parse(i[2]) * int.parse(i[3]);
+                    } else {
+                      volume += int.parse(i[1]) * int.parse(i[2]);
+                    }
+                  }
                   finishedWorkoutDialog();
                   await DatabaseService(uid: uid)
-                      .addWorkout("suggested workout", "pushup");
+                      .addCompletedWorkoutWithDate(dates, tempListList, volume);
                 },
               ),
             ])
