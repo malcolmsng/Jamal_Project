@@ -173,7 +173,44 @@ class DatabaseService {
     });
   }
 
+  Future addSavedWorkout(List<Map<String, Workout>> savedList) async {
+    List<Exercise> tempExercises = [];
+    String name = '';
+    var docRef = FirebaseFirestore.instance.collection("particulars").doc(uid);
+    for (Map<String, Workout> workout in savedList) {
+      name = workout.keys.first;
+      tempExercises = workout.values.first.exercises;
+      // DateTime tempDate = workout.values.first.date;
+      List exerciseNames = tempExercises.map((e) => e.name).toList();
+      List sets = tempExercises.map((e) => e.sets).toList();
+      List reps = tempExercises.map((e) => e.reps).toList();
+      List weights = tempExercises.map((e) {
+        return e.isWeighted ? e.weight : 0;
+      }).toList();
+      // List date = [tempDate.year, tempDate.month, tempDate.day];
+
+      await docRef.collection('savedWorkouts').add({
+        'name': name,
+        'exerciseNames': exerciseNames,
+        'sets': sets,
+        'reps': reps,
+        'weights': weights,
+        // 'date': date
+      });
+    }
+  }
+
   //adding current workout plan
+  Future<bool> collectionExists(String path) async {
+    var docRef = FirebaseFirestore.instance.collection("particulars").doc(uid);
+    int size = await docRef
+        .collection(path)
+        .limit(1)
+        .get()
+        .then((value) => value.size);
+
+    return size != 0;
+  }
 
   Future addCurrentPlan(List<Workout> plan) async {
     List<Exercise> tempExercises = [];
@@ -200,7 +237,75 @@ class DatabaseService {
     }
   }
 
- Future retrieveCurrentPlan() async {
+  Future retrieveSavedWorkout() async {
+    List<Map<String, Workout>> workouts = [];
+    var docRef = FirebaseFirestore.instance.collection("particulars").doc(uid);
+    await docRef.collection('savedWorkouts').get().then((value) =>
+        value.docs.forEach((element) {
+          var workout = element.data();
+
+          // var date = DateTime(
+          //     workout['date'][0], workout['date'][1], workout['date'][2]);
+          String name = workout['name'];
+
+          var tempExercises = [];
+          for (var i = 0; i < workout['exerciseNames'].length; i++) {
+            var exercise = Workout.allExercises
+                .where((element) => element.name == workout['exerciseNames'][i])
+                .elementAt(0);
+
+            exercise.sets = workout['sets'][i];
+            exercise.reps = workout['reps'][i];
+            exercise.weight = workout['weights'][i];
+            tempExercises.add(exercise);
+          }
+          List<Exercise> exercises = tempExercises.cast<Exercise>();
+
+          Workout tempWorkout = Workout(exercises: exercises);
+          workouts.add({name: tempWorkout});
+        }));
+    return workouts;
+  }
+
+  Future<void> deleteSavedWorkout(String name) async {
+    var docRef = FirebaseFirestore.instance.collection("particulars").doc(uid);
+    docRef
+        .collection('savedWorkouts')
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              print(element.data());
+              if (element.data()['name'] == name) {
+                docRef.collection('savedWorkouts').doc(element.id).delete();
+              }
+            }));
+  }
+
+  // Future deleteCurrentPlan() async {
+  //   var docRef = FirebaseFirestore.instance.collection("particulars").doc(uid);
+
+  //   docRef.collection('currentPlan').snapshots().forEach((element) {
+  //     for (QueryDocumentSnapshot snapshot in element.docs) {
+  //       snapshot.reference.delete();
+  //     }
+  //   });
+  // }
+
+  void deleteCurrentPlan() {
+    var docRef = FirebaseFirestore.instance.collection("particulars").doc(uid);
+    List<String> idList = [];
+    docRef
+        .collection('currentPlan')
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              String id = element.id;
+              idList.add(id);
+            }));
+    for (String id in idList) {
+      docRef.collection('currentPlan').doc(id).delete();
+    }
+  }
+
+  Future retrieveCurrentPlan() async {
     List<Workout> workouts = [];
     var docRef = FirebaseFirestore.instance.collection("particulars").doc(uid);
     await docRef.collection('currentPlan').get().then((value) =>
