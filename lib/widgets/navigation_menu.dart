@@ -5,12 +5,10 @@ import 'package:jamal_v1/ui/authentication.dart';
 import 'package:jamal_v1/ui/do_workout.dart';
 import 'package:jamal_v1/ui/user_info.dart';
 import 'package:jamal_v1/ui/exercises_page.dart';
-
+import 'package:jamal_v1/model/workout.dart';
 import 'package:jamal_v1/ui/home_page.dart';
 import 'package:jamal_v1/ui/measurements.dart';
 import 'package:jamal_v1/ui/settings.dart';
-import 'package:jamal_v1/ui/suggester.dart';
-import 'package:jamal_v1/net/auth.dart' as auth;
 import 'package:jamal_v1/model/fitness.dart';
 import 'package:jamal_v1/util/enum_methods.dart';
 import 'package:jamal_v1/net/database.dart';
@@ -64,8 +62,14 @@ class NavigationDrawerWidget extends StatelessWidget {
                           .then((value) => (Enums.enumFromString<FitnessLevel>(
                               value, FitnessLevel.values)));
 
+                      List<Map<String, Workout>> savedWorkouts =
+                          await DatabaseService(uid: uid)
+                              .retrieveSavedWorkout();
+                      
+
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => DoWorkout(
+                          savedWorkouts: savedWorkouts,
                           userFitness: userFitness,
                         ),
                       ));
@@ -216,11 +220,11 @@ class NavigationDrawerWidget extends StatelessWidget {
         ));
         break;
 
-      case 1:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => DoWorkout(),
-        ));
-        break;
+      // case 1:
+      //   Navigator.of(context).push(MaterialPageRoute(
+      //     builder: (context) => DoWorkout(),
+      //   ));
+      //   break;
       case 2:
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => ExercisePage(),

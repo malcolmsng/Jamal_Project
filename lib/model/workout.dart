@@ -19,7 +19,7 @@ class Workout {
   ];
 
   Workout({
-    @required this.rest,
+    this.rest = const Duration(minutes: 1),
     @required this.exercises,
     this.sets,
     this.reps,

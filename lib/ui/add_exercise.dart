@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/model/workout.dart';
+import 'package:jamal_v1/net/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:jamal_v1/ui/do_workout.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:jamal_v1/util/advanced_exercise_constants.dart';
@@ -19,6 +21,7 @@ class AddExercisePage extends StatefulWidget {
 }
 
 class _AddExercisePageState extends State<AddExercisePage> {
+  String uid = FirebaseAuth.instance.currentUser.uid;
   FitnessLevel selectedFitness = FitnessLevel.Beginner;
   String query = '';
   List<ex.Exercise> selectedExercises = beginnerExercises;
@@ -312,6 +315,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                   });
 
                   print(addedExercises);
+                  Navigator.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(primary: Colors.blueAccent),
                 child: Text('Add Exercise'),
@@ -345,12 +349,23 @@ class _AddExercisePageState extends State<AddExercisePage> {
             'Confirm',
             style: TextStyle(fontSize: 16),
           ),
-          onPressed: () {
+          onPressed: () async {
             Map<String, Workout> tempMap = {controller.text: workout};
-
+            await DatabaseService(uid: uid).addSavedWorkout([tempMap]);
             var nav = Navigator.of(context);
+            FitnessLevel userFitness = await DatabaseService()
+                .getFitnessLevel(uid)
+                .then((value) => (Enums.enumFromString<FitnessLevel>(
+                    value, FitnessLevel.values)));
+            List<Map<String, Workout>> savedWorkouts =
+                await DatabaseService(uid: uid).retrieveSavedWorkout();
+
             nav.pop();
-            nav.pop();
+            nav.pushReplacement(MaterialPageRoute(
+                builder: (context) => DoWorkout(
+                      userFitness: userFitness,
+                      savedWorkouts: savedWorkouts,
+                    )));
 
             // changed from pushReplacement, somehow pushReplacement goes to the wrong page
           },

@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/model/exercise.dart';
 import 'package:jamal_v1/model/workout.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:jamal_v1/net/database.dart';
+import 'package:jamal_v1/model/fitness.dart';
+import 'package:jamal_v1/ui/suggested_workouts.dart';
+import 'package:jamal_v1/util/enum_methods.dart';
+import 'package:jamal_v1/ui/do_workout.dart';
 
 class CategoryCard extends StatelessWidget {
   final String title;
   final Workout workout;
   final Function press;
+
   const CategoryCard({
     Key key,
     this.title,
@@ -16,6 +23,7 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Exercise> exercises = workout.exercises;
+    String uid = FirebaseAuth.instance.currentUser.uid;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(13),
@@ -36,7 +44,13 @@ class CategoryCard extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: press,
+            onTap: () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => SuggestedWorkout(
+                  workout: workout,
+                ),
+              ));
+            },
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -67,8 +81,26 @@ class CategoryCard extends StatelessWidget {
                               iconSize: 20,
                               padding: EdgeInsets.all(1),
                               alignment: Alignment.topRight,
-                              onPressed: () {
-                                //delete
+                              onPressed: () async {
+                                FitnessLevel userFitness =
+                                    await DatabaseService()
+                                        .getFitnessLevel(uid)
+                                        .then((value) =>
+                                            (Enums.enumFromString<FitnessLevel>(
+                                                value, FitnessLevel.values)));
+                                await DatabaseService(uid: uid)
+                                    .deleteSavedWorkout(title);
+
+                                List<Map<String, Workout>> savedWorkouts =
+                                    await DatabaseService(uid: uid)
+                                        .retrieveSavedWorkout();
+                                Navigator.of(context)
+                                    .pushReplacement(MaterialPageRoute(
+                                  builder: (context) => DoWorkout(
+                                    savedWorkouts: savedWorkouts,
+                                    userFitness: userFitness,
+                                  ),
+                                ));
                               },
                               icon: Icon(Icons.delete),
                             ),

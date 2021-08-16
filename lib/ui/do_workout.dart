@@ -3,6 +3,7 @@ import 'package:jamal_v1/model/exercise.dart' as ex;
 import 'package:jamal_v1/model/fitness.dart';
 import 'package:jamal_v1/ui/add_exercise.dart';
 import 'package:jamal_v1/ui/add_exercise.dart';
+import 'package:jamal_v1/ui/suggested_workouts.dart';
 import 'package:jamal_v1/ui/suggester.dart';
 import 'package:jamal_v1/ui/workout_plan.dart';
 import 'package:jamal_v1/util/beginner_exercise_constants.dart';
@@ -21,10 +22,12 @@ import 'package:dotted_border/dotted_border.dart';
 
 class DoWorkout extends StatefulWidget {
   final FitnessLevel userFitness;
+  List<Map<String, Workout>> savedWorkouts;
   Workout bruh =
       Workout(rest: Duration(minutes: 1), exercises: [pushup, situp, squat]);
 
-  DoWorkout({Key key, @required this.userFitness}) : super(key: key);
+  DoWorkout({Key key, @required this.userFitness, this.savedWorkouts})
+      : super(key: key);
 
   @override
   _DoWorkoutState createState() => _DoWorkoutState();
@@ -69,6 +72,7 @@ class _DoWorkoutState extends State<DoWorkout> {
 
   //all exercises in list form;
   void initState() {
+    userAddedWorkouts = widget.savedWorkouts;
     userAddedWorkouts.add({'null': null});
     chestExercises = getSuitableExercises(ex.Focus.Chest);
 
@@ -164,8 +168,6 @@ class _DoWorkoutState extends State<DoWorkout> {
                     }
                   });
 
-                  print(selectedEquipment);
-
                   _multiformkey.currentState.validate();
                 },
               ),
@@ -179,7 +181,8 @@ class _DoWorkoutState extends State<DoWorkout> {
                       style:
                           ElevatedButton.styleFrom(primary: Colors.blueAccent),
                       child: Text('Get Suggestions!'),
-                      onPressed: () {
+                      onPressed: () async {
+                        DatabaseService db = DatabaseService(uid: uid);
                         List<Workout> tempWorkout;
                         if (widget.userFitness == FitnessLevel.Beginner) {
                           tempWorkout = getBeginnerExercises();
@@ -189,13 +192,19 @@ class _DoWorkoutState extends State<DoWorkout> {
                         } else {
                           tempWorkout = getAdvancedExercises();
                         }
+                        bool currentPlanExists =
+                            await db.collectionExists('currentPlan');
+                            
+                        if (currentPlanExists) {
+                          db.deleteCurrentPlan();
+                        }
+                        await db.addCurrentPlan(tempWorkout);
 
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            // builder: (context) => SuggestedWorkout(),
-                            builder: (context) => WorkoutPlan(),
                             settings: RouteSettings(arguments: tempWorkout),
+                            builder: (context) => WorkoutPlan(),
                           ),
                         );
                       },
@@ -208,81 +217,90 @@ class _DoWorkoutState extends State<DoWorkout> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(primary: Colors.blueAccent),
                 child: Text('Current Suggestions'),
-                onPressed: () {
+                onPressed: () async {
+                  List tempWorkouts =
+                      await DatabaseService(uid: uid).retrieveCurrentPlan();
+                  List<Workout> workouts = tempWorkouts.cast<Workout>();
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AddExercisePage(),
+                      settings: RouteSettings(arguments: workouts),
+                      builder: (context) => WorkoutPlan(),
                     ),
                   );
                 },
               ),
             ]),
             Expanded(
-              child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2),
-                  itemCount: userAddedWorkouts.length,
-                  itemBuilder: (context, index) {
-                    var current = userAddedWorkouts[index];
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2),
+                    itemCount: userAddedWorkouts.length,
+                    itemBuilder: (context, index) {
+                      var current = userAddedWorkouts[index];
 
-                    return current.keys.first == 'null' &&
-                            current.values.first == null
-                        ? Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: DottedBorder(
-                              color: Colors.black54,
-                              radius: Radius.circular(16),
-                              dashPattern: [8, 8],
-                              borderType: BorderType.RRect,
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(13),
-                                  child: Container(
-                                      child: Material(
-                                        child: InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AddExercisePage(),
+                      return current.keys.first == 'null' &&
+                              current.values.first == null
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: DottedBorder(
+                                color: Colors.black54,
+                                radius: Radius.circular(16),
+                                dashPattern: [8, 8],
+                                borderType: BorderType.RRect,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(13),
+                                    child: Container(
+                                        child: Material(
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AddExercisePage(),
+                                                ),
+                                              );
+                                            },
+                                            child: Center(
+                                              child: Icon(
+                                                Icons.add,
+                                                size: 40,
+                                                semanticLabel: 'Add',
+                                                color: Colors.grey,
                                               ),
-                                            );
-                                          },
-                                          child: Center(
-                                            child: Icon(
-                                              Icons.add,
-                                              size: 40,
-                                              semanticLabel: 'Add',
-                                              color: Colors.grey,
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.transparent),
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(16),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            offset: Offset(0, 17),
-                                            blurRadius: 17,
-                                            spreadRadius: -23,
-                                          ),
-                                        ],
-                                      ))),
-                            ),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CategoryCard(
-                              workout: current.values.first,
-                              title: current.keys.first,
-                              press: () {},
-                            ),
-                          );
-                  }),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.transparent),
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              offset: Offset(0, 17),
+                                              blurRadius: 17,
+                                              spreadRadius: -23,
+                                            ),
+                                          ],
+                                        ))),
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CategoryCard(
+                                workout: current.values.first,
+                                title: current.keys.first,
+                                
+                              ),
+                            );
+                    }),
+              ),
             )
           ],
         ),
