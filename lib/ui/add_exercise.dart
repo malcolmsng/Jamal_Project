@@ -28,8 +28,8 @@ class _AddExercisePageState extends State<AddExercisePage> {
 
   List<ex.Exercise> addedExercises = [];
 
-  int selectedSets = 4;
-  int selectedReps = 10;
+  int _selectedSets = 4;
+  int _selectedReps = 10;
   int selectedWeight = 60;
   int selectedTime = 1;
 
@@ -227,11 +227,11 @@ class _AddExercisePageState extends State<AddExercisePage> {
                   child: Column(children: [
                     NumberPicker(
                       itemHeight: 40,
-                      value: selectedSets,
+                      value: _selectedSets,
                       minValue: 0,
                       maxValue: 100,
                       onChanged: (value) =>
-                          setState(() => selectedSets = value),
+                          setState(() => _selectedSets = value),
                     ),
                     SizedBox(
                       height: 16.0,
@@ -244,12 +244,13 @@ class _AddExercisePageState extends State<AddExercisePage> {
                         flex: 1,
                         child: Column(children: [
                           NumberPicker(
+                            haptics: true,
                             itemHeight: 40,
-                            value: selectedReps,
+                            value: _selectedReps,
                             minValue: 0,
                             maxValue: 100,
                             onChanged: (value) => setState(() {
-                              selectedReps = value;
+                              _selectedReps = value;
                             }),
                           ),
                           SizedBox(
@@ -301,9 +302,9 @@ class _AddExercisePageState extends State<AddExercisePage> {
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: () {
-                  exercise.sets = selectedSets;
+                  exercise.sets = _selectedSets;
                   if (!timed) {
-                    exercise.reps = selectedReps;
+                    exercise.reps = _selectedReps;
                   } else {
                     exercise.time = Duration(seconds: selectedTime);
                   }
