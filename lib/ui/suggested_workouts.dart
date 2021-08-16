@@ -18,6 +18,10 @@ class SuggestedWorkout extends StatefulWidget {
 }
 
 class _SuggestedWorkoutState extends State<SuggestedWorkout> {
+  List<List<String>> listOfListOfWorkouts = [
+    ["pushup", "4", "20", "10"],
+    ["situp", "4", "15", "0"]
+  ];
   String uid = FirebaseAuth.instance.currentUser.uid;
   bool isRest = false;
   List restOrWork;
@@ -236,8 +240,8 @@ class _SuggestedWorkoutState extends State<SuggestedWorkout> {
                 child: Text('End Workout'),
                 onPressed: () async {
                   finishedWorkoutDialog();
-                  await DatabaseService(uid: uid)
-                      .addWorkout("suggested workout", "pushup");
+                  await DatabaseService(uid: uid).addWorkoutListWithDate(
+                      "2021-08-21", listOfListOfWorkouts, 100);
                 },
               ),
             ])
