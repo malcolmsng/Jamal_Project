@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:jamal_v1/model/exercise.dart';
 import 'package:jamal_v1/model/workout.dart';
@@ -7,6 +9,7 @@ import 'package:jamal_v1/model/fitness.dart';
 import 'package:jamal_v1/ui/suggested_workouts.dart';
 import 'package:jamal_v1/util/enum_methods.dart';
 import 'package:jamal_v1/ui/do_workout.dart';
+import 'package:async/async.dart';
 
 class CategoryCard extends StatelessWidget {
   final String title;
@@ -94,13 +97,15 @@ class CategoryCard extends StatelessWidget {
                                 List<Map<String, Workout>> savedWorkouts =
                                     await DatabaseService(uid: uid)
                                         .retrieveSavedWorkout();
-                                Navigator.of(context)
-                                    .pushReplacement(MaterialPageRoute(
-                                  builder: (context) => DoWorkout(
-                                    savedWorkouts: savedWorkouts,
-                                    userFitness: userFitness,
-                                  ),
-                                ));
+                                Timer(Duration(milliseconds: 5), () {
+                                  Navigator.of(context)
+                                      .pushReplacement(MaterialPageRoute(
+                                    builder: (context) => DoWorkout(
+                                      savedWorkouts: savedWorkouts,
+                                      userFitness: userFitness,
+                                    ),
+                                  ));
+                                });
                               },
                               icon: Icon(Icons.delete),
                             ),

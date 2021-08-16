@@ -4,7 +4,7 @@ import 'package:jamal_v1/model/fitness.dart';
 import 'package:jamal_v1/ui/add_exercise.dart';
 import 'package:jamal_v1/ui/add_exercise.dart';
 import 'package:jamal_v1/ui/suggested_workouts.dart';
-import 'package:jamal_v1/ui/suggester.dart';
+import 'package:async/async.dart';
 import 'package:jamal_v1/ui/workout_plan.dart';
 import 'package:jamal_v1/util/beginner_exercise_constants.dart';
 import 'package:jamal_v1/util/intermediate_exercise_constants.dart';
