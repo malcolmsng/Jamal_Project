@@ -18,6 +18,10 @@ class SuggestedWorkout extends StatefulWidget {
 }
 
 class _SuggestedWorkoutState extends State<SuggestedWorkout> {
+  List<List<String>> listOfListOfWorkouts = [
+    ["pushup", "4", "20", "10"],
+    ["situp", "4", "15", "0"]
+  ];
   String uid = FirebaseAuth.instance.currentUser.uid;
   bool isRest = false;
   List restOrWork;
