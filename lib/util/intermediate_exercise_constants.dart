@@ -96,6 +96,34 @@ ex.Exercise legRaises = ex.Exercise(
       'https://www.bodybuilding.com/images/2020/xdb/originals/xdb-63a-lying-leg-lift-m2-16x9.jpg',
 );
 
+ex.Exercise latsPulldown = ex.Exercise(
+  name: 'Lats Pulldown',
+  focus: [ex.Focus.Back, ex.Focus.Bicep],
+  difficulty: FitnessLevel.Intermediate,
+  equipmentNeeded: Equipment.cables,
+  vidURL: 'https://www.youtube.com/watch?v=CAwf7n6Luuc',
+  picURL: 'https://blog.nasm.org/hubfs/lat-pulldown.jpg',
+);
+
+ex.Exercise tBarRow = ex.Exercise(
+  name: 'T-Bar Row',
+  focus: [ex.Focus.Back],
+  difficulty: FitnessLevel.Intermediate,
+  equipmentNeeded: Equipment.barbell,
+  vidURL: 'https://www.youtube.com/watch?v=j3Igk5nyZE4',
+  picURL: 'https://cdn.muscleandstrength.com/sites/default/files/t-bar-row.jpg',
+);
+
+ex.Exercise tricepExtension = ex.Exercise(
+  name: 'Tricep Extension',
+  focus: [ex.Focus.Tricep],
+  difficulty: FitnessLevel.Intermediate,
+  equipmentNeeded: Equipment.dumbbell,
+  vidURL: 'https://www.youtube.com/watch?v=_gsUck-7M74',
+  picURL:
+      'https://qph.fs.quoracdn.net/main-qimg-4242b1f3d494037521ea69122fbf19c4',
+);
+
 List<ex.Exercise> intermediateExercises = [
   pushup,
   situp,
@@ -106,4 +134,7 @@ List<ex.Exercise> intermediateExercises = [
   jumpingLunges,
   mountainClimbers,
   legRaises,
+  latsPulldown,
+  tBarRow,
+  tricepExtension
 ];

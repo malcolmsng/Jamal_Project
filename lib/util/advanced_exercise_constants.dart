@@ -96,6 +96,35 @@ ex.Exercise hangingLegRaises = ex.Exercise(
   picURL: 'https://miro.medium.com/max/1838/0*Mly7U-TaaUvMxnpW',
 );
 
+ex.Exercise deadlift = ex.Exercise(
+  name: 'Deadlift',
+  focus: [ex.Focus.Back, ex.Focus.Legs, ex.Focus.Abs],
+  difficulty: FitnessLevel.Advanced,
+  equipmentNeeded: Equipment.barbell,
+  vidURL: 'https://www.youtube.com/watch?v=ytGaGIn3SjE',
+  picURL: 'https://static.toiimg.com/photo/76287149.cms',
+);
+
+ex.Exercise overheadPress = ex.Exercise(
+  name: 'Overhead Press',
+  focus: [ex.Focus.Shoulder],
+  difficulty: FitnessLevel.Advanced,
+  equipmentNeeded: Equipment.barbell,
+  vidURL: 'https://www.youtube.com/watch?v=_RlRDWO2jfg',
+  picURL:
+      'https://cdn.shopify.com/s/files/1/1283/2557/files/Benefits_Of_Overhead_Press_1024x1024.jpg?v=1616477593',
+);
+
+ex.Exercise skullcrusher = ex.Exercise(
+  name: 'Skullcrusher',
+  focus: [ex.Focus.Tricep],
+  difficulty: FitnessLevel.Advanced,
+  equipmentNeeded: Equipment.barbell,
+  vidURL: 'https://www.youtube.com/watch?v=d_KZxkY_0cM',
+  picURL:
+      'https://www.bodybuilding.com/fun/images/2015/your-complete-guide-to-skullcrushers-graphics-1-700xh.jpg',
+);
+
 List<ex.Exercise> advancedExercises = [
   pikePushup,
   bicycle,
@@ -106,4 +135,7 @@ List<ex.Exercise> advancedExercises = [
   burpees,
   lSit,
   hangingLegRaises,
+  deadlift,
+  overheadPress,
+  skullcrusher
 ];

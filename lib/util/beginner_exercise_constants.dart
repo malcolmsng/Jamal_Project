@@ -62,11 +62,48 @@ ex.Exercise ropeSkipping = ex.Exercise(
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUP4MVI4ITNsRLIOVsKFRgxpEwL9SefvHe3m9nElatAOYoduUlQCeTx0ZkNDPVtd0hHwE&usqp=CAU',
 );
 
+ex.Exercise weightedLunges = ex.Exercise(
+  name: 'Weighted Lunges',
+  focus: [ex.Focus.Legs],
+  difficulty: FitnessLevel.Beginner,
+  equipmentNeeded: Equipment.noEquip,
+  isWeighted: true,
+  weight: 5,
+  vidURL: 'https://www.youtube.com/watch?v=QOVaHwm-Q6U',
+  picURL:
+      'https://static.toiimg.com/thumb/72167543.cms?width=680&height=512&imgsize=682166',
+);
+
+ex.Exercise hammerCurl = ex.Exercise(
+  name: 'Hammer Curl',
+  focus: [ex.Focus.Bicep],
+  difficulty: FitnessLevel.Beginner,
+  equipmentNeeded: Equipment.dumbbell,
+  isWeighted: true,
+  weight: 4,
+  vidURL: 'https://www.youtube.com/watch?v=zC3nLlEvin4',
+  picURL:
+      'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/hammer-curls-1581441441.jpg',
+);
+
+ex.Exercise assistedPullups = ex.Exercise(
+  name: 'Assisted Pullups',
+  focus: [ex.Focus.Back],
+  difficulty: FitnessLevel.Beginner,
+  equipmentNeeded: Equipment.resistanceBand,
+  vidURL: 'https://www.youtube.com/watch?v=7yqudG7vnow',
+  picURL:
+      'https://thumbs.gfycat.com/GrossEvenBluebreastedkookaburra-size_restricted.gif',
+);
+
 List<ex.Exercise> beginnerExercises = [
   kneePushup,
   russianTwist,
   squat,
   plank,
   jumpingJacks,
-  ropeSkipping
+  ropeSkipping,
+  weightedLunges,
+  hammerCurl,
+  assistedPullups
 ];
